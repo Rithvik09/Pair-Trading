@@ -63,8 +63,8 @@ def watchlist_hint(pairs: list[str]) -> None:
     st.code(lines, language="toml")
 
 
-# The page is public, so caches are bounded and free-text tickers are validated: visitors
-# can't make the app fire unlimited Yahoo requests or fill memory.
+# Caches are bounded and free-text tickers validated, so no viewer (including anyone the app
+# is shared with) can make it fire unlimited Yahoo requests or fill memory.
 TICKER = re.compile(r"[A-Z][A-Z0-9.\-]{0,9}")
 
 

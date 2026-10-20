@@ -7,7 +7,10 @@ It never places orders. After each weekday close a scheduled job works out the e
 (ticker, buy/sell/short, whole-share quantity, which morning) and posts them to Discord and the
 dashboard. You place them with your broker. A model book tracks the same trades and P&L.
 
-## How it runs (free)
+## How it runs (free, private)
+
+Everything stays private: the repo (with your trade history) is a private GitHub repo, and the
+dashboard is a private Streamlit app that only you and people you invite can open.
 
 | Piece | Where | What it does |
 |---|---|---|
@@ -17,17 +20,23 @@ dashboard. You place them with your broker. A model book tracks the same trades 
 
 ### One-time setup
 
-1. **GitHub**: create a repo, push this project, and merge it to `main` (scheduled
-   workflows only run from the default branch).
+1. **GitHub**: create a **private** repo, push this project, and merge it to `main`
+   (scheduled workflows only run from the default branch). Private repos get 2,000 free
+   Actions minutes a month; the daily job uses about 80. With GitHub's default $0 spending
+   limit it can't run up a bill: jobs just stop if the minutes ever run out.
 2. **Discord**: in your channel, *Edit Channel → Integrations → Webhooks → New Webhook → Copy
    Webhook URL*. In GitHub: *Settings → Secrets and variables → Actions → New repository
    secret*, name `DISCORD_WEBHOOK_URL`, paste the URL. Treat it like a password: anyone with
    it can post to the channel. Never put it in a file.
 3. **First run**: *Actions → daily step → Run workflow*. It creates `state/book.json`, and
    then runs itself every weekday.
-4. **Dashboard**: at share.streamlit.io, *Create app* → this repo, branch `main`, file
-   `app.py`; under *Advanced settings* pick Python 3.12 and add the secret
-   `GITHUB_REPO = "your-name/your-repo"` (makes the "edit config.toml" links work).
+4. **Dashboard**: sign in at share.streamlit.io with GitHub and, when asked, allow access
+   to **private repositories** (or later: your avatar → *Settings → Linked accounts*).
+   *Create app* → this repo, branch `main`, file `app.py`; under *Advanced settings* pick
+   Python 3.12 and add the secret `GITHUB_REPO = "your-name/your-repo"` (makes the "edit
+   config.toml" links work). An app from a private repo is private: only you can open it,
+   after signing in. To let someone else see it: the app's *Share* button → invite by email.
+   Free accounts may be limited in how many private apps they can have; you need just one.
    Streamlit redeploys on every push, so it shows each day's book after the daily commit.
 
 ### Changing what's traded
