@@ -1,0 +1,21 @@
+# Settings for the daily job. Edit on GitHub (pencil icon) and commit: the next daily run
+# and the dashboard pick it up. Find candidate pairs on the dashboard's Scanner tab.
+
+# Pairs to trade, as [Y, X]. A short spread shorts Y and buys X; a long spread the reverse.
+watchlist = [
+  ["KO", "PEP"],
+  ["GS", "MS"],
+  ["PG", "KMB"],
+]
+
+[strategy]
+entry = 2.0       # open when the spread is this many standard deviations from normal
+exit = 0.5        # close once it's back within this
+stop = 4.0        # give up if it reaches this (the relationship may have broken)
+lookback = 120    # trading days used for the hedge ratio
+z_window = 30     # trading days used for the spread's mean and standard deviation
+cost_bps = 5.0    # assumed trading cost per side, in basis points
+
+[paper]
+notional = 10000        # dollars per pair trade, both legs together
+starting_cash = 100000  # only used the first time the book is created

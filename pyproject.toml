@@ -1,0 +1,23 @@
+[project]
+name = "pairs-trader"
+version = "0.1.0"
+description = "Find cointegrated stock pairs, flag divergences, backtest and paper-trade mean reversion."
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "statsmodels>=0.14",
+    "yfinance>=0.2.40",
+    "streamlit>=1.38",
+    "plotly>=5.22",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

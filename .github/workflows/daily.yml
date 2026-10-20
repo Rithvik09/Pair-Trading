@@ -1,0 +1,76 @@
+name: daily step
+
+# After each weekday close: update the paper book, commit it, then post new orders to Discord.
+# Posting happens only after the push succeeds, so a failed run never leaves orders posted but
+# unsaved: the next run recomputes them and posts them then (once).
+# 21:45 UTC = 5:45pm ET in summer, 4:45pm ET in winter (prices are final by 4:15pm ET).
+# GitHub may start scheduled runs late; orders are for the next open, so that's fine.
+on:
+  schedule:
+    - cron: "45 21 * * 1-5"
+  workflow_dispatch: {}
+
+permissions: {}
+
+concurrency:
+  group: daily-step
+  cancel-in-progress: false
+
+jobs:
+  # Runs third-party code (yfinance, pandas, ...) with neither the write token nor the secret.
+  step:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e  # v6.8.0
+      - run: uv sync --frozen --no-dev
+      - name: Run the daily step
+        run: uv run python -m pairs.cli step
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: state
+          path: state/
+          if-no-files-found: error
+          retention-days: 7
+
+  # Has the write token and the secret, but installs nothing: git plus our stdlib-only
+  # pairs/notify.py on the runner's own Python.
+  commit:
+    needs: step
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+      - name: Keep the previous book to diff against
+        run: |
+          cp state/book.json "$RUNNER_TEMP/old.json" 2>/dev/null || echo "First run, no book yet."
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          name: state
+          path: state/
+      - name: Commit the updated book
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/
+          if git diff --cached --quiet; then
+            echo "The book didn't change: nothing to commit."
+            exit 0
+          fi
+          git commit -m "Daily step: $(date -u +%F)"
+          for attempt in 1 2 3; do
+            git push && exit 0
+            git pull --rebase  # e.g. you edited config.toml meanwhile
+          done
+          exit 1
+      - name: Post new orders to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python3 -m pairs.notify "$RUNNER_TEMP/old.json" state/book.json

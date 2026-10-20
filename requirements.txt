@@ -1,0 +1,176 @@
+altair==6.3.0
+    # via streamlit
+anyio==4.15.1
+    # via
+    #   starlette
+    #   streamlit
+attrs==26.1.0
+    # via
+    #   jsonschema
+    #   referencing
+beautifulsoup4==4.15.0
+    # via yfinance
+certifi==2026.7.22
+    # via
+    #   curl-cffi
+    #   requests
+cffi==2.1.1
+    # via curl-cffi
+charset-normalizer==3.5.2
+    # via requests
+click==8.5.0
+    # via
+    #   streamlit
+    #   uvicorn
+curl-cffi==0.16.3
+    # via yfinance
+formulaic==1.2.2
+    # via statsmodels
+h11==0.16.0
+    # via uvicorn
+idna==3.20
+    # via
+    #   anyio
+    #   requests
+interface-meta==2.0.1
+    # via formulaic
+itsdangerous==2.2.0
+    # via streamlit
+jinja2==3.1.6
+    # via
+    #   altair
+    #   pydeck
+jsonschema==4.26.0
+    # via altair
+jsonschema-specifications==2025.9.1
+    # via jsonschema
+lxml==6.1.3
+    # via yfinance
+markupsafe==3.0.4
+    # via jinja2
+multitasking==0.0.13
+    # via yfinance
+narwhals==2.27.1
+    # via
+    #   altair
+    #   formulaic
+    #   plotly
+numpy==2.4.6 ; python_full_version < '3.12'
+    # via
+    #   formulaic
+    #   pairs-trader
+    #   pandas
+    #   patsy
+    #   pydeck
+    #   scipy
+    #   statsmodels
+    #   streamlit
+    #   yfinance
+numpy==2.5.4 ; python_full_version >= '3.12'
+    # via
+    #   formulaic
+    #   pairs-trader
+    #   pandas
+    #   patsy
+    #   pydeck
+    #   scipy
+    #   statsmodels
+    #   streamlit
+    #   yfinance
+packaging==26.3
+    # via
+    #   altair
+    #   patsy
+    #   plotly
+    #   statsmodels
+    #   streamlit
+pandas==3.0.6
+    # via
+    #   formulaic
+    #   pairs-trader
+    #   statsmodels
+    #   streamlit
+    #   yfinance
+patsy==1.0.3
+    # via statsmodels
+peewee==4.5.3
+    # via yfinance
+pillow==12.3.0
+    # via streamlit
+platformdirs==4.13.3
+    # via yfinance
+plotly==7.1.0
+    # via pairs-trader
+protobuf==7.36.2
+    # via
+    #   streamlit
+    #   yfinance
+pyarrow==26.0.0
+    # via streamlit
+pycparser==3.11 ; implementation_name != 'PyPy'
+    # via cffi
+pydeck==0.9.3
+    # via streamlit
+python-dateutil==2.9.0.post0
+    # via pandas
+python-multipart==0.0.32
+    # via streamlit
+pytz==2026.5
+    # via yfinance
+referencing==0.37.0
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
+requests==2.34.2
+    # via
+    #   streamlit
+    #   yfinance
+rpds-py==2026.9.1
+    # via
+    #   jsonschema
+    #   referencing
+scipy==1.17.1 ; python_full_version < '3.12'
+    # via
+    #   formulaic
+    #   statsmodels
+scipy==1.18.1 ; python_full_version >= '3.12'
+    # via
+    #   formulaic
+    #   statsmodels
+six==1.17.0
+    # via python-dateutil
+soupsieve==2.10 ; python_full_version < '3.11.5'
+    # via beautifulsoup4
+soupsieve==3.0.3 ; python_full_version >= '3.11.5'
+    # via beautifulsoup4
+starlette==1.8.0
+    # via streamlit
+statsmodels==0.15.0
+    # via pairs-trader
+streamlit==1.66.0
+    # via pairs-trader
+typing-extensions==4.16.0
+    # via
+    #   altair
+    #   anyio
+    #   beautifulsoup4
+    #   formulaic
+    #   referencing
+    #   starlette
+    #   streamlit
+tzdata==2026.5 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+    # via pandas
+urllib3==2.8.0
+    # via requests
+uvicorn==0.54.0
+    # via streamlit
+watchdog==6.0.0 ; sys_platform != 'darwin'
+    # via streamlit
+websockets==17.2
+    # via
+    #   streamlit
+    #   yfinance
+wrapt==2.5.1
+    # via formulaic
+yfinance==1.7.0
+    # via pairs-trader

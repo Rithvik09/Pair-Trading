@@ -1,0 +1,3 @@
+ticker,shortable,fee_rate
+# Example overrides from your broker (fee_rate is annual, 0.0025 = 0.25%/yr):
+# GME,true,0.15
