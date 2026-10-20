@@ -1,0 +1,13 @@
+{
+  "cash": 100000.0,
+  "blocked": [],
+  "positions": {},
+  "closed": [],
+  "last_bar": {
+    "KO/PEP": "2026-10-20",
+    "GS/MS": "2026-10-20",
+    "PG/KMB": "2026-10-20"
+  },
+  "orders": [],
+  "last_run_warnings": []
+}
