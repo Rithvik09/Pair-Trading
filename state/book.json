@@ -1,13 +1,89 @@
 {
   "cash": 100000.0,
   "blocked": [],
-  "positions": {},
+  "positions": {
+    "KO/PEP": {
+      "y": "KO",
+      "x": "PEP",
+      "side": "short_spread",
+      "entry_date": "2026-10-22",
+      "entry_y": 95.33999633789062,
+      "entry_x": 138.8300018310547,
+      "y_shares": -64,
+      "x_shares": -28,
+      "beta": -0.6382172974514002,
+      "entry_z": 2.4368463283305464,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0025
+    },
+    "PG/KMB": {
+      "y": "PG",
+      "x": "KMB",
+      "side": "short_spread",
+      "entry_date": "2026-10-22",
+      "entry_y": 165.58999633789062,
+      "entry_x": 112.31999969482422,
+      "y_shares": -50,
+      "x_shares": 13,
+      "beta": 0.18468392623021562,
+      "entry_z": 2.575152672014464,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    }
+  },
   "closed": [],
   "last_bar": {
-    "KO/PEP": "2026-10-21",
-    "GS/MS": "2026-10-21",
-    "PG/KMB": "2026-10-21"
+    "KO/PEP": "2026-10-22",
+    "GS/MS": "2026-10-22",
+    "PG/KMB": "2026-10-22"
   },
-  "orders": [],
+  "orders": [
+    {
+      "pair": "KO/PEP",
+      "event": "open short_spread",
+      "signal_date": "2026-10-22",
+      "execute_on": "2026-10-23",
+      "z": 2.4368463283305464,
+      "legs": [
+        {
+          "ticker": "KO",
+          "side": "SELL SHORT",
+          "qty": 64,
+          "ref_price": 95.33999633789062
+        },
+        {
+          "ticker": "PEP",
+          "side": "SELL SHORT",
+          "qty": 28,
+          "ref_price": 138.8300018310547
+        }
+      ]
+    },
+    {
+      "pair": "PG/KMB",
+      "event": "open short_spread",
+      "signal_date": "2026-10-22",
+      "execute_on": "2026-10-23",
+      "z": 2.575152672014464,
+      "legs": [
+        {
+          "ticker": "PG",
+          "side": "SELL SHORT",
+          "qty": 50,
+          "ref_price": 165.58999633789062
+        },
+        {
+          "ticker": "KMB",
+          "side": "BUY",
+          "qty": 13,
+          "ref_price": 112.31999969482422
+        }
+      ]
+    }
+  ],
   "last_run_warnings": []
 }
