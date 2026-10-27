@@ -44,12 +44,30 @@ dashboard is a private Streamlit app that only you and people you invite can ope
 Edit `config.toml` on GitHub (pencil icon) and commit. The Scanner and Pair explorer tabs show
 the exact line to add for a pair. The next daily run uses the new settings.
 
+To find pairs worth adding, run `uv run python -m pairs.cli shortlist` locally (about a minute).
+It searches every S&P 500 pair within the same GICS sub-industry (about 1,500 pairs, from
+`sp500.csv`) and keeps only those that:
+
+- are cointegrated over 3 years (p < 0.05) **and** over the last year on its own (p < 0.10),
+  so the relationship hasn't already faded
+- revert in 5–30 days (half-life), move together (correlation 0.6–0.97) with a positive hedge
+  ratio
+- backtest with a Sharpe ratio ≥ 0.5, a positive total return, at least 4 trades, and no loss
+  over the last year, after trading costs and borrow fees
+
+It keeps at most 3 pairs per sub-industry and 2 per stock, and prints the `config.toml` lines.
+`--universe core` searches the smaller hand-picked groups in `pairs/data.py` instead.
+`[paper] max_open_positions` caps how many trades are open at once; a signal beyond it is
+skipped and reported in Discord. Refresh `sp500.csv` when the index changes with
+`uv run --with lxml python -m pairs.cli update-universe` and review the diff.
+
 ## Run locally
 
 ```bash
 uv sync
 uv run streamlit run app.py                 # the dashboard
-uv run python -m pairs.cli scan             # print cointegrated pairs in the built-in universe
+uv run python -m pairs.cli scan             # print cointegrated pairs in the S&P 500
+uv run python -m pairs.cli shortlist        # ...that also pass the filters and backtest
 uv run python -m pairs.cli step             # update state/book.json, print any new orders
 DISCORD_WEBHOOK_URL=... uv run python -m pairs.cli step --notify   # ...and post them
 uv run pytest                               # tests (synthetic data, no network)
@@ -60,8 +78,9 @@ If you change dependencies, regenerate the file Streamlit Cloud installs from (C
 
 ## How it works
 
-1. **Find pairs** (`pairs/scanner.py`): within each sector group in `pairs/data.py`, test every
-   pair for cointegration (Engle-Granger). Low p-value = the gap between them has tended to close.
+1. **Find pairs** (`pairs/scanner.py`): within each S&P 500 sub-industry (`sp500.csv`), or each
+   group in `pairs/data.py`, test every pair for cointegration (Engle-Granger). Low p-value = the
+   gap between them has tended to close. `shortlist` then filters and backtests them (above).
 2. **Measure the gap** (`pairs/backtest.py: signal_frame`): spread = log(Y) − β·log(X) − α with a
    rolling hedge ratio β, turned into a z-score over a rolling window.
 3. **Trade it** (`pairs/signals.py`): z ≥ +2 → short Y, buy X. z ≤ −2 → buy Y, short X.
@@ -105,7 +124,9 @@ spread shorts neither). For each ticker the app looks up whether it can be borro
 - Yahoo sometimes rate-limits cloud servers. The fetch retries; if no prices arrive at all
   the run fails, GitHub emails you, and the next run catches up. A single ticker with no data
   gets a ⚠ line in Discord.
-- Scanning hundreds of pairs at p < 0.05 produces false positives by chance. Backtest first.
+- Scanning ~1,500 pairs at p < 0.05 produces dozens of false positives by chance, and picking
+  pairs by their own backtest flatters them. The last-year checks in `shortlist` cut most of
+  that, but expect live results to be worse than the backtest.
 - Pairs that worked historically can break permanently (mergers, business changes) — that's
   what the stop-loss is for.
 - Prices are Yahoo adjusted closes. Borrow availability can vanish mid-trade (recalls); the

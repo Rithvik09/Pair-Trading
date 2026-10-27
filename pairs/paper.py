@@ -69,7 +69,8 @@ class PaperBook:
         self.path.write_text(json.dumps(d, indent=2, default=str))
 
     def step(self, pair, *, date, y_px, x_px, beta, z, entry, exit, stop, notional,
-             cost_bps: float = 0.0, shortable=(None, None), borrow_fee=(0.0, 0.0)) -> str:
+             cost_bps: float = 0.0, shortable=(None, None), borrow_fee=(0.0, 0.0),
+             max_open: int | None = None) -> str:
         """Apply one bar of the strategy to one pair.
 
         Entry/exit/stop decisions come from signals.decide, the same rule the backtest uses.
@@ -84,7 +85,10 @@ class PaperBook:
 
         Returns one of: "none", "hold", "open short_spread", "open long_spread",
         "close", "stop", "blocked", "unshortable <tickers>", "too small <tickers>",
-        "skip: hedge ratio not positive".
+        "skip: hedge ratio not positive", "skip: max open positions".
+        max_open caps how many positions can be open; exits are never blocked. When a run
+        catches up several missed days, pairs are replayed one after another, so which pair
+        gets the last slot can differ from the order the signals actually came in.
         """
         k = pair_key(pair)
         pos = self.positions.get(k)
@@ -110,6 +114,8 @@ class PaperBook:
 
         if beta <= 0:  # same rule as the backtest's can_enter: never short or buy both legs
             return "skip: hedge ratio not positive"
+        if max_open is not None and len(self.positions) >= max_open:
+            return "skip: max open positions"
         side = action  # short_spread: Y rose too far, short Y / buy X. long_spread: the reverse.
         sign = -1 if side == "short_spread" else 1
         w_y, w_x = leg_weights(beta)

@@ -4,13 +4,16 @@ The cache is split at the 4:15pm ET close: a download made during the session ne
 in for the closing prices, which are fetched fresh once the market has closed.
 """
 
+import io
 import time as clock
+import urllib.request
 from datetime import time
+from pathlib import Path
 
 import pandas as pd
 import yfinance as yf
 
-from pairs.paths import DATA_DIR
+from pairs.paths import DATA_DIR, SP500_PATH
 
 CLOSE_CUTOFF = time(16, 15)  # ET; closing prices are settled by then
 
@@ -29,6 +32,33 @@ UNIVERSE: dict[str, list[str]] = {
     "Gold & miners ETFs": ["GLD", "IAU", "GDX", "GDXJ", "NEM"],
     "Index ETFs": ["SPY", "VOO", "IVV", "QQQ", "DIA", "IWM"],
 }
+
+
+SP500_SOURCE = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+
+
+def load_universe(path: Path = SP500_PATH) -> dict[str, list[str]]:
+    """S&P 500 tickers grouped by GICS sub-industry: a much wider search than UNIVERSE, still
+    only pairing like with like. Sub-industries with a single member are dropped."""
+    df = pd.read_csv(path)
+    groups = {sub: sorted(g["ticker"]) for sub, g in df.groupby("sub_industry", sort=False)}
+    return {sub: tickers for sub, tickers in groups.items() if len(tickers) >= 2}
+
+
+def update_universe(path: Path = SP500_PATH) -> pd.DataFrame:
+    """Rewrite `path` from Wikipedia's S&P 500 list (needs lxml: `uv run --with lxml`)."""
+    req = urllib.request.Request(SP500_SOURCE, headers={"User-Agent": "pairs-trader/0.1"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        html = resp.read(10_000_000).decode()
+    t = pd.read_html(io.StringIO(html), attrs={"id": "constituents"})[0]
+    out = pd.DataFrame({
+        "ticker": t["Symbol"].str.replace(".", "-", regex=False),  # Yahoo spelling: BRK-B
+        "name": t["Security"],
+        "sector": t["GICS Sector"],
+        "sub_industry": t["GICS Sub-Industry"],
+    }).sort_values(["sub_industry", "ticker"])
+    out.to_csv(path, index=False)
+    return out
 
 
 def _now_et() -> pd.Timestamp:

@@ -2,10 +2,15 @@
 # and the dashboard pick it up. Find candidate pairs on the dashboard's Scanner tab.
 
 # Pairs to trade, as [Y, X]. A short spread shorts Y and buys X; a long spread the reverse.
+# From `uv run python -m pairs.cli shortlist` on 2026-10-27: S&P 500 pairs in the same
+# sub-industry that are cointegrated over 3 years and the last year, and profitable in a
+# backtest after costs (Sharpe >= 0.5), including the last year on its own. Rerun it every
+# few months; drop a pair once it stops qualifying and it has no open position.
 watchlist = [
-  ["KO", "PEP"],
-  ["GS", "MS"],
-  ["PG", "KMB"],
+  ["MTD", "TMO"],   # life-science tools
+  ["SW", "PKG"],    # paper packaging (SW only listed since mid-2024)
+  ["PPL", "WEC"],   # electric utilities
+  ["AIG", "L"],     # multi-line insurance
 ]
 
 [strategy]
@@ -19,3 +24,4 @@ cost_bps = 5.0    # assumed trading cost per side, in basis points
 [paper]
 notional = 10000        # dollars per pair trade, both legs together
 starting_cash = 100000  # only used the first time the book is created
+max_open_positions = 5  # new trades are skipped (with a Discord warning) beyond this
