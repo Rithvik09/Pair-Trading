@@ -14,8 +14,12 @@ import math
 import pandas as pd
 
 
-def decide(pos: int, blocked: bool, z: float, entry: float, exit: float, stop: float) -> str:
+def decide(pos: int, blocked: bool, z: float, entry: float, exit: float, stop: float,
+           can_enter: bool = True) -> str:
     """One bar of the strategy, given the current position and a non-NaN z.
+
+    can_enter=False blocks new trades (exits still happen), e.g. when the hedge ratio isn't
+    positive: then a "pair trade" would short or buy both legs, a directional bet.
 
     Enter at |z| >= entry, exit once z is back inside +/-exit, bail at |z| >= stop.
     After a stop-out we stay flat ("blocked") until z returns inside the exit band, so we
@@ -33,6 +37,8 @@ def decide(pos: int, blocked: bool, z: float, entry: float, exit: float, stop: f
         return "hold"
     if blocked:
         return "unblock" if abs(z) <= exit else "blocked"
+    if not can_enter:
+        return "flat"
     if entry <= z < stop:
         return "short_spread"
     if -stop < z <= -entry:
@@ -40,16 +46,18 @@ def decide(pos: int, blocked: bool, z: float, entry: float, exit: float, stop: f
     return "flat"
 
 
-def positions_from_z(z: pd.Series, entry: float, exit: float, stop: float) -> pd.Series:
+def positions_from_z(z: pd.Series, entry: float, exit: float, stop: float,
+                     can_enter: pd.Series | None = None) -> pd.Series:
     """Position held at each bar under `decide`. A NaN z keeps the previous position."""
     out = []
     pos = 0
     blocked = False
-    for v in z:
+    allowed = can_enter.to_numpy() if can_enter is not None else [True] * len(z)
+    for v, ok in zip(z, allowed, strict=True):
         if v is None or math.isnan(v):
             out.append(pos)
             continue
-        action = decide(pos, blocked, v, entry, exit, stop)
+        action = decide(pos, blocked, v, entry, exit, stop, bool(ok))
         if action == "stop":
             pos, blocked = 0, True
         elif action == "exit":

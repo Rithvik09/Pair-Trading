@@ -65,6 +65,17 @@ def is_session(d: date) -> bool:
     return d.weekday() < 5 and d not in nyse_holidays(d.year)
 
 
+def last_completed_session(now) -> str:
+    """ISO date of the latest NYSE session whose close is final (4:15pm ET) as of `now`,
+    a timezone-aware datetime in US/Eastern."""
+    d = now.date()
+    if not (is_session(d) and (now.hour, now.minute) >= (16, 15)):
+        d -= timedelta(days=1)
+        while not is_session(d):
+            d -= timedelta(days=1)
+    return d.isoformat()
+
+
 def next_session(signal_date) -> str | None:
     """ISO date of the first NYSE session after `signal_date` (date or ISO string).
     None if the date can't be parsed."""

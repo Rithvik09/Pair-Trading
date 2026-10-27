@@ -105,7 +105,9 @@ def main(argv: list[str]) -> None:
     old = json.loads(Path(old_path).read_text()) if os.path.exists(old_path) else {}
     new = json.loads(Path(new_path).read_text())
     parts = [format_orders(o)] if (o := new_orders(old, new)) else []
-    parts += new.get("last_run_warnings", [])
+    # a warning is posted when it first appears, not again on every run while it lasts
+    parts += [w for w in new.get("last_run_warnings", [])
+              if w not in old.get("last_run_warnings", [])]
     if parts:
         print("\n\n".join(parts))
         post_discord("\n\n".join(parts), os.environ.get("DISCORD_WEBHOOK_URL"))

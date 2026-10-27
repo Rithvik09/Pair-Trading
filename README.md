@@ -14,7 +14,7 @@ dashboard is a private Streamlit app that only you and people you invite can ope
 
 | Piece | Where | What it does |
 |---|---|---|
-| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET | Fetches closes and updates `state/book.json`, commits it, then posts the new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
+| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET (+ ~11:30pm ET catch-up) | Fetches closes and updates `state/book.json`, commits it, then posts the new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
 | `app.py` | Streamlit Community Cloud | Read-only dashboard: Orders, Positions, Scanner, Pair explorer |
 | `config.toml` | this repo | The watchlist and strategy settings. Edit it to change what's traded |
 
@@ -26,7 +26,7 @@ dashboard is a private Streamlit app that only you and people you invite can ope
    limit it can't run up a bill: jobs just stop if the minutes ever run out.
 2. **Discord**: in your channel, *Edit Channel → Integrations → Webhooks → New Webhook → Copy
    Webhook URL*. In GitHub: *Settings → Secrets and variables → Actions → New repository
-   secret*, name `DISCORD_WEBHOOK_URL`, paste the URL. Treat it like a password: anyone with
+   secret*, name `DISCORD_WEBHOOK`, paste the URL. Treat it like a password: anyone with
    it can post to the channel. Never put it in a file.
 3. **First run**: *Actions → daily step → Run workflow*. It creates `state/book.json`, and
    then runs itself every weekday.
@@ -65,6 +65,8 @@ If you change dependencies, regenerate the file Streamlit Cloud installs from (C
 2. **Measure the gap** (`pairs/backtest.py: signal_frame`): spread = log(Y) − β·log(X) − α with a
    rolling hedge ratio β, turned into a z-score over a rolling window.
 3. **Trade it** (`pairs/signals.py`): z ≥ +2 → short Y, buy X. z ≤ −2 → buy Y, short X.
+   Only while the hedge ratio is positive (the two move together); otherwise a "pair trade"
+   would short or buy both legs, which is a directional bet, so it's skipped.
    Close once z is back inside ±0.5 (or has crossed through it). Stop out at |z| ≥ 4 and don't
    re-enter until the gap has normalised. The backtest and the paper book share this one rule.
 4. **Backtest** with no look-ahead (today's signal earns tomorrow's move), trading costs and

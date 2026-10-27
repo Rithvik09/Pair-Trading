@@ -83,7 +83,8 @@ class PaperBook:
         open, close and stop appends an order record to self.orders.
 
         Returns one of: "none", "hold", "open short_spread", "open long_spread",
-        "close", "stop", "blocked", "unshortable <tickers>", "too small <tickers>".
+        "close", "stop", "blocked", "unshortable <tickers>", "too small <tickers>",
+        "skip: hedge ratio not positive".
         """
         k = pair_key(pair)
         pos = self.positions.get(k)
@@ -107,6 +108,8 @@ class PaperBook:
         if action == "flat":
             return "none"
 
+        if beta <= 0:  # same rule as the backtest's can_enter: never short or buy both legs
+            return "skip: hedge ratio not positive"
         side = action  # short_spread: Y rose too far, short Y / buy X. long_spread: the reverse.
         sign = -1 if side == "short_spread" else 1
         w_y, w_x = leg_weights(beta)

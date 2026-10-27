@@ -5,9 +5,12 @@ name: daily step
 # unsaved: the next run recomputes them and posts them then (once).
 # 21:45 UTC = 5:45pm ET in summer, 4:45pm ET in winter (prices are final by 4:15pm ET).
 # GitHub may start scheduled runs late; orders are for the next open, so that's fine.
+# The 03:30 UTC run (~11:30pm ET) is a catch-up for days Yahoo publishes the close late (or
+# GitHub drops the first run). It's a no-op when the book is already current.
 on:
   schedule:
     - cron: "45 21 * * 1-5"
+    - cron: "30 3 * * 2-6"
   workflow_dispatch: {}
 
 permissions: {}
@@ -30,7 +33,7 @@ jobs:
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e  # v6.8.0
       - run: uv sync --frozen --no-dev
       - name: Run the daily step
-        run: uv run python -m pairs.cli step
+        run: uv run --no-dev python -m pairs.cli step
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: state
@@ -72,5 +75,5 @@ jobs:
           exit 1
       - name: Post new orders to Discord
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         run: python3 -m pairs.notify "$RUNNER_TEMP/old.json" state/book.json

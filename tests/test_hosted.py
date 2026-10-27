@@ -176,6 +176,15 @@ def test_intraday_download_is_not_reused_after_the_close(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------- daily job
+def _no_sleep(seconds):
+    pytest.fail("the daily job waited for fresh data in a test that has fresh data")
+
+
+def _after_close(prices):
+    """The evening of the last bar, so that bar counts as the latest completed close."""
+    return pd.Timestamp(prices.index[-1]).tz_localize("America/New_York") + pd.Timedelta(hours=20)
+
+
 def test_daily_posts_only_new_orders(tmp_path, monkeypatch, coint_pair):
     from pairs import cli
     from pairs.config import Config
@@ -193,14 +202,15 @@ def test_daily_posts_only_new_orders(tmp_path, monkeypatch, coint_pair):
     book.last_bar["YYY/XXX"] = str(prices.index[-200].date())  # replay ~200 bars
     cfg = Config(watchlist=[("YYY", "XXX")])
 
-    new = cli.daily(book, cfg, webhook_url="https://hook")
+    new = cli.daily(book, cfg, webhook_url="https://hook", now=_after_close(prices), sleep=_no_sleep)
     assert new and all(o["pair"] == "YYY/XXX" for o in new)
     (text, url), = posted
     assert url == "https://hook" and "OLD/ONE" not in text and "YYY/XXX" in text
     assert PaperBook.load(tmp_path / "book.json").orders[-len(new):] == new  # saved
 
     posted.clear()
-    assert cli.daily(book, cfg, webhook_url="https://hook") == []  # nothing new
+    assert cli.daily(book, cfg, webhook_url="https://hook", now=_after_close(prices),
+                     sleep=_no_sleep) == []  # nothing new
     assert posted == []
 
 
@@ -212,7 +222,8 @@ def test_daily_fails_loudly_when_no_prices_arrive(tmp_path, monkeypatch):
     monkeypatch.setattr(cli, "borrow_table", lambda t: {})
     monkeypatch.setattr(cli, "post_discord", lambda *a: True)
     with pytest.raises(RuntimeError, match="No price data"):
-        cli.daily(PaperBook.load(tmp_path / "b.json"), Config(watchlist=[("KO", "PEP")]))
+        cli.daily(PaperBook.load(tmp_path / "b.json"), Config(watchlist=[("KO", "PEP")]),
+                  sleep=_no_sleep, attempts=1)
 
 
 def test_daily_warns_about_a_missing_ticker(tmp_path, monkeypatch, coint_pair):
@@ -226,12 +237,13 @@ def test_daily_warns_about_a_missing_ticker(tmp_path, monkeypatch, coint_pair):
     posted = []
     monkeypatch.setattr(cli, "post_discord", lambda text, url: posted.append(text) or True)
     book = PaperBook.load(tmp_path / "b.json")
-    cli.daily(book, Config(watchlist=[("YYY", "XXX"), ("ZZZ", "XXX")]), webhook_url="https://hook")
+    cli.daily(book, Config(watchlist=[("YYY", "XXX"), ("ZZZ", "XXX")]), webhook_url="https://hook",
+              now=_after_close(prices), sleep=_no_sleep)
     assert any("ZZZ/XXX" in t and "no price data" in t for t in posted)
     # stored for the post-commit notifier too, and cleared by a clean run
     assert PaperBook.load(tmp_path / "b.json").last_run_warnings == book.last_run_warnings
     assert "ZZZ/XXX" in book.last_run_warnings[0]
-    cli.daily(book, Config(watchlist=[("YYY", "XXX")]))
+    cli.daily(book, Config(watchlist=[("YYY", "XXX")]), now=_after_close(prices), sleep=_no_sleep)
     assert book.last_run_warnings == []
 
 
@@ -285,3 +297,83 @@ def test_fractional_share_books_are_rejected(tmp_path):
     f.write_text(json.dumps({"cash": 1.0, "positions": {"A/B": {"y_shares": -83.7, "x_shares": 2}}}))
     with pytest.raises(ValueError, match="whole shares"):
         PaperBook.load(f)
+
+
+# ---------------------------------------------------------------- Oct 27 fixes
+def test_decide_respects_can_enter():
+    from pairs.signals import decide
+    assert decide(0, False, 2.5, 2, 0.5, 4, can_enter=False) == "flat"
+    assert decide(-1, False, 0.1, 2, 0.5, 4, can_enter=False) == "exit"  # exits still work
+
+
+def test_backtest_never_enters_with_negative_hedge_ratio():
+    import numpy as np
+
+    from pairs.backtest import BacktestConfig, signal_frame
+    rng = np.random.default_rng(5)
+    n = 600
+    log_x = np.log(50) + np.cumsum(rng.normal(0, 0.01, n))
+    ou = np.zeros(n)
+    for t in range(1, n):
+        ou[t] = ou[t - 1] * 0.9 + rng.normal(0, 0.01)
+    idx = pd.bdate_range("2023-01-02", periods=n)
+    y = pd.Series(np.exp(5 - 0.8 * log_x + ou), idx)  # moves opposite to X
+    fr = signal_frame(y, pd.Series(np.exp(log_x), idx), BacktestConfig())
+    assert (fr["beta"].dropna() < 0).all()
+    assert fr["z"].abs().max() > 2  # it does diverge...
+    assert (fr["position"] == 0).all()  # ...but is never traded
+
+
+@pytest.mark.parametrize("now, expected", [
+    ("2026-10-26 20:50", "2026-10-26"),  # Monday evening: Monday's close
+    ("2026-10-26 10:00", "2026-10-23"),  # Monday morning: Friday's close
+    ("2026-10-24 12:00", "2026-10-23"),  # Saturday
+    ("2026-11-26 20:00", "2026-11-25"),  # Thanksgiving evening
+])
+def test_last_completed_session(now, expected):
+    from pairs.orders import last_completed_session
+    assert last_completed_session(pd.Timestamp(now, tz="America/New_York")) == expected
+
+
+def _daily_with(prices_end, tmp_path, monkeypatch, coint_pair):
+    from pairs import cli
+    from pairs.config import Config
+
+    y, x = coint_pair
+    full = pd.concat([y.rename("YYY"), x.rename("XXX")], axis=1)
+    full.index = pd.bdate_range(end="2026-10-26", periods=len(full))
+    calls = []
+    monkeypatch.setattr(cli, "load_prices",
+                        lambda *a, **k: calls.append(1) or full.loc[:prices_end])
+    monkeypatch.setattr(cli, "borrow_table", lambda t: {})
+    monkeypatch.setattr(cli, "post_discord", lambda *a: True)
+    slept = []
+    book = PaperBook.load(tmp_path / "b.json")
+    cli.daily(book, Config(watchlist=[("YYY", "XXX")]),
+              now=pd.Timestamp("2026-10-26 20:50", tz="America/New_York"),
+              sleep=slept.append, attempts=3)
+    return book, calls, slept
+
+
+def test_daily_retries_and_warns_when_yahoo_is_behind(tmp_path, monkeypatch, coint_pair):
+    book, calls, slept = _daily_with("2026-10-23", tmp_path, monkeypatch, coint_pair)
+    assert len(calls) == 3 and len(slept) == 2  # retried, waiting between attempts
+    assert any("2026-10-26" in w and "2026-10-23" in w for w in book.last_run_warnings)
+    assert book.last_bar["YYY/XXX"] == "2026-10-23"  # used what it had; next run catches up
+
+
+def test_daily_fresh_data_no_retry(tmp_path, monkeypatch, coint_pair):
+    book, calls, slept = _daily_with("2026-10-26", tmp_path, monkeypatch, coint_pair)
+    assert len(calls) == 1 and slept == [] and book.last_run_warnings == []
+
+
+def test_notifier_posts_a_warning_once_not_every_run(tmp_path, monkeypatch):
+    w = ["⚠ Yahoo hasn't published the 2026-10-26 close yet"]
+    old = _book_json(tmp_path, "old.json", [], w)
+    new = _book_json(tmp_path, "new.json", [], w)
+    posted = []
+    monkeypatch.setattr(notify, "post_discord", lambda text, url: posted.append(text) or True)
+    notify.main([str(old), str(new)])  # catch-up run, same warning as before
+    assert posted == []
+    notify.main([str(tmp_path / "none.json"), str(new)])  # warning is new
+    assert len(posted) == 1

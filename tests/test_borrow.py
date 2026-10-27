@@ -98,12 +98,14 @@ def test_paper_accrues_borrow_per_calendar_day(tmp_path):
     assert book.cash == pytest.approx(100_000 - 5.0)
 
 
-def test_paper_long_spread_negative_beta_shorts_nothing(tmp_path):
-    """With a negative hedge ratio a long spread buys both legs, so no borrow is due."""
+def test_paper_skips_negative_hedge_ratio(tmp_path):
+    """A negative hedge ratio would short (or buy) both legs: a directional bet, not a pair
+    trade. The strategy only trades pairs that move together, so it skips these."""
     book = PaperBook.load(tmp_path / "b.json")
-    assert _step(book, -2.5, "2026-01-02", beta=-1.0, shortable=(False, False),
-                 borrow_fee=(1.0, 1.0)) == "open long_spread"
-    assert book.borrow_accrued("A/B", "2026-02-01") == 0.0
+    for beta in (-1.0, 0.0):
+        assert _step(book, -2.5, "2026-01-02", beta=beta) == "skip: hedge ratio not positive"
+        assert _step(book, 2.5, "2026-01-02", beta=beta) == "skip: hedge ratio not positive"
+    assert book.positions == {} and book.orders == []
 
 
 def test_unparseable_dates_accrue_nothing(tmp_path):

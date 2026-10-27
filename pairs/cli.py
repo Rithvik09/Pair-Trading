@@ -10,6 +10,7 @@ The hosted job doesn't use --notify: it commits the book first and then posts wi
 
 import argparse
 import os
+import time
 
 import pandas as pd
 
@@ -18,6 +19,7 @@ from pairs.borrow import BorrowInfo, borrow_table
 from pairs.config import Config, load_config
 from pairs.data import UNIVERSE, load_prices
 from pairs.notify import format_orders, post_discord
+from pairs.orders import last_completed_session
 from pairs.paper import PaperBook, pair_key
 from pairs.paths import BOOK_PATH
 from pairs.scanner import scan
@@ -54,13 +56,33 @@ def replay(book: PaperBook, pair, y_px: pd.Series, x_px: pd.Series, frame: pd.Da
     return actions
 
 
-def run_step(book: PaperBook, config: Config, period: str = "2y"):
-    """Fetch latest prices and catch every watchlist pair up to the latest close."""
+def load_fresh_prices(tickers, period, now, attempts=3, wait=300, sleep=time.sleep):
+    """Prices through the latest completed session. Yahoo sometimes publishes a day's close
+    late, so retry a few times; if it's still behind, return what there is plus a warning
+    (the next run catches up)."""
+    expected = last_completed_session(now)
+    for i in range(attempts):
+        prices = load_prices(tickers, period=period, refresh=True, now=now)
+        latest = str(prices.index.max().date()) if len(prices) else None
+        if latest is not None and latest >= expected:
+            return prices, None
+        if i < attempts - 1:
+            print(f"Prices end {latest}, expected {expected}: retrying in {wait}s")
+            sleep(wait)
+    return prices, (f"⚠ Yahoo hasn't published the {expected} close yet (latest: {latest}). "
+                    "Orders are based on the latest close available; the next run catches up.")
+
+
+def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
+             sleep=time.sleep, attempts: int = 3):
+    """Fetch latest prices and catch every watchlist pair up to the latest close.
+    Returns (per-pair results, warnings)."""
     cfg, notional = config.strategy, config.notional
     tickers = sorted({t for pair in config.watchlist for t in pair})
     if not tickers:
-        return []
-    prices = load_prices(tickers, period=period, refresh=True)
+        return [], []
+    now = now or pd.Timestamp.now(tz="America/New_York")
+    prices, stale = load_fresh_prices(tickers, period, now, attempts=attempts, sleep=sleep)
     borrow = borrow_table(tickers)
     results = []
     for y, x in config.watchlist:
@@ -74,22 +96,23 @@ def run_step(book: PaperBook, config: Config, period: str = "2y"):
         state = "; ".join(actions) or ("holding" if holding else "no trade")
         results.append((y, x, state, frame["z"].iloc[-1]))
     book.save()
-    return results
+    return results, [stale] if stale else []
 
 
-def daily(book: PaperBook, config: Config, webhook_url: str | None = None) -> list[dict]:
+def daily(book: PaperBook, config: Config, webhook_url: str | None = None, now=None,
+          sleep=time.sleep, attempts: int = 3) -> list[dict]:
     """The scheduled job: step every pair, save the book, post any new orders.
     Returns the orders created by this run."""
     first_new = len(book.orders)
-    results = run_step(book, config)
+    results, notes = run_step(book, config, now=now, sleep=sleep, attempts=attempts)
     for y, x, action, z in results:
         print(f"{pair_key((y, x))}: z={z:+.2f}  {action}")
     missing = [pair_key((y, x)) for y, x, action, _ in results if action == "no data"]
     if results and len(missing) == len(results):
         # fail the run (GitHub emails on failure) rather than silently skip a day
         raise RuntimeError(f"No price data for any watchlist pair: {', '.join(missing)}")
-    book.last_run_warnings = ([(f"⚠ no price data for {', '.join(missing)}: check the tickers "
-                                "in config.toml")] if missing else [])
+    book.last_run_warnings = notes + ([(f"⚠ no price data for {', '.join(missing)}: check the "
+                                        "tickers in config.toml")] if missing else [])
     book.save()
     if book.last_run_warnings:
         post_discord("\n".join(book.last_run_warnings), webhook_url)

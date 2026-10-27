@@ -43,7 +43,8 @@ def signal_frame(y: pd.Series, x: pd.Series, cfg: BacktestConfig) -> pd.DataFram
     alpha = ly.rolling(cfg.lookback).mean() - beta * roll_x.mean()
     spr = ly - beta * lx - alpha
     z = zscore(spr, cfg.z_window)
-    pos = positions_from_z(z, cfg.entry, cfg.exit, cfg.stop)
+    # only enter while the hedge ratio is positive, i.e. the two stocks move together
+    pos = positions_from_z(z, cfg.entry, cfg.exit, cfg.stop, can_enter=beta > 0)
     return pd.DataFrame({"beta": beta, "alpha": alpha, "spread": spr, "z": z, "position": pos})
 
 
