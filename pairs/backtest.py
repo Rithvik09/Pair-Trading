@@ -22,6 +22,7 @@ class BacktestConfig:
     stop: float = 4.0
     cost_bps: float = 5.0  # per unit of gross notional traded (covers both legs)
     capital: float = 100_000.0
+    delay: int = 0  # extra bars between signal and fill; 1 = stress test for filling a day late
 
 
 @dataclass
@@ -58,6 +59,12 @@ def backtest(y: pd.Series, x: pd.Series, cfg: BacktestConfig | None = None,
     y_name, x_name = y.name or "Y", x.name or "X"
     df = pd.concat([y.rename("y"), x.rename("x")], axis=1).dropna()
     frame = signal_frame(df["y"], df["x"], cfg)
+    if cfg.delay < 0:
+        raise ValueError(f"delay must be >= 0 (a negative delay trades on future signals), "
+                         f"got {cfg.delay}")
+    if cfg.delay:  # fill each signal `delay` bars late, sized on the signal day as real orders are
+        frame = frame.assign(position=frame["position"].shift(cfg.delay, fill_value=0),
+                             beta=frame["beta"].shift(cfg.delay))
     pos = frame["position"]
 
     # Hedge ratio is locked at entry for the life of each trade.

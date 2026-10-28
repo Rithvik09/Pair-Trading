@@ -1,7 +1,8 @@
 """Command line: scan for pairs, or run the daily step on the config.toml watchlist.
 
-    uv run python -m pairs.cli scan            # cointegrated pairs in the S&P 500
+    uv run python -m pairs.cli scan            # cointegrated pairs in the S&P 1500
     uv run python -m pairs.cli shortlist       # ...that also pass the backtest filters
+    uv run python -m pairs.cli validate        # how well those filters did on unseen years
     uv run python -m pairs.cli step            # update state/book.json, print new orders
     uv run python -m pairs.cli step --notify   # ...and post them to Discord
 
@@ -23,7 +24,13 @@ from pairs.notify import format_orders, post_discord
 from pairs.orders import last_completed_session
 from pairs.paper import PaperBook, pair_key
 from pairs.paths import BOOK_PATH
-from pairs.scanner import scan, shortlist
+from pairs.scanner import scan, shortlist, walk_forward
+
+UNIVERSES = {
+    "sp1500": load_universe,
+    "sp500": lambda: load_universe(indexes={"S&P 500"}),
+    "core": lambda: UNIVERSE,
+}
 
 
 def replay(book: PaperBook, pair, y_px: pd.Series, x_px: pd.Series, frame: pd.DataFrame,
@@ -140,12 +147,14 @@ def main() -> None:
     s = sub.add_parser("scan", help="find cointegrated pairs")
     s.add_argument("--max-pvalue", type=float, default=0.05)
     sl = sub.add_parser("shortlist", help="pairs worth trading (filters + backtest)")
-    for cmd in (s, sl):
-        cmd.add_argument("--period", default="3y")
-        cmd.add_argument("--universe", choices=["sp500", "core"], default="sp500",
-                         help="sp500: S&P 500 by sub-industry (sp500.csv); "
-                              "core: the hand-picked groups in pairs/data.py")
-    sub.add_parser("update-universe", help="refresh sp500.csv from Wikipedia "
+    v = sub.add_parser("validate", help="score the shortlist filters on years they never saw")
+    v.add_argument("--folds", type=int, default=4, help="unseen years to test, ending today")
+    for cmd in (s, sl, v):
+        cmd.add_argument("--period", default="10y" if cmd is v else "3y")
+        cmd.add_argument("--universe", choices=list(UNIVERSES), default="sp1500",
+                         help="sp1500/sp500: S&P index members by sub-industry "
+                              "(universe.csv); core: the hand-picked groups in pairs/data.py")
+    sub.add_parser("update-universe", help="refresh universe.csv from Wikipedia "
                                            "(run with `uv run --with lxml`)")
     t = sub.add_parser("step", help="run the daily step for the config.toml watchlist")
     t.add_argument("--notify", action="store_true",
@@ -156,15 +165,26 @@ def main() -> None:
         out = update_universe()
         print(f"{len(out)} tickers, {out['sub_industry'].nunique()} sub-industries. "
               "Review the diff before committing.")
-    elif args.cmd in ("scan", "shortlist"):
-        groups = load_universe() if args.universe == "sp500" else UNIVERSE
+    elif args.cmd in ("scan", "shortlist", "validate"):
+        groups = UNIVERSES[args.universe]()
         tickers = sorted({t for g in groups.values() for t in g})
         prices = load_prices(tickers, period=args.period)
+        workers = os.cpu_count() or 1
         if args.cmd == "scan":
-            print(scan(prices, groups, max_pvalue=args.max_pvalue).to_string())
+            print(scan(prices, groups, max_pvalue=args.max_pvalue, workers=workers).to_string())
             return
         fees = {t: b.fee_rate for t, b in borrow_table(tickers).items()}
-        out = shortlist(prices, groups, load_config().strategy, borrow_fees=fees)
+        if args.cmd == "validate":
+            picks, summary = walk_forward(prices, groups, load_config().strategy, fees,
+                                          folds=args.folds, workers=workers)
+            print(summary.round({"hit_rate": 3, "mean_return": 3, "sharpe": 3}).to_string(index=False))
+            print(f"\n{len(picks)} picks over {args.folds} unseen years: "
+                  f"{(picks['holdout_return'] > 0).mean():.0%} made money, "
+                  f"average {picks['holdout_return'].mean():+.2%} per pair-year"
+                  if len(picks) else "\nno picks")
+            return
+        out = shortlist(prices, groups, load_config().strategy, borrow_fees=fees,
+                        workers=workers)
         print(out.round(3).to_string())
         print("\nconfig.toml watchlist lines:")
         print("\n".join(f'  ["{r.y}", "{r.x}"],' for r in out.itertuples()))

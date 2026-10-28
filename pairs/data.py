@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from pairs.paths import DATA_DIR, SP500_PATH
+from pairs.paths import DATA_DIR, UNIVERSE_PATH
 
 CLOSE_CUTOFF = time(16, 15)  # ET; closing prices are settled by then
 
@@ -34,29 +34,42 @@ UNIVERSE: dict[str, list[str]] = {
 }
 
 
-SP500_SOURCE = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+INDEX_PAGES = {  # Wikipedia lists with each member's GICS sub-industry
+    "S&P 500": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+    "S&P 400": "https://en.wikipedia.org/wiki/List_of_S%26P_400_companies",
+    "S&P 600": "https://en.wikipedia.org/wiki/List_of_S%26P_600_companies",
+}
 
 
-def load_universe(path: Path = SP500_PATH) -> dict[str, list[str]]:
-    """S&P 500 tickers grouped by GICS sub-industry: a much wider search than UNIVERSE, still
-    only pairing like with like. Sub-industries with a single member are dropped."""
+def load_universe(path: Path = UNIVERSE_PATH,
+                  indexes: set[str] | None = None) -> dict[str, list[str]]:
+    """S&P 1500 tickers (large, mid and small caps) grouped by GICS sub-industry: a much wider
+    search than UNIVERSE, still only pairing like with like. `indexes` limits it, e.g.
+    {"S&P 500"}. Sub-industries with a single member are dropped."""
     df = pd.read_csv(path)
+    if indexes is not None:
+        df = df[df["index"].isin(indexes)]
     groups = {sub: sorted(g["ticker"]) for sub, g in df.groupby("sub_industry", sort=False)}
     return {sub: tickers for sub, tickers in groups.items() if len(tickers) >= 2}
 
 
-def update_universe(path: Path = SP500_PATH) -> pd.DataFrame:
-    """Rewrite `path` from Wikipedia's S&P 500 list (needs lxml: `uv run --with lxml`)."""
-    req = urllib.request.Request(SP500_SOURCE, headers={"User-Agent": "pairs-trader/0.1"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        html = resp.read(10_000_000).decode()
-    t = pd.read_html(io.StringIO(html), attrs={"id": "constituents"})[0]
-    out = pd.DataFrame({
-        "ticker": t["Symbol"].str.replace(".", "-", regex=False),  # Yahoo spelling: BRK-B
-        "name": t["Security"],
-        "sector": t["GICS Sector"],
-        "sub_industry": t["GICS Sub-Industry"],
-    }).sort_values(["sub_industry", "ticker"])
+def update_universe(path: Path = UNIVERSE_PATH) -> pd.DataFrame:
+    """Rewrite `path` from Wikipedia's index lists (needs lxml: `uv run --with lxml`)."""
+    parts = []
+    for index, url in INDEX_PAGES.items():
+        req = urllib.request.Request(url, headers={"User-Agent": "pairs-trader/0.1"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            html = resp.read(10_000_000).decode()
+        t = pd.read_html(io.StringIO(html), attrs={"id": "constituents"})[0]
+        parts.append(pd.DataFrame({
+            "ticker": t["Symbol"].str.replace(".", "-", regex=False),  # Yahoo spelling: BRK-B
+            "name": t["Security"],
+            "sector": t["GICS Sector"],
+            "sub_industry": t["GICS Sub-Industry"],
+            "index": index,
+        }))
+    out = (pd.concat(parts).drop_duplicates("ticker")  # mid-rebalance a stock can be in two
+           .sort_values(["sub_industry", "ticker"]))
     out.to_csv(path, index=False)
     return out
 

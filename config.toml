@@ -2,15 +2,52 @@
 # and the dashboard pick it up. Find candidate pairs on the dashboard's Scanner tab.
 
 # Pairs to trade, as [Y, X]. A short spread shorts Y and buys X; a long spread the reverse.
-# From `uv run python -m pairs.cli shortlist` on 2026-10-27: S&P 500 pairs in the same
-# sub-industry that are cointegrated over 3 years and the last year, and profitable in a
-# backtest after costs (Sharpe >= 0.5), including the last year on its own. Rerun it every
-# few months; drop a pair once it stops qualifying and it has no open position.
+# From `uv run python -m pairs.cli shortlist` on 2026-10-27 (S&P 1500, same sub-industry),
+# best backtest Sharpe first. The edge is unproven: these filters made money in 2023-2025
+# but broke even in 2025-26, a year in which almost every variant tried lost money (see
+# README, "Why these filters"). Watch the model book before trading real money.
+# Rerun the shortlist every few months; drop a pair once it stops qualifying and it has no
+# open position.
 watchlist = [
-  ["MTD", "TMO"],   # life-science tools
-  ["SW", "PKG"],    # paper packaging (SW only listed since mid-2024)
-  ["PPL", "WEC"],   # electric utilities
-  ["AIG", "L"],     # multi-line insurance
+  ["PPL", "DUK"],     # Electric Utilities
+  ["MTDR", "OXY"],    # Oil & Gas Exploration & Production
+  ["LKFN", "RNST"],   # Regional Banks
+  ["BANC", "FIBK"],   # Regional Banks
+  ["RF", "FIBK"],     # Regional Banks
+  ["KRG", "PECO"],    # Retail REITs
+  ["TALO", "COP"],    # Oil & Gas Exploration & Production
+  ["ALL", "THG"],     # Property & Casualty Insurance
+  ["SHO", "APLE"],    # Hotel & Resort REITs
+  ["IESC", "STRL"],   # Construction & Engineering
+  ["MTDR", "CHRD"],   # Oil & Gas Exploration & Production
+  ["KNX", "JBHT"],    # Cargo Ground Transportation
+  ["REG", "IVT"],     # Retail REITs
+  ["ENTG", "ICHR"],   # Semiconductor Materials & Equipment
+  ["SPG", "IVT"],     # Retail REITs
+  ["MTD", "TMO"],     # Life Sciences Tools & Services
+  ["D", "AEE"],       # Multi-Utilities
+  ["MSCI", "SPGI"],   # Financial Exchanges & Data
+  ["KKR", "BX"],      # Asset Management & Custody Banks
+  ["PDFS", "COHU"],   # Semiconductor Materials & Equipment
+  ["FELE", "LECO"],   # Industrial Machinery & Supplies & Components
+  ["RES", "LBRT"],    # Oil & Gas Equipment & Services
+  ["VMRK", "CPT"],    # Multi-Family Residential REITs
+  ["RHP", "APLE"],    # Hotel & Resort REITs
+  ["FLS", "PH"],      # Industrial Machinery & Supplies & Components
+  ["SW", "PKG"],      # Paper & Plastic Packaging Products & Materials
+  ["PENN", "CZR"],    # Casinos & Gaming
+  ["IESC", "EME"],    # Construction & Engineering
+  ["FDS", "MORN"],    # Financial Exchanges & Data
+  ["TRNO", "EGP"],    # Industrial REITs
+  ["RES", "HAL"],     # Oil & Gas Equipment & Services
+  ["CWT", "MSEX"],    # Water Utilities
+  ["TRNO", "FR"],     # Industrial REITs
+  ["PWR", "STRL"],    # Construction & Engineering
+  ["YETI", "BC"],     # Leisure Products
+  ["RL", "TPR"],      # Apparel, Accessories & Luxury Goods
+  ["ITW", "LECO"],    # Industrial Machinery & Supplies & Components
+  ["AMP", "CRBG"],    # Asset Management & Custody Banks
+  ["SSD", "WMS"],     # Building Products
 ]
 
 [strategy]
@@ -24,4 +61,4 @@ cost_bps = 5.0    # assumed trading cost per side, in basis points
 [paper]
 notional = 10000        # dollars per pair trade, both legs together
 starting_cash = 100000  # only used the first time the book is created
-max_open_positions = 5  # new trades are skipped (with a Discord warning) beyond this
+max_open_positions = 10  # new trades are skipped (with a Discord warning) beyond this
