@@ -21,10 +21,10 @@
   },
   "closed": [],
   "last_bar": {
-    "MTD/TMO": "2026-10-26",
-    "SW/PKG": "2026-10-26",
-    "PPL/WEC": "2026-10-26",
-    "AIG/L": "2026-10-26"
+    "MTD/TMO": "2026-10-27",
+    "SW/PKG": "2026-10-27",
+    "PPL/WEC": "2026-10-27",
+    "AIG/L": "2026-10-27"
   },
   "orders": [
     {
@@ -49,7 +49,5 @@
       ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 Yahoo hasn't published the 2026-10-27 close yet (latest: 2026-10-26). Orders are based on the latest close available; the next run catches up."
-  ]
+  "last_run_warnings": []
 }
