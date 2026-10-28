@@ -1,0 +1,55 @@
+{
+  "cash": 100000.0,
+  "blocked": [],
+  "positions": {
+    "SW/PKG": {
+      "y": "SW",
+      "x": "PKG",
+      "side": "long_spread",
+      "entry_date": "2026-10-26",
+      "entry_y": 42.2400016784668,
+      "entry_x": 253.74000549316406,
+      "y_shares": 105,
+      "x_shares": -21,
+      "beta": 1.2419355813644444,
+      "entry_z": -2.206005713459508,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    }
+  },
+  "closed": [],
+  "last_bar": {
+    "MTD/TMO": "2026-10-26",
+    "SW/PKG": "2026-10-26",
+    "PPL/WEC": "2026-10-26",
+    "AIG/L": "2026-10-26"
+  },
+  "orders": [
+    {
+      "pair": "SW/PKG",
+      "event": "open long_spread",
+      "signal_date": "2026-10-26",
+      "execute_on": "2026-10-27",
+      "z": -2.206005713459508,
+      "legs": [
+        {
+          "ticker": "SW",
+          "side": "BUY",
+          "qty": 105,
+          "ref_price": 42.2400016784668
+        },
+        {
+          "ticker": "PKG",
+          "side": "SELL SHORT",
+          "qty": 21,
+          "ref_price": 253.74000549316406
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [
+    "\u26a0 Yahoo hasn't published the 2026-10-27 close yet (latest: 2026-10-26). Orders are based on the latest close available; the next run catches up."
+  ]
+}
