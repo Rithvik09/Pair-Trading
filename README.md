@@ -9,8 +9,11 @@ dashboard. You place them with your broker. A model book tracks the same trades 
 
 Each run posts one recap to Discord: the model book's value after that close (change on the
 day and since the start), every decision with its reason ("z +2.31 ≥ +2.0: SW ran ahead of
-PKG…", "…but 10 positions already open"), then the order sheet. The dashboard has the same
-decision log and an equity curve of the book.
+PKG…", "…but 10 positions already open"), then the order sheet. It also shows the cash in
+use: the stock held, long and short, the margin that needs (`margin_rate` in config.toml, 50%
+by default as under Reg T; your broker may want more), and what's left free, with a ⚠ if the
+trades need more margin than the book is worth. The dashboard has the same decision log, an
+equity curve of the book, and the cash in use.
 
 ## How it runs (free, private)
 

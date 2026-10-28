@@ -286,6 +286,17 @@ with tab_book:
         fig.update_layout(height=320, margin={"t": 10, "b": 10}, yaxis_tickprefix="$",
                           showlegend=False)
         st.plotly_chart(fig, width="stretch")
+        last = book.equity[-1]
+        if "margin" in last:  # snapshots from before cash in use was tracked don't have it
+            c = st.columns(3)
+            c[0].metric("Stock held (long + short)", f"${last['gross']:,.0f}")
+            c[1].metric("Margin it needs", f"${last['margin']:,.0f}",
+                        help=f"{config.margin_rate:.0%} of the stock held (margin_rate in "
+                             "config.toml). Your broker's requirement may differ.")
+            c[2].metric("Free for new trades", f"${last['free']:,.0f}")
+            if last["free"] < 0:
+                st.warning("The open trades need more margin than the book is worth: a real "
+                           "account would get a margin call.")
     unreal = 0.0
     if book.positions:
         st.subheader("Open positions")

@@ -7,7 +7,7 @@ import pytest
 
 from pairs import cli, notify, paper
 from pairs.backtest import BacktestConfig
-from pairs.config import Config
+from pairs.config import Config, load_config
 from pairs.paper import PaperBook
 
 
@@ -168,3 +168,35 @@ def test_recap_dates_decisions_from_a_catch_up_run():
     assert "Tue 2026-10-27" in text and "Wed 2026-10-28" in text
     one_day = notify.recap(_book(), _book([_eq("2026-10-28", 1e5)], [b]))
     assert one_day.count("2026-10-28") == 1  # just the header
+
+
+# ---------------------------------------------------------------- cash in use
+def test_equity_tracks_stock_held_margin_and_free_cash(tmp_path):
+    book = PaperBook.load(tmp_path / "b.json")
+    book.step(("A", "B"), date="2026-10-19", y_px=10, x_px=10, beta=1.0, z=2.5, entry=2,
+              exit=0.5, stop=4, notional=10_000)  # short 500 A, buy 500 B
+    snap = book.record_equity("2026-10-20", {"A": 12.0, "B": 10.0}, margin_rate=0.5)
+    assert snap["gross"] == pytest.approx(500 * 12 + 500 * 10)  # both legs, at today's prices
+    assert snap["margin"] == pytest.approx(0.5 * snap["gross"])
+    assert snap["free"] == pytest.approx(snap["equity"] - snap["margin"])
+
+
+def test_config_margin_rate(tmp_path):
+    f = tmp_path / "c.toml"
+    f.write_text("[paper]\nmargin_rate = 0.3\n")
+    assert load_config(f).margin_rate == 0.3
+    f.write_text("")
+    assert load_config(f).margin_rate == 0.5  # Reg T initial margin
+    f.write_text("[paper]\nmargin_rate = 0\n")
+    with pytest.raises(ValueError, match="margin_rate"):
+        load_config(f)
+
+
+def test_recap_shows_cash_in_use_and_warns_when_short_of_it():
+    def eq(free):
+        return {**_eq("2026-10-28", 100_000.0), "gross": 80_000.0, "margin": 40_000.0,
+                "free": free}
+    text = notify.recap(_book(), _book([eq(60_000.0)]))
+    assert "$80,000 of stock" in text and "$40,000 margin" in text and "$60,000 free" in text
+    assert "⚠" not in text
+    assert "⚠" in notify.recap(_book(), _book([eq(-5_000.0)]))

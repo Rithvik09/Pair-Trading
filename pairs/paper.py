@@ -82,19 +82,26 @@ class PaperBook:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.to_dict(), indent=2, default=str))
 
-    def record_equity(self, date, prices: dict[str, float], cost_bps: float = 0.0) -> dict:
-        """Snapshot the book's value at a close: what it would be worth if every open position
-        were closed at `prices`, after opening and closing costs and the borrow owed (the same
-        sum _close books). One entry per date; a rerun replaces it.
+    def record_equity(self, date, prices: dict[str, float], cost_bps: float = 0.0,
+                      margin_rate: float = 0.5) -> dict:
+        """Snapshot the book at a close. `equity` is what it would be worth if every open
+        position were closed at `prices`, after opening and closing costs and the borrow owed
+        (the same sum _close books). `gross` is the stock held, long and short, at `prices`;
+        `margin` the broker deposit that needs (margin_rate of gross); `free` what's left of
+        equity for new trades. One entry per date; a rerun replaces it.
         A position whose prices are missing is marked at its entry prices."""
-        unreal = 0.0
+        unreal = gross = 0.0
         for k, p in self.positions.items():
-            if p["y"] in prices and p["x"] in prices:
-                unreal += self.mark(k, prices[p["y"]], prices[p["x"]])
+            px = {leg: prices[p[leg]] if p["y"] in prices and p["x"] in prices
+                  else p[f"entry_{leg}"] for leg in ("y", "x")}
+            unreal += self.mark(k, px["y"], px["x"])
+            gross += sum(abs(p[f"{leg}_shares"]) * px[leg] for leg in ("y", "x"))
             unreal -= (p.get("costs", 0.0) + p.get("notional", 0.0) * cost_bps / 1e4
                        + self.borrow_accrued(k, date))
-        snap = {"date": str(date), "cash": self.cash, "unrealised": unreal,
-                "equity": self.cash + unreal, "open": len(self.positions)}
+        equity = self.cash + unreal
+        snap = {"date": str(date), "cash": self.cash, "unrealised": unreal, "equity": equity,
+                "open": len(self.positions), "gross": gross, "margin": gross * margin_rate,
+                "free": equity - gross * margin_rate}
         self.equity = sorted([e for e in self.equity if e["date"] != snap["date"]] + [snap],
                              key=lambda e: e["date"])
         return snap

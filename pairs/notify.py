@@ -143,6 +143,13 @@ def recap(old: dict, new: dict, today: date | None = None) -> str:
         lines = [f"**Paper book after the {_day(now['date'])} close**",
                  (f"Value ${now['equity']:,.0f} ({day}{now['equity'] / start - 1:+.2%} since "
                   f"the ${start:,.0f} start) · {now['open']} open")]
+        if "margin" in now:  # snapshots from before cash in use was tracked don't have it
+            lines.append(f"Cash in use: ${now['gross']:,.0f} of stock held (long + short) "
+                         f"needs ${now['margin']:,.0f} margin · ${now['free']:,.0f} free")
+            if now["free"] < 0:
+                lines.append("⚠ The open trades need more margin than the book is worth: a "
+                             "real account would get a margin call. Lower notional or "
+                             "max_open_positions in config.toml.")
         lines += _decision_lines(decisions) or ["No trades today."]
         parts.append("\n".join(lines))
     elif decisions:

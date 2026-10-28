@@ -146,7 +146,8 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
             if p["y"] in prices and p["x"] in prices:
                 book.rebase_entry(k, prices[p["y"]], prices[p["x"]])
         latest = prices.ffill().iloc[-1].dropna()
-        book.record_equity(prices.index[-1].date(), latest.to_dict(), cfg.cost_bps)
+        book.record_equity(prices.index[-1].date(), latest.to_dict(), cfg.cost_bps,
+                           config.margin_rate)
     book.save()
     return results, [stale] if stale else []
 
