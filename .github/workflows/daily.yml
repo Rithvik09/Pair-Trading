@@ -1,6 +1,6 @@
 name: daily step
 
-# After each weekday close: update the paper book, commit it, then post new orders to Discord.
+# After each weekday close: update the paper book, commit it, then post the recap to Discord.
 # Posting happens only after the push succeeds, so a failed run never leaves orders posted but
 # unsaved: the next run recomputes them and posts them then (once).
 # 21:45 UTC = 5:45pm ET in summer, 4:45pm ET in winter (prices are final by 4:15pm ET).
@@ -73,7 +73,7 @@ jobs:
             git pull --rebase  # e.g. you edited config.toml meanwhile
           done
           exit 1
-      - name: Post new orders to Discord
+      - name: Post the recap and new orders to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         run: python3 -m pairs.notify "$RUNNER_TEMP/old.json" state/book.json

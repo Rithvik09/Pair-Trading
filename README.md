@@ -7,6 +7,11 @@ It never places orders. After each weekday close a scheduled job works out the e
 (ticker, buy/sell/short, whole-share quantity, which morning) and posts them to Discord and the
 dashboard. You place them with your broker. A model book tracks the same trades and P&L.
 
+Each run posts one recap to Discord: the model book's value after that close (change on the
+day and since the start), every decision with its reason ("z +2.31 ≥ +2.0: SW ran ahead of
+PKG…", "…but 10 positions already open"), then the order sheet. The dashboard has the same
+decision log and an equity curve of the book.
+
 ## How it runs (free, private)
 
 Everything stays private: the repo (with your trade history) is a private GitHub repo, and the
@@ -14,8 +19,8 @@ dashboard is a private Streamlit app that only you and people you invite can ope
 
 | Piece | Where | What it does |
 |---|---|---|
-| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET (+ ~11:30pm ET catch-up) | Fetches closes and updates `state/book.json`, commits it, then posts the new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
-| `app.py` | Streamlit Community Cloud | Read-only dashboard: Orders, Positions, Scanner, Pair explorer |
+| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET (+ ~11:30pm ET catch-up) | Fetches closes and updates `state/book.json`, commits it, then posts the day's recap and new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
+| `app.py` | Streamlit Community Cloud | Read-only dashboard: Orders, Positions (with the book's equity curve), Decision log, Scanner, Pair explorer |
 | `config.toml` | this repo | The watchlist and strategy settings. Edit it to change what's traded |
 
 ### One-time setup
@@ -120,7 +125,8 @@ If you change dependencies, regenerate the file Streamlit Cloud installs from (C
    borrow fees (below).
 5. **Order sheet + model book** (`pairs/paper.py`, `pairs/orders.py`): positions are whole
    shares (half the trade size per leg, rounded down) and persist in `state/book.json` along
-   with every order. Signals use a day's close, so orders are for the **next NYSE session's
+   with every order, every decision and its reason, and the book's value after each close.
+   Signals use a day's close, so orders are for the **next NYSE session's
    open** (weekends and exchange holidays skipped). Each run replays any days it missed, so a
    skipped run doesn't hide a stop-out; orders from a missed day are flagged LATE.
 

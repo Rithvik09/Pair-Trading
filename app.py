@@ -120,8 +120,8 @@ def borrow_source_note(borrow: dict) -> str:
 
 
 book = PaperBook.load(BOOK_PATH, starting_cash=config.starting_cash)
-tab_orders, tab_book, tab_scan, tab_pair = st.tabs(
-    ["Orders", "Positions", "Scanner", "Pair explorer"])
+tab_orders, tab_book, tab_log, tab_scan, tab_pair = st.tabs(
+    ["Orders", "Positions", "Decision log", "Scanner", "Pair explorer"])
 
 # ---------------------------------------------------------------- orders
 with tab_orders:
@@ -270,6 +270,22 @@ with tab_book:
                f"Enter at |z| ≥ {s.entry}, exit at {s.exit}, stop at {s.stop}, "
                f"${config.notional:,.0f} per trade"
                + (f" · [edit config.toml]({CONFIG_EDIT_URL})" if CONFIG_EDIT_URL else "") + ".")
+    if book.equity:
+        eq = pd.DataFrame(book.equity).assign(date=lambda d: pd.to_datetime(d["date"]))
+        start = book.starting_cash
+        now = eq["equity"].iloc[-1]
+        st.subheader("Paper book value")
+        st.caption(f"After each close: what the book would be worth if every open "
+                   f"position were closed at that close, after costs and borrow fees. "
+                   f"\\${now:,.0f} now, {now / start - 1:+.2%} since the \\${start:,.0f} start "
+                   f"on {eq['date'].iloc[0]:%b %-d, %Y}.")
+        fig = go.Figure(go.Scatter(x=eq["date"], y=eq["equity"], mode="lines+markers",
+                                   name="value", line={"color": "#1f77b4"}))
+        fig.add_hline(y=start, line_dash="dot", line_width=1,
+                      annotation_text="start", annotation_position="bottom right")
+        fig.update_layout(height=320, margin={"t": 10, "b": 10}, yaxis_tickprefix="$",
+                          showlegend=False)
+        st.plotly_chart(fig, width="stretch")
     unreal = 0.0
     if book.positions:
         st.subheader("Open positions")
@@ -302,3 +318,19 @@ with tab_book:
     if book.closed:
         st.subheader("Closed trades")
         st.dataframe(pd.DataFrame(book.closed), hide_index=True, width="stretch")
+
+# ---------------------------------------------------------------- decision log
+with tab_log:
+    st.caption("Every decision the daily job made and why, newest first: trades opened and "
+               "closed, stops, and signals it didn't act on.")
+    if not book.log:
+        st.info("No decisions yet. They appear after the daily job's next run.")
+    else:
+        log = pd.DataFrame(reversed(book.log))
+        log["decision"] = [EVENT_LABELS.get(a, "not traded") for a in log["action"]]
+        if not st.checkbox("Include signals that weren't traded", value=True):
+            log = log[log["action"].isin(EVENT_LABELS)]
+        st.dataframe(log[["date", "pair", "decision", "z", "reason"]], hide_index=True,
+                     width="stretch",
+                     column_config={"z": st.column_config.NumberColumn(format="%+.2f"),
+                                    "reason": st.column_config.TextColumn(width="large")})

@@ -1,9 +1,9 @@
-"""Order sheet text, and posting it to a Discord channel via webhook.
+"""The daily recap (book value, decisions and why, order sheet), posted to Discord via webhook.
 
 Stdlib only on purpose: the hosted job runs this module with the webhook secret and without
 installing any third-party package.
 
-    python -m pairs.notify OLD_BOOK.json NEW_BOOK.json   # post orders new in NEW, + warnings
+    python -m pairs.notify OLD_BOOK.json NEW_BOOK.json   # post the recap of what's new in NEW
 """
 
 import json
@@ -100,19 +100,71 @@ def new_orders(old_book: dict, new_book: dict) -> list[dict]:
     return [o for o in new_book.get("orders", []) if _order_id(o) not in seen]
 
 
+def _money(v: float) -> str:
+    return f"{'-' if v < 0 else '+'}${abs(v):,.0f}"
+
+
+def _log_id(e: dict) -> tuple:
+    return e.get("date"), e.get("pair"), e.get("action")
+
+
+def _decision_lines(decisions: list[dict]) -> list[str]:
+    """Trades first, then the signals that weren't traded. Dated when a catch-up run covers
+    more than one close."""
+    dated = len({e["date"] for e in decisions}) > 1
+
+    def when(e):
+        return f"{_day(e['date'])} " if dated else ""
+
+    traded = [e for e in decisions if e["action"] in EVENT_LABELS]
+    skipped = [e for e in decisions if e["action"] not in EVENT_LABELS]
+    lines = [f"• {when(e)}**{e['pair']}** {EVENT_LABELS[e['action']]}: {e['reason']}"
+             for e in traded]
+    if skipped:
+        lines.append("Not traded:")
+        lines += [f"• {when(e)}{e['pair']}: {e['reason']}" for e in skipped]
+    return lines
+
+
+def recap(old: dict, new: dict, today: date | None = None) -> str:
+    """What changed between two saves of the book, as one message: after a new close, the
+    book's value and every decision with its reason; any new orders; any new warnings.
+    Empty when nothing changed (e.g. a catch-up run on a day that was already done)."""
+    parts = []
+    seen = {_log_id(e) for e in old.get("log", [])}
+    decisions = [e for e in new.get("log", []) if _log_id(e) not in seen]
+    equity = new.get("equity", [])
+    if equity and equity[-1]["date"] not in {e["date"] for e in old.get("equity", [])}:
+        now = equity[-1]
+        start = new.get("starting_cash") or now["equity"]
+        # since the previous snapshot, which is the previous close unless a run was missed
+        day = (f"{_money(now['equity'] - equity[-2]['equity'])} since "
+               f"{_day(equity[-2]['date'])}, " if len(equity) > 1 else "")
+        lines = [f"**Paper book after the {_day(now['date'])} close**",
+                 (f"Value ${now['equity']:,.0f} ({day}{now['equity'] / start - 1:+.2%} since "
+                  f"the ${start:,.0f} start) · {now['open']} open")]
+        lines += _decision_lines(decisions) or ["No trades today."]
+        parts.append("\n".join(lines))
+    elif decisions:
+        parts.append("\n".join(_decision_lines(decisions)))
+    if orders := new_orders(old, new):
+        parts.append(format_orders(orders, today))
+    # a warning is posted when it first appears, not again on every run while it lasts
+    parts += [w for w in new.get("last_run_warnings", [])
+              if w not in old.get("last_run_warnings", [])]
+    return "\n\n".join(parts)
+
+
 def main(argv: list[str]) -> None:
     old_path, new_path = argv
     old = json.loads(Path(old_path).read_text()) if os.path.exists(old_path) else {}
     new = json.loads(Path(new_path).read_text())
-    parts = [format_orders(o)] if (o := new_orders(old, new)) else []
-    # a warning is posted when it first appears, not again on every run while it lasts
-    parts += [w for w in new.get("last_run_warnings", [])
-              if w not in old.get("last_run_warnings", [])]
-    if parts:
-        print("\n\n".join(parts))
-        post_discord("\n\n".join(parts), os.environ.get("DISCORD_WEBHOOK_URL"))
+    text = recap(old, new)
+    if text:
+        print(text)
+        post_discord(text, os.environ.get("DISCORD_WEBHOOK_URL"))
     else:
-        print("No new orders and no warnings: nothing to post.")
+        print("Nothing new since the last run: nothing to post.")
 
 
 if __name__ == "__main__":

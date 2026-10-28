@@ -11,6 +11,7 @@ The hosted job doesn't use --notify: it commits the book first and then posts wi
 """
 
 import argparse
+import json
 import os
 import time
 
@@ -20,7 +21,7 @@ from pairs.backtest import BacktestConfig, signal_frame
 from pairs.borrow import BorrowInfo, borrow_table
 from pairs.config import Config, load_config
 from pairs.data import UNIVERSE, load_prices, load_universe, update_universe
-from pairs.notify import format_orders, post_discord
+from pairs.notify import post_discord, recap
 from pairs.orders import last_completed_session
 from pairs.paper import PaperBook, pair_key
 from pairs.paths import BOOK_PATH
@@ -31,6 +32,35 @@ UNIVERSES = {
     "sp500": lambda: load_universe(indexes={"S&P 500"}),
     "core": lambda: UNIVERSE,
 }
+
+
+def explain(pair, action: str, z: float, beta: float, cfg: BacktestConfig,
+            max_open: int | None = None) -> str:
+    """One line on why the strategy did what it did, for the decision log and the recap."""
+    y, x = pair
+    if action == "open short_spread":
+        return f"z {z:+.2f} ≥ +{cfg.entry}: {y} ran ahead of {x}, so short {y} / buy {x} " \
+               f"(hedge ratio {beta:.2f})"
+    if action == "open long_spread":
+        return f"z {z:+.2f} ≤ -{cfg.entry}: {y} fell behind {x}, so buy {y} / short {x} " \
+               f"(hedge ratio {beta:.2f})"
+    if action == "close":
+        return f"z {z:+.2f} back within ±{cfg.exit}: the spread converged, take the profit"
+    if action == "stop":
+        return f"z {z:+.2f} past the ±{cfg.stop} stop: the gap kept widening, so cut the " \
+               "loss; no new trade until the spread is back to normal"
+    crossed = f"z {z:+.2f} crossed the ±{cfg.entry} entry"
+    if action == "skip: max open positions":
+        return f"{crossed}, but {max_open} positions already open"
+    if action == "skip: hedge ratio not positive":
+        return f"{crossed}, but hedge ratio {beta:.2f} isn't positive (both legs would be " \
+               "short or both long)"
+    if action.startswith("unshortable "):
+        return f"{crossed}, but can't borrow {action.removeprefix('unshortable ')} to short it"
+    if action.startswith("too small "):
+        return f"{crossed}, but the trade size buys less than one share of " \
+               f"{action.removeprefix('too small ')}"
+    return f"z {z:+.2f}: {action}"
 
 
 def replay(book: PaperBook, pair, y_px: pd.Series, x_px: pd.Series, frame: pd.DataFrame,
@@ -60,6 +90,9 @@ def replay(book: PaperBook, pair, y_px: pd.Series, x_px: pd.Series, frame: pd.Da
                       borrow_fee=fees, max_open=max_open)
         if a not in ("none", "hold", "blocked"):
             actions.append(f"{t.date()}: {a}")
+            z = float(frame.at[t, "z"])
+            book.log.append({"date": str(t.date()), "pair": k, "action": a, "z": z,
+                             "reason": explain(pair, a, z, beta, cfg, max_open)})
     if len(frame):
         book.last_bar[k] = str(frame.index[-1].date())
     return actions
@@ -88,6 +121,9 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
     Returns (per-pair results, warnings)."""
     cfg, notional = config.strategy, config.notional
     tickers = sorted({t for pair in config.watchlist for t in pair})
+    if tickers:  # also price positions on pairs dropped from the watchlist, to value the book
+        tickers = sorted(set(tickers) | {p[leg] for p in book.positions.values()
+                                         for leg in ("y", "x")})
     if not tickers:
         return [], []
     now = now or pd.Timestamp.now(tz="America/New_York")
@@ -105,14 +141,21 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
         holding = pair_key((y, x)) in book.positions
         state = "; ".join(actions) or ("holding" if holding else "no trade")
         results.append((y, x, state, frame["z"].iloc[-1]))
+    if len(prices):
+        for k, p in book.positions.items():
+            if p["y"] in prices and p["x"] in prices:
+                book.rebase_entry(k, prices[p["y"]], prices[p["x"]])
+        latest = prices.ffill().iloc[-1].dropna()
+        book.record_equity(prices.index[-1].date(), latest.to_dict(), cfg.cost_bps)
     book.save()
     return results, [stale] if stale else []
 
 
 def daily(book: PaperBook, config: Config, webhook_url: str | None = None, now=None,
           sleep=time.sleep, attempts: int = 3) -> list[dict]:
-    """The scheduled job: step every pair, save the book, post any new orders.
-    Returns the orders created by this run."""
+    """The scheduled job: step every pair, save the book, post the day's recap (the book's
+    value, every decision and why, new orders, new warnings). Returns the new orders."""
+    before = json.loads(json.dumps(book.to_dict(), default=str))
     first_new = len(book.orders)
     results, notes = run_step(book, config, now=now, sleep=sleep, attempts=attempts)
     for y, x, action, z in results:
@@ -129,15 +172,13 @@ def daily(book: PaperBook, config: Config, webhook_url: str | None = None, now=N
     book.last_run_warnings = notes + ([(f"⚠ no price data for {', '.join(missing)}: check the "
                                         "tickers in config.toml")] if missing else [])
     book.save()
-    if book.last_run_warnings:
-        post_discord("\n".join(book.last_run_warnings), webhook_url)
     new = book.orders[first_new:]
     print(f"cash ${book.cash:,.2f}, open positions: {len(book.positions)}, "
           f"new orders: {len(new)}")
-    if new:
-        sheet = format_orders(new)
-        print(sheet)
-        post_discord(sheet, webhook_url)
+    text = recap(before, json.loads(json.dumps(book.to_dict(), default=str)))
+    if text:
+        print(text)
+        post_discord(text, webhook_url)
     return new
 
 

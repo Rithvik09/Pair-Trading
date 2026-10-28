@@ -10,6 +10,8 @@ import pandas as pd
 from pairs.orders import order_record
 from pairs.signals import decide, leg_weights
 
+LOG_KEEP = 5000  # decision-log entries kept in the book (about six months of a busy watchlist)
+
 
 def pair_key(pair) -> str:
     """'Y/X': how a pair is keyed in the book and labelled in the UI."""
@@ -45,6 +47,13 @@ class PaperBook:
     last_bar: dict[str, str] = field(default_factory=dict)  # last date stepped, per pair
     orders: list[dict] = field(default_factory=list)  # every order the strategy asked for
     last_run_warnings: list[str] = field(default_factory=list)  # e.g. tickers with no data
+    starting_cash: float | None = None  # what the book started with; set from cash if None
+    log: list[dict] = field(default_factory=list)  # every decision and why, newest last
+    equity: list[dict] = field(default_factory=list)  # the book's value after each close
+
+    def __post_init__(self):
+        if self.starting_cash is None:
+            self.starting_cash = self.cash
 
     @classmethod
     def load(cls, path, starting_cash: float = 100_000.0) -> "PaperBook":
@@ -59,14 +68,36 @@ class PaperBook:
         return cls(path=path, cash=d["cash"], blocked=d.get("blocked", []),
                    positions=d.get("positions", {}), closed=d.get("closed", []),
                    last_bar=d.get("last_bar", {}), orders=d.get("orders", []),
-                   last_run_warnings=d.get("last_run_warnings", []))
+                   last_run_warnings=d.get("last_run_warnings", []),
+                   starting_cash=d.get("starting_cash", starting_cash),
+                   log=d.get("log", []), equity=d.get("equity", []))
+
+    def to_dict(self) -> dict:
+        return {"cash": self.cash, "starting_cash": self.starting_cash, "blocked": self.blocked,
+                "positions": self.positions, "closed": self.closed, "last_bar": self.last_bar,
+                "orders": self.orders, "last_run_warnings": self.last_run_warnings,
+                "log": self.log[-LOG_KEEP:], "equity": self.equity}
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        d = {"cash": self.cash, "blocked": self.blocked, "positions": self.positions,
-             "closed": self.closed, "last_bar": self.last_bar, "orders": self.orders,
-             "last_run_warnings": self.last_run_warnings}
-        self.path.write_text(json.dumps(d, indent=2, default=str))
+        self.path.write_text(json.dumps(self.to_dict(), indent=2, default=str))
+
+    def record_equity(self, date, prices: dict[str, float], cost_bps: float = 0.0) -> dict:
+        """Snapshot the book's value at a close: what it would be worth if every open position
+        were closed at `prices`, after opening and closing costs and the borrow owed (the same
+        sum _close books). One entry per date; a rerun replaces it.
+        A position whose prices are missing is marked at its entry prices."""
+        unreal = 0.0
+        for k, p in self.positions.items():
+            if p["y"] in prices and p["x"] in prices:
+                unreal += self.mark(k, prices[p["y"]], prices[p["x"]])
+            unreal -= (p.get("costs", 0.0) + p.get("notional", 0.0) * cost_bps / 1e4
+                       + self.borrow_accrued(k, date))
+        snap = {"date": str(date), "cash": self.cash, "unrealised": unreal,
+                "equity": self.cash + unreal, "open": len(self.positions)}
+        self.equity = sorted([e for e in self.equity if e["date"] != snap["date"]] + [snap],
+                             key=lambda e: e["date"])
+        return snap
 
     def step(self, pair, *, date, y_px, x_px, beta, z, entry, exit, stop, notional,
              cost_bps: float = 0.0, shortable=(None, None), borrow_fee=(0.0, 0.0),
@@ -162,7 +193,7 @@ class PaperBook:
         """
         p = self.positions[k]
         d = pd.Timestamp(p["entry_date"])
-        if d in y_adj.index and d in x_adj.index:
+        if d in y_adj.index and d in x_adj.index and pd.notna(y_adj[d]) and pd.notna(x_adj[d]):
             p["entry_y"], p["entry_x"] = float(y_adj[d]), float(x_adj[d])
 
     def mark(self, k: str, y_px: float, x_px: float) -> float:
