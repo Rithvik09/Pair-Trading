@@ -272,7 +272,9 @@
       ]
     }
   ],
-  "last_run_warnings": [],
+  "last_run_warnings": [
+    "\u26a0 Yahoo hasn't published the 2026-10-29 close yet (latest: 2026-10-28). Orders are based on the latest close available; the next run catches up."
+  ],
   "log": [
     {
       "date": "2026-10-27",
