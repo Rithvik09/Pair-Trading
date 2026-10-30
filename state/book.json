@@ -98,51 +98,67 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
+    },
+    "D/AEE": {
+      "y": "D",
+      "x": "AEE",
+      "side": "long_spread",
+      "entry_date": "2026-10-29",
+      "entry_y": 65.12000274658203,
+      "entry_x": 110.20999908447266,
+      "y_shares": 74,
+      "x_shares": -46,
+      "beta": 1.0475556097063488,
+      "entry_z": -2.0179846719656194,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
     }
   },
   "closed": [],
   "last_bar": {
-    "MTD/TMO": "2026-10-28",
-    "SW/PKG": "2026-10-28",
+    "MTD/TMO": "2026-10-29",
+    "SW/PKG": "2026-10-29",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-10-28",
-    "MTDR/OXY": "2026-10-28",
-    "LKFN/RNST": "2026-10-28",
-    "BANC/FIBK": "2026-10-28",
-    "RF/FIBK": "2026-10-28",
-    "KRG/PECO": "2026-10-28",
-    "TALO/COP": "2026-10-28",
-    "ALL/THG": "2026-10-28",
-    "SHO/APLE": "2026-10-28",
-    "IESC/STRL": "2026-10-28",
-    "MTDR/CHRD": "2026-10-28",
-    "KNX/JBHT": "2026-10-28",
-    "REG/IVT": "2026-10-28",
-    "ENTG/ICHR": "2026-10-28",
-    "SPG/IVT": "2026-10-28",
-    "D/AEE": "2026-10-28",
-    "MSCI/SPGI": "2026-10-28",
-    "KKR/BX": "2026-10-28",
-    "PDFS/COHU": "2026-10-28",
-    "FELE/LECO": "2026-10-28",
-    "RES/LBRT": "2026-10-28",
-    "VMRK/CPT": "2026-10-28",
-    "RHP/APLE": "2026-10-28",
-    "FLS/PH": "2026-10-28",
-    "PENN/CZR": "2026-10-28",
-    "IESC/EME": "2026-10-28",
-    "FDS/MORN": "2026-10-28",
-    "TRNO/EGP": "2026-10-28",
-    "RES/HAL": "2026-10-28",
-    "CWT/MSEX": "2026-10-28",
-    "TRNO/FR": "2026-10-28",
-    "PWR/STRL": "2026-10-28",
-    "YETI/BC": "2026-10-28",
-    "RL/TPR": "2026-10-28",
-    "ITW/LECO": "2026-10-28",
-    "AMP/CRBG": "2026-10-28",
-    "SSD/WMS": "2026-10-28"
+    "PPL/DUK": "2026-10-29",
+    "MTDR/OXY": "2026-10-29",
+    "LKFN/RNST": "2026-10-29",
+    "BANC/FIBK": "2026-10-29",
+    "RF/FIBK": "2026-10-29",
+    "KRG/PECO": "2026-10-29",
+    "TALO/COP": "2026-10-29",
+    "ALL/THG": "2026-10-29",
+    "SHO/APLE": "2026-10-29",
+    "IESC/STRL": "2026-10-29",
+    "MTDR/CHRD": "2026-10-29",
+    "KNX/JBHT": "2026-10-29",
+    "REG/IVT": "2026-10-29",
+    "ENTG/ICHR": "2026-10-29",
+    "SPG/IVT": "2026-10-29",
+    "D/AEE": "2026-10-29",
+    "MSCI/SPGI": "2026-10-29",
+    "KKR/BX": "2026-10-29",
+    "PDFS/COHU": "2026-10-29",
+    "FELE/LECO": "2026-10-29",
+    "RES/LBRT": "2026-10-29",
+    "VMRK/CPT": "2026-10-29",
+    "RHP/APLE": "2026-10-29",
+    "FLS/PH": "2026-10-29",
+    "PENN/CZR": "2026-10-29",
+    "IESC/EME": "2026-10-29",
+    "FDS/MORN": "2026-10-29",
+    "TRNO/EGP": "2026-10-29",
+    "RES/HAL": "2026-10-29",
+    "CWT/MSEX": "2026-10-29",
+    "TRNO/FR": "2026-10-29",
+    "PWR/STRL": "2026-10-29",
+    "YETI/BC": "2026-10-29",
+    "RL/TPR": "2026-10-29",
+    "ITW/LECO": "2026-10-29",
+    "AMP/CRBG": "2026-10-29",
+    "SSD/WMS": "2026-10-29"
   },
   "orders": [
     {
@@ -270,11 +286,30 @@
           "ref_price": 130.94000244140625
         }
       ]
+    },
+    {
+      "pair": "D/AEE",
+      "event": "open long_spread",
+      "signal_date": "2026-10-29",
+      "execute_on": "2026-10-30",
+      "z": -2.0179846719656194,
+      "legs": [
+        {
+          "ticker": "D",
+          "side": "BUY",
+          "qty": 74,
+          "ref_price": 65.12000274658203
+        },
+        {
+          "ticker": "AEE",
+          "side": "SELL SHORT",
+          "qty": 46,
+          "ref_price": 110.20999908447266
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 Yahoo hasn't published the 2026-10-29 close yet (latest: 2026-10-28). Orders are based on the latest close available; the next run catches up."
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-10-27",
@@ -310,6 +345,13 @@
       "action": "open short_spread",
       "z": 3.08934291240704,
       "reason": "z +3.09 \u2265 +2.0: SSD ran ahead of WMS, so short SSD / buy WMS (hedge ratio 0.74)"
+    },
+    {
+      "date": "2026-10-29",
+      "pair": "D/AEE",
+      "action": "open long_spread",
+      "z": -2.0179846719656194,
+      "reason": "z -2.02 \u2264 -2.0: D fell behind AEE, so buy D / short AEE (hedge ratio 1.05)"
     }
   ],
   "equity": [
@@ -332,6 +374,16 @@
       "gross": 59256.59054851532,
       "margin": 29628.29527425766,
       "free": 69952.04308242394
+    },
+    {
+      "date": "2026-10-29",
+      "cash": 100000.0,
+      "unrealised": 92.85386432317897,
+      "equity": 100092.85386432317,
+      "open": 7,
+      "gross": 69464.14054298401,
+      "margin": 34732.070271492004,
+      "free": 65360.78359283117
     }
   ]
 }
