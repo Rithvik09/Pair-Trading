@@ -17,11 +17,12 @@ from pairs.backtest import BacktestConfig, backtest, signal_frame
 from pairs.borrow import DEFAULT_FEE, OVERRIDES_PATH, borrow_label, borrow_table, fee_label
 from pairs.config import load_config
 from pairs.data import UNIVERSE, load_prices
-from pairs.notify import EVENT_LABELS
+from pairs.notify import EVENT_LABELS, _money
 from pairs.paper import PaperBook, pair_key, short_legs
 from pairs.paths import BOOK_PATH
 from pairs.scanner import scan
 from pairs.signals import trade_opens
+from pairs.sizing import loss_rates, plan, smallest_trade
 
 st.set_page_config(page_title="Pairs Trader", layout="wide")
 st.title("Pairs Trader")
@@ -120,8 +121,8 @@ def borrow_source_note(borrow: dict) -> str:
 
 
 book = PaperBook.load(BOOK_PATH, starting_cash=config.starting_cash)
-tab_orders, tab_book, tab_log, tab_scan, tab_pair = st.tabs(
-    ["Orders", "Positions", "Decision log", "Scanner", "Pair explorer"])
+tab_orders, tab_book, tab_log, tab_size, tab_scan, tab_pair = st.tabs(
+    ["Orders", "Positions", "Decision log", "Sizing", "Scanner", "Pair explorer"])
 
 # ---------------------------------------------------------------- orders
 with tab_orders:
@@ -149,6 +150,93 @@ with tab_orders:
                                  for leg in o["legs"])}
             for o in reversed(book.orders)])
         st.dataframe(hist, hide_index=True, width="stretch")
+
+# ---------------------------------------------------------------- sizing
+@st.cache_data(ttl=3600, max_entries=5, show_spinner="Pricing the watchlist…")
+def smallest_trades(watchlist: tuple[tuple[str, str], ...]) -> dict[str, float]:
+    """Per watchlist pair, the smallest trade size that buys a share of each leg today.
+    Pairs whose hedge ratio isn't positive can't trade at any size, so they're left out."""
+    px = prices_for(tuple(sorted({t for p in watchlist for t in p})), "2y")
+    out = {}
+    for y, x in watchlist:
+        if y in px and x in px:
+            d = px[[y, x]].dropna()
+            beta = signal_frame(d[y], d[x], live)["beta"].iloc[-1]
+            if beta > 0:
+                out[pair_key((y, x))] = smallest_trade(d[y].iloc[-1], d[x].iloc[-1], beta)
+    return out
+
+
+with tab_size:
+    st.caption("Arithmetic, not advice: what a trade size adds up to under the paper book's "
+               "own rules. How much to put in, and whether to, is your decision.")
+    c = st.columns(4)
+    account = c[0].number_input("Account size ($)", 1_000, 10_000_000,
+                                int(config.starting_cash), 1_000)
+    size = c[1].number_input("Per trade, both legs ($)", 500, 1_000_000,
+                             int(config.notional), 500)
+    slots = c[2].number_input("Max open trades", 1, 100,
+                              config.max_open_positions or len(config.watchlist) or 1)
+    rate = c[3].number_input("Margin rate", 0.05, 1.0, config.margin_rate, 0.05,
+                             help="Margin per dollar of stock held, long and short. 0.5 is "
+                                  "Reg T; your broker may want more.")
+    marks = []
+    if book.positions:
+        tick = tuple(sorted({p[k] for p in book.positions.values() for k in ("y", "x")}))
+        hist = prices_for(tick, "1y").ffill()
+        for k, p in book.positions.items():
+            book.rebase_entry(k, hist[p["y"]], hist[p["x"]])
+            u = (book.mark(k, hist[p["y"]].iloc[-1], hist[p["x"]].iloc[-1]) - p.get("costs", 0.0)
+                 - book.borrow_accrued(k, hist.index[-1].date()))
+            marks.append((u, p.get("notional", 0.0)))
+    smallest = smallest_trades(tuple(config.watchlist))
+    r = plan(account, size, slots, rate, smallest, loss_rates(book.closed, marks))
+
+    m = st.columns(3)
+    m[0].metric("Stock held, all slots full", f"${r['gross']:,.0f}",
+                help=f"{slots} trades × ${size:,.0f}, long and short legs together.")
+    m[1].metric("Margin it needs", f"${r['margin']:,.0f}")
+    m[2].metric("Account left free", f"${r['free']:,.0f}",
+                help=f"{r['margin'] / account:.0%} of the account is tied up as margin.")
+    if r["free"] < 0:
+        st.warning("With every slot full, the margin needed is more than the account: a real "
+                   "account would get a margin call. Lower the trade size or the max open "
+                   "trades.")
+
+    st.subheader("Pairs this size can't trade")
+    if r["too_small"]:
+        n = len(r["too_small"])
+        st.markdown(f"{n} of {len(smallest)} watchlist pairs {'needs' if n == 1 else 'need'} more than "
+                    f"\\${size:,.0f} to buy one whole share of each leg, so their signals "
+                    "would be skipped as \"too small\".")
+        st.dataframe(pd.DataFrame({"pair": r["too_small"],
+                                   "smallest trade": [smallest[k] for k in r["too_small"]]}),
+                     hide_index=True,
+                     column_config={"smallest trade": st.column_config.NumberColumn(
+                         format="$%.0f")})
+    else:
+        st.markdown(f"None: \\${size:,.0f} buys at least one share of each leg in all "
+                    f"{len(smallest)} tradeable watchlist pairs at today's prices.")
+
+    st.subheader("Worst trade so far, at this size")
+    if r["worst_rate"] is None:
+        st.markdown("No trades in the paper book yet to measure from.")
+    else:
+        def md(v):  # "-$28", with the $ escaped so Streamlit doesn't read it as math
+            return _money(v).replace("$", "\\$")
+        n = len(book.closed) + len(marks)
+        st.markdown(f"Out of {n} paper trade{'s' if n != 1 else ''} so far (closed or still "
+                    f"open), the worst is {r['worst_rate']:+.1%} of its size. At "
+                    f"\\${size:,.0f} per trade that's **{md(r['worst_loss'])}**; if all "
+                    f"{slots} slots did that at once, {md(r['worst_loss'] * slots)} "
+                    f"({r['worst_loss'] * slots / account:+.1%} of the account)."
+                    + (" That's too few trades to say much: expect worse." if n < 10 else ""))
+    st.caption("The paper book fills at the signal close; real fills come at the next open, "
+               "and borrow can be recalled, so live results tend to be a little worse. The "
+               "stop is on the spread, not on dollars: if both stocks fall together a trade "
+               "can lose a lot without stopping out. To use a size, set `notional` and "
+               "`max_open_positions` in config.toml"
+               + (f" ([edit]({CONFIG_EDIT_URL}))" if CONFIG_EDIT_URL else "") + ".")
 
 # ---------------------------------------------------------------- scanner
 with tab_scan:
