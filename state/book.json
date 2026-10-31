@@ -1,5 +1,5 @@
 {
-  "cash": 100000.0,
+  "cash": 100597.9152225965,
   "starting_cash": 100000.0,
   "blocked": [],
   "positions": {
@@ -67,22 +67,6 @@
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
     },
-    "RES/LBRT": {
-      "y": "RES",
-      "x": "LBRT",
-      "side": "short_spread",
-      "entry_date": "2026-10-27",
-      "entry_y": 6.599999904632568,
-      "entry_x": 16.940000534057617,
-      "y_shares": -1230,
-      "x_shares": 110,
-      "beta": 0.23149910899986564,
-      "entry_z": 2.135089489538869,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0025,
-      "borrow_fee_x": 0.0
-    },
     "SSD/WMS": {
       "y": "SSD",
       "x": "WMS",
@@ -99,7 +83,57 @@
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
     },
-    "D/AEE": {
+    "FLS/PH": {
+      "y": "FLS",
+      "x": "PH",
+      "side": "short_spread",
+      "entry_date": "2026-10-30",
+      "entry_y": 79.01000213623047,
+      "entry_x": 899.8200073242188,
+      "y_shares": -83,
+      "x_shares": 3,
+      "beta": 0.513566275318701,
+      "entry_z": 3.1728094027460396,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "PENN/CZR": {
+      "y": "PENN",
+      "x": "CZR",
+      "side": "short_spread",
+      "entry_date": "2026-10-30",
+      "entry_y": 15.890000343322754,
+      "entry_x": 29.09000015258789,
+      "y_shares": -195,
+      "x_shares": 236,
+      "beta": 2.2157762018576923,
+      "entry_z": 2.279548414875095,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "RES/HAL": {
+      "y": "RES",
+      "x": "HAL",
+      "side": "long_spread",
+      "entry_date": "2026-10-30",
+      "entry_y": 6.170000076293945,
+      "entry_x": 36.16999816894531,
+      "y_shares": 872,
+      "x_shares": -127,
+      "beta": 0.8567154458312333,
+      "entry_z": -2.267401669463636,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    }
+  },
+  "closed": [
+    {
       "y": "D",
       "x": "AEE",
       "side": "long_spread",
@@ -111,54 +145,81 @@
       "beta": 1.0475556097063488,
       "entry_z": -2.0179846719656194,
       "notional": 10000.0,
-      "costs": 5.0,
+      "costs": 10.0,
       "borrow_fee_y": 0.0,
-      "borrow_fee_x": 0.0025
+      "borrow_fee_x": 0.0025,
+      "exit_date": "2026-10-30",
+      "exit_y": 66.62000274658203,
+      "exit_x": 110.54000091552734,
+      "borrow": 0.035205971929762096,
+      "pnl": 85.78470979955462,
+      "reason": "converged"
+    },
+    {
+      "y": "RES",
+      "x": "LBRT",
+      "side": "short_spread",
+      "entry_date": "2026-10-27",
+      "entry_y": 6.599999904632568,
+      "entry_x": 16.940000534057617,
+      "y_shares": -1230,
+      "x_shares": 110,
+      "beta": 0.23149910899986564,
+      "entry_z": 2.135089489538869,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0,
+      "exit_date": "2026-10-30",
+      "exit_y": 6.170000076293945,
+      "exit_x": 16.8799991607666,
+      "borrow": 0.16912499755620958,
+      "pnl": 512.1305127969384,
+      "reason": "converged"
     }
-  },
-  "closed": [],
+  ],
   "last_bar": {
-    "MTD/TMO": "2026-10-29",
-    "SW/PKG": "2026-10-29",
+    "MTD/TMO": "2026-10-30",
+    "SW/PKG": "2026-10-30",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-10-29",
-    "MTDR/OXY": "2026-10-29",
-    "LKFN/RNST": "2026-10-29",
-    "BANC/FIBK": "2026-10-29",
-    "RF/FIBK": "2026-10-29",
-    "KRG/PECO": "2026-10-29",
-    "TALO/COP": "2026-10-29",
-    "ALL/THG": "2026-10-29",
-    "SHO/APLE": "2026-10-29",
-    "IESC/STRL": "2026-10-29",
-    "MTDR/CHRD": "2026-10-29",
-    "KNX/JBHT": "2026-10-29",
-    "REG/IVT": "2026-10-29",
-    "ENTG/ICHR": "2026-10-29",
-    "SPG/IVT": "2026-10-29",
-    "D/AEE": "2026-10-29",
-    "MSCI/SPGI": "2026-10-29",
-    "KKR/BX": "2026-10-29",
-    "PDFS/COHU": "2026-10-29",
-    "FELE/LECO": "2026-10-29",
-    "RES/LBRT": "2026-10-29",
-    "VMRK/CPT": "2026-10-29",
-    "RHP/APLE": "2026-10-29",
-    "FLS/PH": "2026-10-29",
-    "PENN/CZR": "2026-10-29",
-    "IESC/EME": "2026-10-29",
-    "FDS/MORN": "2026-10-29",
-    "TRNO/EGP": "2026-10-29",
-    "RES/HAL": "2026-10-29",
-    "CWT/MSEX": "2026-10-29",
-    "TRNO/FR": "2026-10-29",
-    "PWR/STRL": "2026-10-29",
-    "YETI/BC": "2026-10-29",
-    "RL/TPR": "2026-10-29",
-    "ITW/LECO": "2026-10-29",
-    "AMP/CRBG": "2026-10-29",
-    "SSD/WMS": "2026-10-29"
+    "PPL/DUK": "2026-10-30",
+    "MTDR/OXY": "2026-10-30",
+    "LKFN/RNST": "2026-10-30",
+    "BANC/FIBK": "2026-10-30",
+    "RF/FIBK": "2026-10-30",
+    "KRG/PECO": "2026-10-30",
+    "TALO/COP": "2026-10-30",
+    "ALL/THG": "2026-10-30",
+    "SHO/APLE": "2026-10-30",
+    "IESC/STRL": "2026-10-30",
+    "MTDR/CHRD": "2026-10-30",
+    "KNX/JBHT": "2026-10-30",
+    "REG/IVT": "2026-10-30",
+    "ENTG/ICHR": "2026-10-30",
+    "SPG/IVT": "2026-10-30",
+    "D/AEE": "2026-10-30",
+    "MSCI/SPGI": "2026-10-30",
+    "KKR/BX": "2026-10-30",
+    "PDFS/COHU": "2026-10-30",
+    "FELE/LECO": "2026-10-30",
+    "RES/LBRT": "2026-10-30",
+    "VMRK/CPT": "2026-10-30",
+    "RHP/APLE": "2026-10-30",
+    "FLS/PH": "2026-10-30",
+    "PENN/CZR": "2026-10-30",
+    "IESC/EME": "2026-10-30",
+    "FDS/MORN": "2026-10-30",
+    "TRNO/EGP": "2026-10-30",
+    "RES/HAL": "2026-10-30",
+    "CWT/MSEX": "2026-10-30",
+    "TRNO/FR": "2026-10-30",
+    "PWR/STRL": "2026-10-30",
+    "YETI/BC": "2026-10-30",
+    "RL/TPR": "2026-10-30",
+    "ITW/LECO": "2026-10-30",
+    "AMP/CRBG": "2026-10-30",
+    "SSD/WMS": "2026-10-30"
   },
   "orders": [
     {
@@ -307,11 +368,114 @@
           "ref_price": 110.20999908447266
         }
       ]
+    },
+    {
+      "pair": "D/AEE",
+      "event": "close",
+      "signal_date": "2026-10-30",
+      "execute_on": "2026-11-02",
+      "z": -0.018629904101287727,
+      "legs": [
+        {
+          "ticker": "D",
+          "side": "SELL",
+          "qty": 74,
+          "ref_price": 66.62000274658203
+        },
+        {
+          "ticker": "AEE",
+          "side": "BUY TO COVER",
+          "qty": 46,
+          "ref_price": 110.54000091552734
+        }
+      ]
+    },
+    {
+      "pair": "RES/LBRT",
+      "event": "close",
+      "signal_date": "2026-10-30",
+      "execute_on": "2026-11-02",
+      "z": 0.2623908978848217,
+      "legs": [
+        {
+          "ticker": "RES",
+          "side": "BUY TO COVER",
+          "qty": 1230,
+          "ref_price": 6.170000076293945
+        },
+        {
+          "ticker": "LBRT",
+          "side": "SELL",
+          "qty": 110,
+          "ref_price": 16.8799991607666
+        }
+      ]
+    },
+    {
+      "pair": "FLS/PH",
+      "event": "open short_spread",
+      "signal_date": "2026-10-30",
+      "execute_on": "2026-11-02",
+      "z": 3.1728094027460396,
+      "legs": [
+        {
+          "ticker": "FLS",
+          "side": "SELL SHORT",
+          "qty": 83,
+          "ref_price": 79.01000213623047
+        },
+        {
+          "ticker": "PH",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 899.8200073242188
+        }
+      ]
+    },
+    {
+      "pair": "PENN/CZR",
+      "event": "open short_spread",
+      "signal_date": "2026-10-30",
+      "execute_on": "2026-11-02",
+      "z": 2.279548414875095,
+      "legs": [
+        {
+          "ticker": "PENN",
+          "side": "SELL SHORT",
+          "qty": 195,
+          "ref_price": 15.890000343322754
+        },
+        {
+          "ticker": "CZR",
+          "side": "BUY",
+          "qty": 236,
+          "ref_price": 29.09000015258789
+        }
+      ]
+    },
+    {
+      "pair": "RES/HAL",
+      "event": "open long_spread",
+      "signal_date": "2026-10-30",
+      "execute_on": "2026-11-02",
+      "z": -2.267401669463636,
+      "legs": [
+        {
+          "ticker": "RES",
+          "side": "BUY",
+          "qty": 872,
+          "ref_price": 6.170000076293945
+        },
+        {
+          "ticker": "HAL",
+          "side": "SELL SHORT",
+          "qty": 127,
+          "ref_price": 36.16999816894531
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 Yahoo hasn't published the 2026-10-30 close yet (latest: 2026-10-29). Orders are based on the latest close available; the next run catches up."
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-10-27",
@@ -354,6 +518,41 @@
       "action": "open long_spread",
       "z": -2.0179846719656194,
       "reason": "z -2.02 \u2264 -2.0: D fell behind AEE, so buy D / short AEE (hedge ratio 1.05)"
+    },
+    {
+      "date": "2026-10-30",
+      "pair": "D/AEE",
+      "action": "close",
+      "z": -0.018629904101287727,
+      "reason": "z -0.02 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-10-30",
+      "pair": "RES/LBRT",
+      "action": "close",
+      "z": 0.2623908978848217,
+      "reason": "z +0.26 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-10-30",
+      "pair": "FLS/PH",
+      "action": "open short_spread",
+      "z": 3.1728094027460396,
+      "reason": "z +3.17 \u2265 +2.0: FLS ran ahead of PH, so short FLS / buy PH (hedge ratio 0.51)"
+    },
+    {
+      "date": "2026-10-30",
+      "pair": "PENN/CZR",
+      "action": "open short_spread",
+      "z": 2.279548414875095,
+      "reason": "z +2.28 \u2265 +2.0: PENN ran ahead of CZR, so short PENN / buy CZR (hedge ratio 2.22)"
+    },
+    {
+      "date": "2026-10-30",
+      "pair": "RES/HAL",
+      "action": "open long_spread",
+      "z": -2.267401669463636,
+      "reason": "z -2.27 \u2264 -2.0: RES fell behind HAL, so buy RES / short HAL (hedge ratio 0.86)"
     }
   ],
   "equity": [
@@ -386,6 +585,16 @@
       "gross": 69464.14054298401,
       "margin": 34732.070271492004,
       "free": 65360.78359283117
+    },
+    {
+      "date": "2026-10-30",
+      "cash": 100597.9152225965,
+      "unrealised": -187.710495957613,
+      "equity": 100410.20472663888,
+      "open": 8,
+      "gross": 79251.23034954071,
+      "margin": 39625.615174770355,
+      "free": 60784.58955186853
     }
   ]
 }
