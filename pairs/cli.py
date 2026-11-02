@@ -136,7 +136,7 @@ def make_room(book: PaperBook, date, signals, zs: dict[str, float], prices: dict
         p, k, gain = book.positions[worst], pair_key(pair), abs(z) - cfg.exit
         if gain < held[worst] + SWAP_EDGE:
             continue
-        # only close it if that frees enough cash: its loss and costs may eat what it frees
+        # only close it if that frees enough cash: losses on other open trades shrink the budget
         cash = book.budget() + book.close_pnl(worst, date, prices[p["y"]], prices[p["x"]],
                                           cfg.cost_bps)
         in_use = sum(q.get("notional", 0.0) for q in book.positions.values()) - p["notional"]
