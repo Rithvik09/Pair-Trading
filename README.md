@@ -9,7 +9,7 @@ dashboard. You place them with your broker. A model book tracks the same trades 
 
 Each run posts one recap to Discord: the model book's value after that close (change on the
 day and since the start), every decision with its reason ("z +2.31 ≥ +2.0: SW ran ahead of
-PKG…", "…but 10 positions already open"), then the order sheet. It also shows the cash in
+PKG…", "…but can't borrow PKG to short it"), then the order sheet. It also shows the cash in
 use: the stock held, long and short, the margin that needs (`margin_rate` in config.toml, 50%
 by default as under Reg T; your broker may want more), and what's left free, with a ⚠ if the
 trades need more margin than the book is worth. The dashboard has the same decision log, an
@@ -92,8 +92,11 @@ cointegration over the last year on its own, and requiring a profitable last yea
 list is today's index members (stocks that fell out are missing), which flatters all of these
 numbers a little.
 
-`[paper] max_open_positions` caps how many trades are open at once; a signal beyond it is
-skipped and reported in Discord. Refresh `universe.csv` when the indexes change with
+`[paper] max_open_positions` (off by default) caps how many trades are open at once; a signal
+beyond it is skipped and reported in Discord. Without it, every signal on the watchlist opens a
+trade, so the margin needed can grow past the book's value; the recap and dashboard warn when it does.
+
+Refresh `universe.csv` when the indexes change with
 `uv run --with lxml python -m pairs.cli update-universe` and review the diff.
 
 ## Run locally
