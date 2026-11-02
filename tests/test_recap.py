@@ -200,3 +200,96 @@ def test_recap_shows_cash_in_use_and_warns_when_short_of_it():
     assert "$80,000 of stock" in text and "$40,000 margin" in text and "$60,000 free" in text
     assert "⚠" not in text
     assert "⚠" in notify.recap(_book(), _book([eq(-5_000.0)]))
+
+
+# ---------------------------------------------------------------- trade until the cash runs out
+def test_new_trades_stop_when_the_cash_cant_cover_their_margin(tmp_path):
+    book = PaperBook.load(tmp_path / "b.json", starting_cash=25_000)
+    kw = {"date": "2026-10-19", "y_px": 10, "x_px": 10, "beta": 1.0, "z": 2.5, "entry": 2,
+          "exit": 0.5, "stop": 4, "notional": 10_000, "margin_rate": 0.5}
+    assert book.step(("A", "B"), **kw) == "open short_spread"  # $5,000 of $25,000
+    assert book.step(("C", "D"), **kw) == "open short_spread"
+    assert book.step(("E", "F"), **kw) == "open short_spread"
+    assert book.step(("G", "H"), **kw) == "open short_spread"
+    assert book.step(("I", "J"), **kw) == "open short_spread"  # exactly $25,000 in use
+    assert book.step(("K", "L"), **kw) == "skip: out of cash"
+    assert book.step(("A", "B"), **{**kw, "z": 0.1}) == "close"  # exits never blocked
+    assert book.step(("K", "L"), **kw) == "open short_spread"  # its margin is free again
+
+
+def test_explain_out_of_cash():
+    text = cli.explain(("YYY", "XXX"), "skip: out of cash", 2.4, 1.0, BacktestConfig())
+    assert "+2.40" in text and "no cash left" in text
+
+
+def test_daily_stops_opening_trades_when_the_cash_is_used_up(tmp_path, monkeypatch, coint_pair):
+    y, x = coint_pair
+    prices = pd.concat([y.rename("YYY"), x.rename("XXX")], axis=1)
+    monkeypatch.setattr(cli, "load_prices", lambda *a, **k: prices)
+    monkeypatch.setattr(cli, "borrow_table", lambda t: {})
+    book = PaperBook.load(tmp_path / "book.json", starting_cash=4_000)  # < $5,000 margin
+    book.last_bar["YYY/XXX"] = str(prices.index[-200].date())
+    cli.daily(book, Config(watchlist=[("YYY", "XXX")]), now=_after_close(prices),
+              sleep=lambda s: None)
+    assert not book.orders
+    assert any(e["action"] == "skip: out of cash" for e in book.log)
+
+
+# ---------------------------------------------------------------- swap in a better trade
+def _two_slot_book(tmp_path, cash=10_100):
+    """About $10,000 of cash at 50% margin: room for two $10,000 trades, plus a little for
+    the cost of a swap."""
+    book = PaperBook.load(tmp_path / "b.json", starting_cash=cash)
+    kw = {"date": "2026-10-19", "y_px": 10, "x_px": 10, "beta": 1.0, "z": 2.5, "entry": 2,
+          "exit": 0.5, "stop": 4, "notional": 10_000, "margin_rate": 0.5}
+    book.step(("A", "B"), **kw)
+    book.step(("C", "D"), **kw)
+    return book
+
+
+def test_a_better_signal_replaces_the_trade_with_least_left_to_gain(tmp_path):
+    book = _two_slot_book(tmp_path)
+    prices = {t: 10.0 for t in "ABCDEF"}
+    done = cli.make_room(book, "2026-10-20", [(("E", "F"), 3.0, 1.0)],
+                         {"A/B": 0.8, "C/D": 2.6}, prices, BacktestConfig(), 10_000, {}, 0.5)
+    assert done == ["E/F"]
+    assert set(book.positions) == {"C/D", "E/F"}
+    assert book.closed[-1]["reason"] == "replaced"
+    (out, in_) = book.log[-2:]
+    assert out["pair"] == "A/B" and out["action"] == "replace" and "E/F" in out["reason"]
+    assert in_["pair"] == "E/F" and in_["action"] == "open short_spread"
+    assert [o["event"] for o in book.orders[-2:]] == ["replace", "open short_spread"]
+
+
+def test_no_swap_unless_the_new_signal_is_clearly_better(tmp_path):
+    book = _two_slot_book(tmp_path)
+    prices = {t: 10.0 for t in "ABCDEF"}
+    done = cli.make_room(book, "2026-10-20", [(("E", "F"), 2.3, 1.0)],
+                         {"A/B": 2.0, "C/D": 2.6}, prices, BacktestConfig(), 10_000, {}, 0.5)
+    assert done == [] and set(book.positions) == {"A/B", "C/D"}
+
+
+def test_trades_without_a_current_z_are_never_swapped_out(tmp_path):
+    book = _two_slot_book(tmp_path)
+    prices = {t: 10.0 for t in "ABCDEF"}
+    done = cli.make_room(book, "2026-10-20", [(("E", "F"), 3.5, 1.0)],
+                         {}, prices, BacktestConfig(), 10_000, {}, 0.5)  # e.g. off the watchlist
+    assert done == [] and set(book.positions) == {"A/B", "C/D"}
+
+
+def test_no_swap_when_closing_wouldnt_free_enough_cash(tmp_path):
+    book = _two_slot_book(tmp_path)
+    prices = {**{t: 10.0 for t in "CDEF"}, "A": 10.4, "B": 10.0}  # A/B (short A) down $200
+    done = cli.make_room(book, "2026-10-20", [(("E", "F"), 3.0, 1.0)],
+                         {"A/B": 0.8, "C/D": 2.6}, prices, BacktestConfig(), 10_000, {}, 0.5)
+    assert done == [] and set(book.positions) == {"A/B", "C/D"}  # nothing closed for nothing
+
+
+def test_cash_limit_counts_losses_on_open_trades(tmp_path):
+    book = PaperBook.load(tmp_path / "b.json", starting_cash=10_000)
+    kw = {"date": "2026-10-19", "y_px": 10, "x_px": 10, "beta": 1.0, "z": 2.5, "entry": 2,
+          "exit": 0.5, "stop": 4, "notional": 10_000, "margin_rate": 0.5}
+    book.step(("A", "B"), **kw)  # short 500 A
+    book.record_equity("2026-10-19", {"A": 11.0, "B": 10.0})  # A up $1: -$500 open
+    assert book.budget() == 9_500
+    assert book.step(("C", "D"), **kw) == "skip: out of cash"  # $10,000 margin > $9,500

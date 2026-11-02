@@ -108,7 +108,7 @@ class PaperBook:
 
     def step(self, pair, *, date, y_px, x_px, beta, z, entry, exit, stop, notional,
              cost_bps: float = 0.0, shortable=(None, None), borrow_fee=(0.0, 0.0),
-             max_open: int | None = None) -> str:
+             max_open: int | None = None, margin_rate: float | None = None) -> str:
         """Apply one bar of the strategy to one pair.
 
         Entry/exit/stop decisions come from signals.decide, the same rule the backtest uses.
@@ -123,7 +123,9 @@ class PaperBook:
 
         Returns one of: "none", "hold", "open short_spread", "open long_spread",
         "close", "stop", "blocked", "unshortable <tickers>", "too small <tickers>",
-        "skip: hedge ratio not positive", "skip: max open positions".
+        "skip: hedge ratio not positive", "skip: max open positions", "skip: out of cash".
+        margin_rate, when given, opens a trade only if budget() still covers the margin of
+        every open trade plus this one, at their entry sizes.
         max_open caps how many positions can be open; exits are never blocked. When a run
         catches up several missed days, pairs are replayed one after another, so which pair
         gets the last slot can differ from the order the signals actually came in.
@@ -167,6 +169,10 @@ class PaperBook:
         too_small = [t for t, n in ((y, y_shares), (x, x_shares)) if n == 0]
         if too_small:
             return "too small " + ",".join(too_small)
+        if margin_rate is not None:  # last, so a trade skipped for cash is otherwise tradeable
+            in_use = sum(p.get("notional", 0.0) for p in self.positions.values()) * margin_rate
+            if in_use + notional * margin_rate > self.budget() + 1e-6:
+                return "skip: out of cash"
         self.positions[k] = {
             "y": y, "x": x, "side": side, "entry_date": str(date),
             "entry_y": float(y_px), "entry_x": float(x_px),
@@ -208,12 +214,30 @@ class PaperBook:
         p = self.positions[k]
         return p["y_shares"] * (y_px - p["entry_y"]) + p["x_shares"] * (x_px - p["entry_x"])
 
-    def _close(self, k, date, y_px, x_px, reason, cost_bps, z) -> None:
+    def budget(self) -> float:
+        """Cash that open trades' margin must fit within: realised cash, less the open trades'
+        losses at the last recorded close (gains aren't counted until they're realised)."""
+        return self.cash + min(0.0, self.equity[-1]["unrealised"] if self.equity else 0.0)
+
+    def _closing(self, k, date, y_px, x_px, cost_bps):
         p = self.positions[k]
         costs = p.get("costs", 0.0) + p.get("notional", 0.0) * cost_bps / 1e4
         borrow = self.borrow_accrued(k, date)
-        pnl = self.mark(k, y_px, x_px) - costs - borrow
-        event = "stop" if reason == "stop" else "close"
+        return costs, borrow, self.mark(k, y_px, x_px) - costs - borrow
+
+    def close_pnl(self, k: str, date, y_px: float, x_px: float, cost_bps: float = 0.0) -> float:
+        """What closing a position at these prices would realise, after costs and borrow."""
+        return self._closing(k, date, y_px, x_px, cost_bps)[2]
+
+    def close(self, k: str, date, y_px: float, x_px: float, reason: str, cost_bps: float = 0.0,
+              z: float = float("nan")) -> None:
+        """Close a position outside the strategy's own exit rule, e.g. to make room."""
+        self._close(k, date, y_px, x_px, reason, cost_bps, z)
+
+    def _close(self, k, date, y_px, x_px, reason, cost_bps, z) -> None:
+        p = self.positions[k]
+        costs, borrow, pnl = self._closing(k, date, y_px, x_px, cost_bps)
+        event = {"stop": "stop", "replaced": "replace"}.get(reason, "close")
         self.orders.append(order_record(k, p, event, date, z, (y_px, x_px)))
         del self.positions[k]
         self.cash += pnl

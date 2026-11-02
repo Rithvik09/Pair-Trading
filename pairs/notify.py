@@ -21,6 +21,7 @@ EVENT_LABELS = {
     "open long_spread": "OPEN",
     "close": "CLOSE (converged)",
     "stop": "STOP-LOSS EXIT",
+    "replace": "CLOSE (swapped for a better trade)",
 }
 
 
@@ -148,8 +149,7 @@ def recap(old: dict, new: dict, today: date | None = None) -> str:
                          f"needs ${now['margin']:,.0f} margin · ${now['free']:,.0f} free")
             if now["free"] < 0:
                 lines.append("⚠ The open trades need more margin than the book is worth: a "
-                             "real account would get a margin call. Lower notional or "
-                             "max_open_positions in config.toml.")
+                             "real account would get a margin call. Lower notional in config.toml.")
         lines += _decision_lines(decisions) or ["No trades today."]
         parts.append("\n".join(lines))
     elif decisions:

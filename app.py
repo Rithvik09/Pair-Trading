@@ -175,8 +175,11 @@ with tab_size:
                                 int(config.starting_cash), 1_000)
     size = c[1].number_input("Per trade, both legs ($)", 500, 1_000_000,
                              int(config.notional), 500)
+    fits = int(config.starting_cash // (config.notional * config.margin_rate))
     slots = c[2].number_input("Max open trades", 1, 100,
-                              config.max_open_positions or len(config.watchlist) or 1)
+                              min(config.max_open_positions or fits, 100) or 1,
+                              help="How many trades the cash covers the margin for; the "
+                                   "daily job opens no more than that.")
     rate = c[3].number_input("Margin rate", 0.05, 1.0, config.margin_rate, 0.05,
                              help="Margin per dollar of stock held, long and short. 0.5 is "
                                   "Reg T; your broker may want more.")
@@ -234,8 +237,8 @@ with tab_size:
     st.caption("The paper book fills at the signal close; real fills come at the next open, "
                "and borrow can be recalled, so live results tend to be a little worse. The "
                "stop is on the spread, not on dollars: if both stocks fall together a trade "
-               "can lose a lot without stopping out. To use a size, set `notional` and "
-               "`max_open_positions` in config.toml"
+               "can lose a lot without stopping out. To use a size, set `notional` (and "
+               "optionally `max_open_positions`) in config.toml"
                + (f" ([edit]({CONFIG_EDIT_URL}))" if CONFIG_EDIT_URL else "") + ".")
 
 # ---------------------------------------------------------------- scanner
