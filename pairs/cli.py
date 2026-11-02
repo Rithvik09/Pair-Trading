@@ -27,10 +27,6 @@ from pairs.paper import PaperBook, pair_key
 from pairs.paths import BOOK_PATH
 from pairs.scanner import scan, shortlist, walk_forward
 
-# How much more of its gap (in z) a waiting signal must have left to close than the weakest
-# open trade before it's swapped in. Each swap pays trading costs on two round trips.
-SWAP_EDGE = 0.5
-
 UNIVERSES = {
     "sp1500": load_universe,
     "sp500": lambda: load_universe(indexes={"S&P 500"}),
@@ -60,8 +56,7 @@ def explain(pair, action: str, z: float, beta: float, cfg: BacktestConfig,
         return f"{crossed}, but hedge ratio {beta:.2f} isn't positive (both legs would be " \
                "short or both long)"
     if action == "skip: out of cash":
-        return f"{crossed}, but no cash left for its margin, and no open trade had clearly " \
-               "less left to gain"
+        return f"{crossed}, but no cash left for its margin"
     if action.startswith("unshortable "):
         return f"{crossed}, but can't borrow {action.removeprefix('unshortable ')} to short it"
     if action.startswith("too small "):
@@ -110,52 +105,6 @@ def replay(book: PaperBook, pair, y_px: pd.Series, x_px: pd.Series, frame: pd.Da
     return actions
 
 
-def make_room(book: PaperBook, date, signals, zs: dict[str, float], prices: dict[str, float],
-              cfg: BacktestConfig, notional: float, borrow: dict[str, BorrowInfo] | None,
-              margin_rate: float) -> list[str]:
-    """Swap signals skipped for lack of cash into the book, in place of weaker open trades.
-
-    signals are (pair, z, beta) skipped on `date`; zs is every watchlist pair's z at that
-    close. What's left to gain is |z| minus the exit level: how far the gap still has to close.
-    The open trade with the least left is closed if the signal has at least SWAP_EDGE more.
-    Open trades with no z here (dropped from the watchlist) are never swapped out.
-    Returns the pairs swapped in.
-    """
-    done = []
-    for pair, z, beta in sorted(signals, key=lambda s: -abs(s[1])):
-        held = {k: abs(zs[k]) - cfg.exit for k in book.positions if k in zs}
-        if not held or any(t not in prices for t in pair):
-            continue
-        worst = min(held, key=held.get)
-        p, k, gain = book.positions[worst], pair_key(pair), abs(z) - cfg.exit
-        if gain < held[worst] + SWAP_EDGE or p["y"] not in prices or p["x"] not in prices:
-            continue
-        # only close it if that frees enough cash: its loss and costs may eat what it frees
-        cash = book.budget() + book.close_pnl(worst, date, prices[p["y"]], prices[p["x"]],
-                                          cfg.cost_bps)
-        in_use = sum(q.get("notional", 0.0) for q in book.positions.values()) - p["notional"]
-        if (in_use + notional) * margin_rate > cash + 1e-6:
-            continue
-        book.close(worst, date, prices[p["y"]], prices[p["x"]], "replaced", cfg.cost_bps,
-                   zs[worst])
-        book.log.append({"date": str(date), "pair": worst, "action": "replace", "z": zs[worst],
-                         "reason": f"z {zs[worst]:+.2f}: only {held[worst]:.2f} left to the "
-                                   f"±{cfg.exit} exit, so closed to make room for {k}, which "
-                                   f"has {gain:.2f} left"})
-        shortable, fees = _borrow_legs(pair, borrow)
-        a = book.step(pair, date=date, y_px=prices[pair[0]], x_px=prices[pair[1]], beta=beta,
-                      z=z, entry=cfg.entry, exit=cfg.exit, stop=cfg.stop, notional=notional,
-                      cost_bps=cfg.cost_bps, shortable=shortable, borrow_fee=fees,
-                      margin_rate=margin_rate)
-        book.log = [e for e in book.log if (e["date"], e["pair"], e["action"])
-                    != (str(date), k, "skip: out of cash")]
-        book.log.append({"date": str(date), "pair": k, "action": a, "z": float(z),
-                         "reason": explain(pair, a, z, beta, cfg)})
-        if a.startswith("open"):
-            done.append(k)
-    return done
-
-
 def load_fresh_prices(tickers, period, now, attempts=3, wait=300, sleep=time.sleep):
     """Prices through the latest completed session. Yahoo sometimes publishes a day's close
     late, so retry a few times; if it's still behind, return what there is plus a warning
@@ -187,7 +136,7 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
     now = now or pd.Timestamp.now(tz="America/New_York")
     prices, stale = load_fresh_prices(tickers, period, now, attempts=attempts, sleep=sleep)
     borrow = borrow_table(tickers)
-    results, zs, waiting = [], {}, []
+    results = []
     for y, x in config.watchlist:
         if y not in prices or x not in prices:
             results.append((y, x, "no data", float("nan")))
@@ -196,22 +145,14 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
         frame = signal_frame(df[y], df[x], cfg)
         actions = replay(book, (y, x), df[y], df[x], frame, cfg, notional, borrow,
                          config.max_open_positions, config.margin_rate)
-        if len(frame) and frame.index[-1] == prices.index[-1]:  # compare at the same close
-            zs[pair_key((y, x))] = float(frame["z"].iloc[-1])
-            if actions and actions[-1] == f"{frame.index[-1].date()}: skip: out of cash":
-                waiting.append(((y, x), frame["z"].iloc[-1], frame["beta"].iloc[-1]))
         holding = pair_key((y, x)) in book.positions
         state = "; ".join(actions) or ("holding" if holding else "no trade")
         results.append((y, x, state, frame["z"].iloc[-1]))
     if len(prices):
-        latest = prices.ffill().iloc[-1].dropna()
-        for k in make_room(book, prices.index[-1].date(), waiting, zs, latest.to_dict(), cfg,
-                           notional, borrow, config.margin_rate):
-            results = [(y, x, s + "; swapped in" if pair_key((y, x)) == k else s, z)
-                       for y, x, s, z in results]
         for k, p in book.positions.items():
             if p["y"] in prices and p["x"] in prices:
                 book.rebase_entry(k, prices[p["y"]], prices[p["x"]])
+        latest = prices.ffill().iloc[-1].dropna()
         book.record_equity(prices.index[-1].date(), latest.to_dict(), cfg.cost_bps,
                            config.margin_rate)
     book.save()

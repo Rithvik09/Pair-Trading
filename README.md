@@ -93,13 +93,10 @@ list is today's index members (stocks that fell out are missing), which flatters
 numbers a little.
 
 **How many trades at once:** as many as the cash covers. A new trade opens only if the book's
-cash (realised P&L included) still covers the margin of every open trade plus the new one
+cash (realised P&L, less any losses on open trades at the last close) still covers the margin
+of every open trade plus the new one
 (`margin_rate` × trade size each, so $100,000 at 50% and $10,000 a trade is 20 trades).
-When a signal comes in with no cash left, it's compared with the open trades by how far each
-gap still has to close (|z| minus the exit level). If it has at least 0.5 more than the open
-trade with the least left, that trade is closed and the new one opened, provided closing it
-frees enough cash. The order sheet marks that close "swapped for a better trade". Only signals
-on the latest close are compared, so a catch-up run doesn't swap on stale prices.
+A signal that comes in with no cash left is skipped, and the recap says so.
 `[paper] max_open_positions` (off by default) adds a hard cap on the number of trades.
 
 Refresh `universe.csv` when the indexes change with

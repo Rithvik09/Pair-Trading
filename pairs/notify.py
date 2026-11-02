@@ -21,7 +21,6 @@ EVENT_LABELS = {
     "open long_spread": "OPEN",
     "close": "CLOSE (converged)",
     "stop": "STOP-LOSS EXIT",
-    "replace": "CLOSE (swapped for a better trade)",
 }
 
 

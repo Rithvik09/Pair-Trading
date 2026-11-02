@@ -219,25 +219,12 @@ class PaperBook:
         losses at the last recorded close (gains aren't counted until they're realised)."""
         return self.cash + min(0.0, self.equity[-1]["unrealised"] if self.equity else 0.0)
 
-    def _closing(self, k, date, y_px, x_px, cost_bps):
+    def _close(self, k, date, y_px, x_px, reason, cost_bps, z) -> None:
         p = self.positions[k]
         costs = p.get("costs", 0.0) + p.get("notional", 0.0) * cost_bps / 1e4
         borrow = self.borrow_accrued(k, date)
-        return costs, borrow, self.mark(k, y_px, x_px) - costs - borrow
-
-    def close_pnl(self, k: str, date, y_px: float, x_px: float, cost_bps: float = 0.0) -> float:
-        """What closing a position at these prices would realise, after costs and borrow."""
-        return self._closing(k, date, y_px, x_px, cost_bps)[2]
-
-    def close(self, k: str, date, y_px: float, x_px: float, reason: str, cost_bps: float = 0.0,
-              z: float = float("nan")) -> None:
-        """Close a position outside the strategy's own exit rule, e.g. to make room."""
-        self._close(k, date, y_px, x_px, reason, cost_bps, z)
-
-    def _close(self, k, date, y_px, x_px, reason, cost_bps, z) -> None:
-        p = self.positions[k]
-        costs, borrow, pnl = self._closing(k, date, y_px, x_px, cost_bps)
-        event = {"stop": "stop", "replaced": "replace"}.get(reason, "close")
+        pnl = self.mark(k, y_px, x_px) - costs - borrow
+        event = "stop" if reason == "stop" else "close"
         self.orders.append(order_record(k, p, event, date, z, (y_px, x_px)))
         del self.positions[k]
         self.cash += pnl
