@@ -1,5 +1,5 @@
 {
-  "cash": 100597.9152225965,
+  "cash": 100794.17605621355,
   "starting_cash": 100000.0,
   "blocked": [],
   "positions": {
@@ -46,22 +46,6 @@
       "x_shares": 96,
       "beta": 0.6742461759376202,
       "entry_z": 2.389015450385236,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0025,
-      "borrow_fee_x": 0.0
-    },
-    "MTDR/CHRD": {
-      "y": "MTDR",
-      "x": "CHRD",
-      "side": "short_spread",
-      "entry_date": "2026-10-27",
-      "entry_y": 59.27000045776367,
-      "entry_x": 153.30999755859375,
-      "y_shares": -101,
-      "x_shares": 25,
-      "beta": 0.6621302761527924,
-      "entry_z": 2.0666005698933523,
       "notional": 10000.0,
       "costs": 5.0,
       "borrow_fee_y": 0.0025,
@@ -130,6 +114,86 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0,
       "borrow_fee_x": 0.0025
+    },
+    "TALO/COP": {
+      "y": "TALO",
+      "x": "COP",
+      "side": "long_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 16.459999084472656,
+      "entry_x": 146.83999633789062,
+      "y_shares": 318,
+      "x_shares": -32,
+      "beta": 0.9068763762536973,
+      "entry_z": -2.6152107923437233,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "SPG/IVT": {
+      "y": "SPG",
+      "x": "IVT",
+      "side": "short_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 221.72999572753906,
+      "entry_x": 31.31999969482422,
+      "y_shares": -29,
+      "x_shares": 113,
+      "beta": 0.5544423159617984,
+      "entry_z": 2.001893650906747,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "KKR/BX": {
+      "y": "KKR",
+      "x": "BX",
+      "side": "short_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 98.01000213623047,
+      "entry_x": 120.13999938964844,
+      "y_shares": -57,
+      "x_shares": 36,
+      "beta": 0.7683042423674615,
+      "entry_z": 2.1591233583331677,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "CWT/MSEX": {
+      "y": "CWT",
+      "x": "MSEX",
+      "side": "long_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 49.47999954223633,
+      "entry_x": 58.33000183105469,
+      "y_shares": 96,
+      "x_shares": -89,
+      "beta": 1.1037547588958911,
+      "entry_z": -2.0863384002656424,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "AMP/CRBG": {
+      "y": "AMP",
+      "x": "CRBG",
+      "side": "short_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 504.30999755859375,
+      "entry_x": 35.040000915527344,
+      "y_shares": -12,
+      "x_shares": 102,
+      "beta": 0.5602126287544161,
+      "entry_z": 2.060298335854556,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
     }
   },
   "closed": [
@@ -176,50 +240,72 @@
       "borrow": 0.16912499755620958,
       "pnl": 512.1305127969384,
       "reason": "converged"
+    },
+    {
+      "y": "MTDR",
+      "x": "CHRD",
+      "side": "short_spread",
+      "entry_date": "2026-10-27",
+      "entry_y": 59.27000045776367,
+      "entry_x": 153.30999755859375,
+      "y_shares": -101,
+      "x_shares": 25,
+      "beta": 0.6621302761527924,
+      "entry_z": 2.0666005698933523,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0,
+      "exit_date": "2026-11-02",
+      "exit_y": 55.7599983215332,
+      "exit_x": 147.38999938964844,
+      "borrow": 0.2494279185930888,
+      "pnl": 196.26083361705145,
+      "reason": "converged"
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-10-30",
-    "SW/PKG": "2026-10-30",
+    "MTD/TMO": "2026-11-02",
+    "SW/PKG": "2026-11-02",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-10-30",
-    "MTDR/OXY": "2026-10-30",
-    "LKFN/RNST": "2026-10-30",
-    "BANC/FIBK": "2026-10-30",
-    "RF/FIBK": "2026-10-30",
-    "KRG/PECO": "2026-10-30",
-    "TALO/COP": "2026-10-30",
-    "ALL/THG": "2026-10-30",
-    "SHO/APLE": "2026-10-30",
-    "IESC/STRL": "2026-10-30",
-    "MTDR/CHRD": "2026-10-30",
-    "KNX/JBHT": "2026-10-30",
-    "REG/IVT": "2026-10-30",
-    "ENTG/ICHR": "2026-10-30",
-    "SPG/IVT": "2026-10-30",
-    "D/AEE": "2026-10-30",
-    "MSCI/SPGI": "2026-10-30",
-    "KKR/BX": "2026-10-30",
-    "PDFS/COHU": "2026-10-30",
-    "FELE/LECO": "2026-10-30",
-    "RES/LBRT": "2026-10-30",
-    "VMRK/CPT": "2026-10-30",
-    "RHP/APLE": "2026-10-30",
-    "FLS/PH": "2026-10-30",
-    "PENN/CZR": "2026-10-30",
-    "IESC/EME": "2026-10-30",
-    "FDS/MORN": "2026-10-30",
-    "TRNO/EGP": "2026-10-30",
-    "RES/HAL": "2026-10-30",
-    "CWT/MSEX": "2026-10-30",
-    "TRNO/FR": "2026-10-30",
-    "PWR/STRL": "2026-10-30",
-    "YETI/BC": "2026-10-30",
-    "RL/TPR": "2026-10-30",
-    "ITW/LECO": "2026-10-30",
-    "AMP/CRBG": "2026-10-30",
-    "SSD/WMS": "2026-10-30"
+    "PPL/DUK": "2026-11-02",
+    "MTDR/OXY": "2026-11-02",
+    "LKFN/RNST": "2026-11-02",
+    "BANC/FIBK": "2026-11-02",
+    "RF/FIBK": "2026-11-02",
+    "KRG/PECO": "2026-11-02",
+    "TALO/COP": "2026-11-02",
+    "ALL/THG": "2026-11-02",
+    "SHO/APLE": "2026-11-02",
+    "IESC/STRL": "2026-11-02",
+    "MTDR/CHRD": "2026-11-02",
+    "KNX/JBHT": "2026-11-02",
+    "REG/IVT": "2026-11-02",
+    "ENTG/ICHR": "2026-11-02",
+    "SPG/IVT": "2026-11-02",
+    "D/AEE": "2026-11-02",
+    "MSCI/SPGI": "2026-11-02",
+    "KKR/BX": "2026-11-02",
+    "PDFS/COHU": "2026-11-02",
+    "FELE/LECO": "2026-11-02",
+    "RES/LBRT": "2026-11-02",
+    "VMRK/CPT": "2026-11-02",
+    "RHP/APLE": "2026-11-02",
+    "FLS/PH": "2026-11-02",
+    "PENN/CZR": "2026-11-02",
+    "IESC/EME": "2026-11-02",
+    "FDS/MORN": "2026-11-02",
+    "TRNO/EGP": "2026-11-02",
+    "RES/HAL": "2026-11-02",
+    "CWT/MSEX": "2026-11-02",
+    "TRNO/FR": "2026-11-02",
+    "PWR/STRL": "2026-11-02",
+    "YETI/BC": "2026-11-02",
+    "RL/TPR": "2026-11-02",
+    "ITW/LECO": "2026-11-02",
+    "AMP/CRBG": "2026-11-02",
+    "SSD/WMS": "2026-11-02"
   },
   "orders": [
     {
@@ -473,6 +559,132 @@
           "ref_price": 36.16999816894531
         }
       ]
+    },
+    {
+      "pair": "TALO/COP",
+      "event": "open long_spread",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": -2.6152107923437233,
+      "legs": [
+        {
+          "ticker": "TALO",
+          "side": "BUY",
+          "qty": 318,
+          "ref_price": 16.459999084472656
+        },
+        {
+          "ticker": "COP",
+          "side": "SELL SHORT",
+          "qty": 32,
+          "ref_price": 146.83999633789062
+        }
+      ]
+    },
+    {
+      "pair": "MTDR/CHRD",
+      "event": "close",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": 0.3399658957728172,
+      "legs": [
+        {
+          "ticker": "MTDR",
+          "side": "BUY TO COVER",
+          "qty": 101,
+          "ref_price": 55.7599983215332
+        },
+        {
+          "ticker": "CHRD",
+          "side": "SELL",
+          "qty": 25,
+          "ref_price": 147.38999938964844
+        }
+      ]
+    },
+    {
+      "pair": "SPG/IVT",
+      "event": "open short_spread",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": 2.001893650906747,
+      "legs": [
+        {
+          "ticker": "SPG",
+          "side": "SELL SHORT",
+          "qty": 29,
+          "ref_price": 221.72999572753906
+        },
+        {
+          "ticker": "IVT",
+          "side": "BUY",
+          "qty": 113,
+          "ref_price": 31.31999969482422
+        }
+      ]
+    },
+    {
+      "pair": "KKR/BX",
+      "event": "open short_spread",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": 2.1591233583331677,
+      "legs": [
+        {
+          "ticker": "KKR",
+          "side": "SELL SHORT",
+          "qty": 57,
+          "ref_price": 98.01000213623047
+        },
+        {
+          "ticker": "BX",
+          "side": "BUY",
+          "qty": 36,
+          "ref_price": 120.13999938964844
+        }
+      ]
+    },
+    {
+      "pair": "CWT/MSEX",
+      "event": "open long_spread",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": -2.0863384002656424,
+      "legs": [
+        {
+          "ticker": "CWT",
+          "side": "BUY",
+          "qty": 96,
+          "ref_price": 49.47999954223633
+        },
+        {
+          "ticker": "MSEX",
+          "side": "SELL SHORT",
+          "qty": 89,
+          "ref_price": 58.33000183105469
+        }
+      ]
+    },
+    {
+      "pair": "AMP/CRBG",
+      "event": "open short_spread",
+      "signal_date": "2026-11-02",
+      "execute_on": "2026-11-03",
+      "z": 2.060298335854556,
+      "legs": [
+        {
+          "ticker": "AMP",
+          "side": "SELL SHORT",
+          "qty": 12,
+          "ref_price": 504.30999755859375
+        },
+        {
+          "ticker": "CRBG",
+          "side": "BUY",
+          "qty": 102,
+          "ref_price": 35.040000915527344
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -553,6 +765,48 @@
       "action": "open long_spread",
       "z": -2.267401669463636,
       "reason": "z -2.27 \u2264 -2.0: RES fell behind HAL, so buy RES / short HAL (hedge ratio 0.86)"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "TALO/COP",
+      "action": "open long_spread",
+      "z": -2.6152107923437233,
+      "reason": "z -2.62 \u2264 -2.0: TALO fell behind COP, so buy TALO / short COP (hedge ratio 0.91)"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "MTDR/CHRD",
+      "action": "close",
+      "z": 0.3399658957728172,
+      "reason": "z +0.34 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "SPG/IVT",
+      "action": "open short_spread",
+      "z": 2.001893650906747,
+      "reason": "z +2.00 \u2265 +2.0: SPG ran ahead of IVT, so short SPG / buy IVT (hedge ratio 0.55)"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "KKR/BX",
+      "action": "open short_spread",
+      "z": 2.1591233583331677,
+      "reason": "z +2.16 \u2265 +2.0: KKR ran ahead of BX, so short KKR / buy BX (hedge ratio 0.77)"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "CWT/MSEX",
+      "action": "open long_spread",
+      "z": -2.0863384002656424,
+      "reason": "z -2.09 \u2264 -2.0: CWT fell behind MSEX, so buy CWT / short MSEX (hedge ratio 1.10)"
+    },
+    {
+      "date": "2026-11-02",
+      "pair": "AMP/CRBG",
+      "action": "open short_spread",
+      "z": 2.060298335854556,
+      "reason": "z +2.06 \u2265 +2.0: AMP ran ahead of CRBG, so short AMP / buy CRBG (hedge ratio 0.56)"
     }
   ],
   "equity": [
@@ -595,6 +849,16 @@
       "gross": 79251.23034954071,
       "margin": 39625.615174770355,
       "free": 60784.58955186853
+    },
+    {
+      "date": "2026-11-02",
+      "cash": 100794.17605621355,
+      "unrealised": -424.76092242167397,
+      "equity": 100369.41513379187,
+      "open": 12,
+      "gross": 118453.25032424927,
+      "margin": 59226.625162124634,
+      "free": 41142.78997166724
     }
   ]
 }
