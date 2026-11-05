@@ -1,24 +1,8 @@
 {
-  "cash": 101074.63095830352,
+  "cash": 101260.01743748576,
   "starting_cash": 100000.0,
   "blocked": [],
   "positions": {
-    "SW/PKG": {
-      "y": "SW",
-      "x": "PKG",
-      "side": "long_spread",
-      "entry_date": "2026-10-26",
-      "entry_y": 42.2400016784668,
-      "entry_x": 253.74000549316406,
-      "y_shares": 105,
-      "x_shares": -21,
-      "beta": 1.2419355813644444,
-      "entry_z": -2.206005713459508,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0,
-      "borrow_fee_x": 0.0025
-    },
     "LKFN/RNST": {
       "y": "LKFN",
       "x": "RNST",
@@ -194,6 +178,70 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
+    },
+    "PPL/DUK": {
+      "y": "PPL",
+      "x": "DUK",
+      "side": "long_spread",
+      "entry_date": "2026-11-04",
+      "entry_y": 35.720001220703125,
+      "entry_x": 129.58999633789062,
+      "y_shares": 150,
+      "x_shares": -35,
+      "beta": 0.8661005144150083,
+      "entry_z": -2.119438054509472,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "KRG/PECO": {
+      "y": "KRG",
+      "x": "PECO",
+      "side": "long_spread",
+      "entry_date": "2026-11-04",
+      "entry_y": 25.90999984741211,
+      "entry_x": 41.13999938964844,
+      "y_shares": 170,
+      "x_shares": -135,
+      "beta": 1.266865959631906,
+      "entry_z": -3.5261702441055984,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "D/AEE": {
+      "y": "D",
+      "x": "AEE",
+      "side": "short_spread",
+      "entry_date": "2026-11-04",
+      "entry_y": 69.75,
+      "entry_x": 113.08000183105469,
+      "y_shares": -69,
+      "x_shares": 45,
+      "beta": 1.0531178028233108,
+      "entry_z": 2.0347314003442576,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "MSCI/SPGI": {
+      "y": "MSCI",
+      "x": "SPGI",
+      "side": "short_spread",
+      "entry_date": "2026-11-04",
+      "entry_y": 674.2999877929688,
+      "entry_x": 481.69000244140625,
+      "y_shares": -10,
+      "x_shares": 5,
+      "beta": 0.3812949060102146,
+      "entry_z": 2.2559564563280037,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
     }
   },
   "closed": [
@@ -284,50 +332,72 @@
       "borrow": 0.26506861315833197,
       "pnl": 280.45490208996665,
       "reason": "converged"
+    },
+    {
+      "y": "SW",
+      "x": "PKG",
+      "side": "long_spread",
+      "entry_date": "2026-10-26",
+      "entry_y": 42.2400016784668,
+      "entry_x": 253.74000549316406,
+      "y_shares": 105,
+      "x_shares": -21,
+      "beta": 1.2419355813644444,
+      "entry_z": -2.206005713459508,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025,
+      "exit_date": "2026-11-04",
+      "exit_y": 45.189998626708984,
+      "exit_x": 259.1700134277344,
+      "borrow": 0.33303375720977785,
+      "pnl": 185.38647918224333,
+      "reason": "converged"
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-03",
-    "SW/PKG": "2026-11-03",
+    "MTD/TMO": "2026-11-04",
+    "SW/PKG": "2026-11-04",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-03",
-    "MTDR/OXY": "2026-11-03",
-    "LKFN/RNST": "2026-11-03",
-    "BANC/FIBK": "2026-11-03",
-    "RF/FIBK": "2026-11-03",
-    "KRG/PECO": "2026-11-03",
-    "TALO/COP": "2026-11-03",
-    "ALL/THG": "2026-11-03",
-    "SHO/APLE": "2026-11-03",
-    "IESC/STRL": "2026-11-03",
-    "MTDR/CHRD": "2026-11-03",
-    "KNX/JBHT": "2026-11-03",
-    "REG/IVT": "2026-11-03",
-    "ENTG/ICHR": "2026-11-03",
-    "SPG/IVT": "2026-11-03",
-    "D/AEE": "2026-11-03",
-    "MSCI/SPGI": "2026-11-03",
-    "KKR/BX": "2026-11-03",
-    "PDFS/COHU": "2026-11-03",
-    "FELE/LECO": "2026-11-03",
-    "RES/LBRT": "2026-11-03",
-    "VMRK/CPT": "2026-11-03",
-    "RHP/APLE": "2026-11-03",
-    "FLS/PH": "2026-11-03",
-    "PENN/CZR": "2026-11-03",
-    "IESC/EME": "2026-11-03",
-    "FDS/MORN": "2026-11-03",
-    "TRNO/EGP": "2026-11-03",
-    "RES/HAL": "2026-11-03",
-    "CWT/MSEX": "2026-11-03",
-    "TRNO/FR": "2026-11-03",
-    "PWR/STRL": "2026-11-03",
-    "YETI/BC": "2026-11-03",
-    "RL/TPR": "2026-11-03",
-    "ITW/LECO": "2026-11-03",
-    "AMP/CRBG": "2026-11-03",
-    "SSD/WMS": "2026-11-03"
+    "PPL/DUK": "2026-11-04",
+    "MTDR/OXY": "2026-11-04",
+    "LKFN/RNST": "2026-11-04",
+    "BANC/FIBK": "2026-11-04",
+    "RF/FIBK": "2026-11-04",
+    "KRG/PECO": "2026-11-04",
+    "TALO/COP": "2026-11-04",
+    "ALL/THG": "2026-11-04",
+    "SHO/APLE": "2026-11-04",
+    "IESC/STRL": "2026-11-04",
+    "MTDR/CHRD": "2026-11-04",
+    "KNX/JBHT": "2026-11-04",
+    "REG/IVT": "2026-11-04",
+    "ENTG/ICHR": "2026-11-04",
+    "SPG/IVT": "2026-11-04",
+    "D/AEE": "2026-11-04",
+    "MSCI/SPGI": "2026-11-04",
+    "KKR/BX": "2026-11-04",
+    "PDFS/COHU": "2026-11-04",
+    "FELE/LECO": "2026-11-04",
+    "RES/LBRT": "2026-11-04",
+    "VMRK/CPT": "2026-11-04",
+    "RHP/APLE": "2026-11-04",
+    "FLS/PH": "2026-11-04",
+    "PENN/CZR": "2026-11-04",
+    "IESC/EME": "2026-11-04",
+    "FDS/MORN": "2026-11-04",
+    "TRNO/EGP": "2026-11-04",
+    "RES/HAL": "2026-11-04",
+    "CWT/MSEX": "2026-11-04",
+    "TRNO/FR": "2026-11-04",
+    "PWR/STRL": "2026-11-04",
+    "YETI/BC": "2026-11-04",
+    "RL/TPR": "2026-11-04",
+    "ITW/LECO": "2026-11-04",
+    "AMP/CRBG": "2026-11-04",
+    "SSD/WMS": "2026-11-04"
   },
   "orders": [
     {
@@ -749,11 +819,114 @@
           "ref_price": 18.649999618530273
         }
       ]
+    },
+    {
+      "pair": "PPL/DUK",
+      "event": "open long_spread",
+      "signal_date": "2026-11-04",
+      "execute_on": "2026-11-05",
+      "z": -2.119438054509472,
+      "legs": [
+        {
+          "ticker": "PPL",
+          "side": "BUY",
+          "qty": 150,
+          "ref_price": 35.720001220703125
+        },
+        {
+          "ticker": "DUK",
+          "side": "SELL SHORT",
+          "qty": 35,
+          "ref_price": 129.58999633789062
+        }
+      ]
+    },
+    {
+      "pair": "KRG/PECO",
+      "event": "open long_spread",
+      "signal_date": "2026-11-04",
+      "execute_on": "2026-11-05",
+      "z": -3.5261702441055984,
+      "legs": [
+        {
+          "ticker": "KRG",
+          "side": "BUY",
+          "qty": 170,
+          "ref_price": 25.90999984741211
+        },
+        {
+          "ticker": "PECO",
+          "side": "SELL SHORT",
+          "qty": 135,
+          "ref_price": 41.13999938964844
+        }
+      ]
+    },
+    {
+      "pair": "D/AEE",
+      "event": "open short_spread",
+      "signal_date": "2026-11-04",
+      "execute_on": "2026-11-05",
+      "z": 2.0347314003442576,
+      "legs": [
+        {
+          "ticker": "D",
+          "side": "SELL SHORT",
+          "qty": 69,
+          "ref_price": 69.75
+        },
+        {
+          "ticker": "AEE",
+          "side": "BUY",
+          "qty": 45,
+          "ref_price": 113.08000183105469
+        }
+      ]
+    },
+    {
+      "pair": "MSCI/SPGI",
+      "event": "open short_spread",
+      "signal_date": "2026-11-04",
+      "execute_on": "2026-11-05",
+      "z": 2.2559564563280037,
+      "legs": [
+        {
+          "ticker": "MSCI",
+          "side": "SELL SHORT",
+          "qty": 10,
+          "ref_price": 674.2999877929688
+        },
+        {
+          "ticker": "SPGI",
+          "side": "BUY",
+          "qty": 5,
+          "ref_price": 481.69000244140625
+        }
+      ]
+    },
+    {
+      "pair": "SW/PKG",
+      "event": "close",
+      "signal_date": "2026-11-04",
+      "execute_on": "2026-11-05",
+      "z": -0.1169912544855902,
+      "legs": [
+        {
+          "ticker": "SW",
+          "side": "SELL",
+          "qty": 105,
+          "ref_price": 45.189998626708984
+        },
+        {
+          "ticker": "PKG",
+          "side": "BUY TO COVER",
+          "qty": 21,
+          "ref_price": 259.1700134277344
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 Yahoo hasn't published the 2026-11-04 close yet (latest: 2026-11-03). Orders are based on the latest close available; the next run catches up."
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-10-27",
@@ -887,6 +1060,41 @@
       "action": "open short_spread",
       "z": 2.010181982570652,
       "reason": "z +2.01 \u2265 +2.0: RHP ran ahead of APLE, so short RHP / buy APLE (hedge ratio 0.76)"
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "PPL/DUK",
+      "action": "open long_spread",
+      "z": -2.119438054509472,
+      "reason": "z -2.12 \u2264 -2.0: PPL fell behind DUK, so buy PPL / short DUK (hedge ratio 0.87)"
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "KRG/PECO",
+      "action": "open long_spread",
+      "z": -3.5261702441055984,
+      "reason": "z -3.53 \u2264 -2.0: KRG fell behind PECO, so buy KRG / short PECO (hedge ratio 1.27)"
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "D/AEE",
+      "action": "open short_spread",
+      "z": 2.0347314003442576,
+      "reason": "z +2.03 \u2265 +2.0: D ran ahead of AEE, so short D / buy AEE (hedge ratio 1.05)"
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "MSCI/SPGI",
+      "action": "open short_spread",
+      "z": 2.2559564563280037,
+      "reason": "z +2.26 \u2265 +2.0: MSCI ran ahead of SPGI, so short MSCI / buy SPGI (hedge ratio 0.38)"
+    },
+    {
+      "date": "2026-11-04",
+      "pair": "SW/PKG",
+      "action": "close",
+      "z": -0.1169912544855902,
+      "reason": "z -0.12 back within \u00b10.5: the spread converged, take the profit"
     }
   ],
   "equity": [
@@ -949,6 +1157,16 @@
       "gross": 118116.06914520264,
       "margin": 59058.03457260132,
       "free": 41664.64199371607
+    },
+    {
+      "date": "2026-11-04",
+      "cash": 101260.01743748576,
+      "unrealised": -923.3811023962696,
+      "equity": 100336.6363350895,
+      "open": 15,
+      "gross": 148767.4302558899,
+      "margin": 74383.71512794495,
+      "free": 25952.92120714455
     }
   ]
 }
