@@ -242,6 +242,86 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
+    },
+    "ENTG/ICHR": {
+      "y": "ENTG",
+      "x": "ICHR",
+      "side": "long_spread",
+      "entry_date": "2026-11-05",
+      "entry_y": 124.75,
+      "entry_x": 28.030000686645508,
+      "y_shares": 75,
+      "x_shares": -21,
+      "beta": 0.06278411895388379,
+      "entry_z": -2.7318171751790374,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "VMRK/CPT": {
+      "y": "VMRK",
+      "x": "CPT",
+      "side": "short_spread",
+      "entry_date": "2026-11-05",
+      "entry_y": 65.25,
+      "entry_x": 103.70999908447266,
+      "y_shares": -90,
+      "x_shares": 39,
+      "beta": 0.687126178039383,
+      "entry_z": 3.5891767273512802,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "TRNO/EGP": {
+      "y": "TRNO",
+      "x": "EGP",
+      "side": "short_spread",
+      "entry_date": "2026-11-05",
+      "entry_y": 67.08999633789062,
+      "entry_x": 193.86000061035156,
+      "y_shares": -68,
+      "x_shares": 27,
+      "beta": 1.1650564495155833,
+      "entry_z": 3.1268554977736325,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
+    },
+    "PWR/STRL": {
+      "y": "PWR",
+      "x": "STRL",
+      "side": "long_spread",
+      "entry_date": "2026-11-05",
+      "entry_y": 509.05999755859375,
+      "entry_x": 244.33999633789062,
+      "y_shares": 16,
+      "x_shares": -6,
+      "beta": 0.19446070121162193,
+      "entry_z": -2.1082219653186915,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "RL/TPR": {
+      "y": "RL",
+      "x": "TPR",
+      "side": "long_spread",
+      "entry_date": "2026-11-05",
+      "entry_y": 381.7799987792969,
+      "entry_x": 134.1699981689453,
+      "y_shares": 20,
+      "x_shares": -16,
+      "beta": 0.2814706679223485,
+      "entry_z": -2.610011661644703,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
     }
   },
   "closed": [
@@ -357,47 +437,47 @@
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-04",
-    "SW/PKG": "2026-11-04",
+    "MTD/TMO": "2026-11-05",
+    "SW/PKG": "2026-11-05",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-04",
-    "MTDR/OXY": "2026-11-04",
-    "LKFN/RNST": "2026-11-04",
-    "BANC/FIBK": "2026-11-04",
-    "RF/FIBK": "2026-11-04",
-    "KRG/PECO": "2026-11-04",
-    "TALO/COP": "2026-11-04",
-    "ALL/THG": "2026-11-04",
-    "SHO/APLE": "2026-11-04",
-    "IESC/STRL": "2026-11-04",
-    "MTDR/CHRD": "2026-11-04",
-    "KNX/JBHT": "2026-11-04",
-    "REG/IVT": "2026-11-04",
-    "ENTG/ICHR": "2026-11-04",
-    "SPG/IVT": "2026-11-04",
-    "D/AEE": "2026-11-04",
-    "MSCI/SPGI": "2026-11-04",
-    "KKR/BX": "2026-11-04",
-    "PDFS/COHU": "2026-11-04",
-    "FELE/LECO": "2026-11-04",
-    "RES/LBRT": "2026-11-04",
-    "VMRK/CPT": "2026-11-04",
-    "RHP/APLE": "2026-11-04",
-    "FLS/PH": "2026-11-04",
-    "PENN/CZR": "2026-11-04",
-    "IESC/EME": "2026-11-04",
-    "FDS/MORN": "2026-11-04",
-    "TRNO/EGP": "2026-11-04",
-    "RES/HAL": "2026-11-04",
-    "CWT/MSEX": "2026-11-04",
-    "TRNO/FR": "2026-11-04",
-    "PWR/STRL": "2026-11-04",
-    "YETI/BC": "2026-11-04",
-    "RL/TPR": "2026-11-04",
-    "ITW/LECO": "2026-11-04",
-    "AMP/CRBG": "2026-11-04",
-    "SSD/WMS": "2026-11-04"
+    "PPL/DUK": "2026-11-05",
+    "MTDR/OXY": "2026-11-05",
+    "LKFN/RNST": "2026-11-05",
+    "BANC/FIBK": "2026-11-05",
+    "RF/FIBK": "2026-11-05",
+    "KRG/PECO": "2026-11-05",
+    "TALO/COP": "2026-11-05",
+    "ALL/THG": "2026-11-05",
+    "SHO/APLE": "2026-11-05",
+    "IESC/STRL": "2026-11-05",
+    "MTDR/CHRD": "2026-11-05",
+    "KNX/JBHT": "2026-11-05",
+    "REG/IVT": "2026-11-05",
+    "ENTG/ICHR": "2026-11-05",
+    "SPG/IVT": "2026-11-05",
+    "D/AEE": "2026-11-05",
+    "MSCI/SPGI": "2026-11-05",
+    "KKR/BX": "2026-11-05",
+    "PDFS/COHU": "2026-11-05",
+    "FELE/LECO": "2026-11-05",
+    "RES/LBRT": "2026-11-05",
+    "VMRK/CPT": "2026-11-05",
+    "RHP/APLE": "2026-11-05",
+    "FLS/PH": "2026-11-05",
+    "PENN/CZR": "2026-11-05",
+    "IESC/EME": "2026-11-05",
+    "FDS/MORN": "2026-11-05",
+    "TRNO/EGP": "2026-11-05",
+    "RES/HAL": "2026-11-05",
+    "CWT/MSEX": "2026-11-05",
+    "TRNO/FR": "2026-11-05",
+    "PWR/STRL": "2026-11-05",
+    "YETI/BC": "2026-11-05",
+    "RL/TPR": "2026-11-05",
+    "ITW/LECO": "2026-11-05",
+    "AMP/CRBG": "2026-11-05",
+    "SSD/WMS": "2026-11-05"
   },
   "orders": [
     {
@@ -924,11 +1004,114 @@
           "ref_price": 259.1700134277344
         }
       ]
+    },
+    {
+      "pair": "ENTG/ICHR",
+      "event": "open long_spread",
+      "signal_date": "2026-11-05",
+      "execute_on": "2026-11-06",
+      "z": -2.7318171751790374,
+      "legs": [
+        {
+          "ticker": "ENTG",
+          "side": "BUY",
+          "qty": 75,
+          "ref_price": 124.75
+        },
+        {
+          "ticker": "ICHR",
+          "side": "SELL SHORT",
+          "qty": 21,
+          "ref_price": 28.030000686645508
+        }
+      ]
+    },
+    {
+      "pair": "VMRK/CPT",
+      "event": "open short_spread",
+      "signal_date": "2026-11-05",
+      "execute_on": "2026-11-06",
+      "z": 3.5891767273512802,
+      "legs": [
+        {
+          "ticker": "VMRK",
+          "side": "SELL SHORT",
+          "qty": 90,
+          "ref_price": 65.25
+        },
+        {
+          "ticker": "CPT",
+          "side": "BUY",
+          "qty": 39,
+          "ref_price": 103.70999908447266
+        }
+      ]
+    },
+    {
+      "pair": "TRNO/EGP",
+      "event": "open short_spread",
+      "signal_date": "2026-11-05",
+      "execute_on": "2026-11-06",
+      "z": 3.1268554977736325,
+      "legs": [
+        {
+          "ticker": "TRNO",
+          "side": "SELL SHORT",
+          "qty": 68,
+          "ref_price": 67.08999633789062
+        },
+        {
+          "ticker": "EGP",
+          "side": "BUY",
+          "qty": 27,
+          "ref_price": 193.86000061035156
+        }
+      ]
+    },
+    {
+      "pair": "PWR/STRL",
+      "event": "open long_spread",
+      "signal_date": "2026-11-05",
+      "execute_on": "2026-11-06",
+      "z": -2.1082219653186915,
+      "legs": [
+        {
+          "ticker": "PWR",
+          "side": "BUY",
+          "qty": 16,
+          "ref_price": 509.05999755859375
+        },
+        {
+          "ticker": "STRL",
+          "side": "SELL SHORT",
+          "qty": 6,
+          "ref_price": 244.33999633789062
+        }
+      ]
+    },
+    {
+      "pair": "RL/TPR",
+      "event": "open long_spread",
+      "signal_date": "2026-11-05",
+      "execute_on": "2026-11-06",
+      "z": -2.610011661644703,
+      "legs": [
+        {
+          "ticker": "RL",
+          "side": "BUY",
+          "qty": 20,
+          "ref_price": 381.7799987792969
+        },
+        {
+          "ticker": "TPR",
+          "side": "SELL SHORT",
+          "qty": 16,
+          "ref_price": 134.1699981689453
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 Yahoo hasn't published the 2026-11-05 close yet (latest: 2026-11-04). Orders are based on the latest close available; the next run catches up."
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-10-27",
@@ -1097,6 +1280,41 @@
       "action": "close",
       "z": -0.1169912544855902,
       "reason": "z -0.12 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-05",
+      "pair": "ENTG/ICHR",
+      "action": "open long_spread",
+      "z": -2.7318171751790374,
+      "reason": "z -2.73 \u2264 -2.0: ENTG fell behind ICHR, so buy ENTG / short ICHR (hedge ratio 0.06)"
+    },
+    {
+      "date": "2026-11-05",
+      "pair": "VMRK/CPT",
+      "action": "open short_spread",
+      "z": 3.5891767273512802,
+      "reason": "z +3.59 \u2265 +2.0: VMRK ran ahead of CPT, so short VMRK / buy CPT (hedge ratio 0.69)"
+    },
+    {
+      "date": "2026-11-05",
+      "pair": "TRNO/EGP",
+      "action": "open short_spread",
+      "z": 3.1268554977736325,
+      "reason": "z +3.13 \u2265 +2.0: TRNO ran ahead of EGP, so short TRNO / buy EGP (hedge ratio 1.17)"
+    },
+    {
+      "date": "2026-11-05",
+      "pair": "PWR/STRL",
+      "action": "open long_spread",
+      "z": -2.1082219653186915,
+      "reason": "z -2.11 \u2264 -2.0: PWR fell behind STRL, so buy PWR / short STRL (hedge ratio 0.19)"
+    },
+    {
+      "date": "2026-11-05",
+      "pair": "RL/TPR",
+      "action": "open long_spread",
+      "z": -2.610011661644703,
+      "reason": "z -2.61 \u2264 -2.0: RL fell behind TPR, so buy RL / short TPR (hedge ratio 0.28)"
     }
   ],
   "equity": [
@@ -1169,6 +1387,16 @@
       "gross": 148767.4302558899,
       "margin": 74383.71512794495,
       "free": 25952.92120714455
+    },
+    {
+      "date": "2026-11-05",
+      "cash": 101260.01743748576,
+      "unrealised": -1341.4254887994794,
+      "equity": 99918.59194868628,
+      "open": 20,
+      "gross": 194204.02054977417,
+      "margin": 97102.01027488708,
+      "free": 2816.581673799199
     }
   ]
 }
