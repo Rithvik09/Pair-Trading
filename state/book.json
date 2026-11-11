@@ -74,7 +74,7 @@
       "x": "HAL",
       "side": "long_spread",
       "entry_date": "2026-10-30",
-      "entry_y": 6.170000076293945,
+      "entry_y": 6.123080253601074,
       "entry_x": 36.16999816894531,
       "y_shares": 872,
       "x_shares": -127,
@@ -282,7 +282,7 @@
       "x": "LBRT",
       "side": "long_spread",
       "entry_date": "2026-11-09",
-      "entry_y": 5.260000228881836,
+      "entry_y": 5.220000267028809,
       "entry_x": 12.930000305175781,
       "y_shares": 1598,
       "x_shares": -123,
@@ -292,6 +292,22 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0,
       "borrow_fee_x": 0.0025
+    },
+    "KKR/BX": {
+      "y": "KKR",
+      "x": "BX",
+      "side": "short_spread",
+      "entry_date": "2026-11-10",
+      "entry_y": 100.8499984741211,
+      "entry_x": 122.52999877929688,
+      "y_shares": -55,
+      "x_shares": 35,
+      "beta": 0.776486912565908,
+      "entry_z": 2.370074912123238,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
     }
   },
   "closed": [
@@ -539,45 +555,45 @@
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-09",
+    "MTD/TMO": "2026-11-10",
     "SW/PKG": "2026-11-09",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-09",
+    "PPL/DUK": "2026-11-10",
     "MTDR/OXY": "2026-11-09",
-    "LKFN/RNST": "2026-11-09",
-    "BANC/FIBK": "2026-11-09",
-    "RF/FIBK": "2026-11-09",
+    "LKFN/RNST": "2026-11-10",
+    "BANC/FIBK": "2026-11-10",
+    "RF/FIBK": "2026-11-10",
     "KRG/PECO": "2026-11-09",
     "TALO/COP": "2026-11-09",
-    "ALL/THG": "2026-11-09",
+    "ALL/THG": "2026-11-10",
     "SHO/APLE": "2026-11-09",
-    "IESC/STRL": "2026-11-09",
+    "IESC/STRL": "2026-11-10",
     "MTDR/CHRD": "2026-11-09",
-    "KNX/JBHT": "2026-11-09",
+    "KNX/JBHT": "2026-11-10",
     "REG/IVT": "2026-11-09",
     "ENTG/ICHR": "2026-11-09",
     "SPG/IVT": "2026-11-09",
-    "D/AEE": "2026-11-09",
-    "MSCI/SPGI": "2026-11-09",
-    "KKR/BX": "2026-11-09",
-    "PDFS/COHU": "2026-11-09",
-    "FELE/LECO": "2026-11-09",
+    "D/AEE": "2026-11-10",
+    "MSCI/SPGI": "2026-11-10",
+    "KKR/BX": "2026-11-10",
+    "PDFS/COHU": "2026-11-10",
+    "FELE/LECO": "2026-11-10",
     "RES/LBRT": "2026-11-09",
-    "VMRK/CPT": "2026-11-09",
+    "VMRK/CPT": "2026-11-10",
     "RHP/APLE": "2026-11-09",
-    "FLS/PH": "2026-11-09",
+    "FLS/PH": "2026-11-10",
     "PENN/CZR": "2026-11-09",
-    "IESC/EME": "2026-11-09",
-    "FDS/MORN": "2026-11-09",
-    "TRNO/EGP": "2026-11-09",
-    "RES/HAL": "2026-11-09",
-    "CWT/MSEX": "2026-11-09",
-    "TRNO/FR": "2026-11-09",
-    "PWR/STRL": "2026-11-09",
+    "IESC/EME": "2026-11-10",
+    "FDS/MORN": "2026-11-10",
+    "TRNO/EGP": "2026-11-10",
+    "RES/HAL": "2026-11-10",
+    "CWT/MSEX": "2026-11-10",
+    "TRNO/FR": "2026-11-10",
+    "PWR/STRL": "2026-11-10",
     "YETI/BC": "2026-11-09",
-    "RL/TPR": "2026-11-09",
-    "ITW/LECO": "2026-11-09",
+    "RL/TPR": "2026-11-10",
+    "ITW/LECO": "2026-11-10",
     "AMP/CRBG": "2026-11-09",
     "SSD/WMS": "2026-11-09"
   },
@@ -1421,6 +1437,27 @@
           "ref_price": 290.6700134277344
         }
       ]
+    },
+    {
+      "pair": "KKR/BX",
+      "event": "open short_spread",
+      "signal_date": "2026-11-10",
+      "execute_on": "2026-11-11",
+      "z": 2.370074912123238,
+      "legs": [
+        {
+          "ticker": "KKR",
+          "side": "SELL SHORT",
+          "qty": 55,
+          "ref_price": 100.8499984741211
+        },
+        {
+          "ticker": "BX",
+          "side": "BUY",
+          "qty": 35,
+          "ref_price": 122.52999877929688
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -1697,6 +1734,13 @@
       "action": "close",
       "z": 0.1402821755112471,
       "reason": "z +0.14 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-10",
+      "pair": "KKR/BX",
+      "action": "open short_spread",
+      "z": 2.370074912123238,
+      "reason": "z +2.37 \u2265 +2.0: KKR ran ahead of BX, so short KKR / buy BX (hedge ratio 0.78)"
     }
   ],
   "equity": [
@@ -1799,6 +1843,16 @@
       "gross": 178974.6309452057,
       "margin": 89487.31547260284,
       "free": 12184.049036713244
+    },
+    {
+      "date": "2026-11-10",
+      "cash": 102467.54741101552,
+      "unrealised": -612.9783959452512,
+      "equity": 101854.56901507027,
+      "open": 19,
+      "gross": 188606.07983589172,
+      "margin": 94303.03991794586,
+      "free": 7551.52909712441
     }
   ]
 }
