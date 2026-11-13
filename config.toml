@@ -83,3 +83,12 @@ starting_cash = 100000  # each strategy is its own paper book with its own cash
 universe = ["SPY", "QQQ", "IWM", "EFA", "EEM", "TLT", "IEF", "LQD", "GLD", "DBC", "VNQ", "UUP"]
 vol_target = 0.10       # volatility budget shared out over the ETFs (see above)
 max_gross = 1.5         # most stock held, long + short, as a multiple of the book's value
+
+# Risk parity: always long stocks, bonds, gold and commodities, each sized so it brings the
+# same volatility (a calm bond fund is held in more size). Rebalanced at the first close of
+# each month.
+[strategies.risk_parity]
+enabled = true
+starting_cash = 100000
+universe = ["SPY", "EFA", "TLT", "IEF", "GLD", "DBC"]
+exposure = 1.0          # stock held as a multiple of the book's value; above 1 borrows

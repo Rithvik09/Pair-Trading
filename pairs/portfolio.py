@@ -39,8 +39,9 @@ class WeightBook:
 
     @property
     def label(self) -> str:
-        """How the strategy is named on the order sheet: state/trend.json -> 'TREND'."""
-        return self.path.stem.upper()
+        """How the strategy is named on the order sheet: state/risk_parity.json ->
+        'RISK PARITY'."""
+        return self.path.stem.replace("_", " ").upper()
 
     @classmethod
     def load(cls, path, starting_cash: float = 100_000.0) -> "WeightBook":

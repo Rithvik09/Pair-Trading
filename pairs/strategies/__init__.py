@@ -11,6 +11,6 @@ A strategy is a module with:
 To add one, write the module and list it here; the daily job, recap and dashboard pick it up.
 """
 
-from pairs.strategies import trend
+from pairs.strategies import risk_parity, trend
 
-STRATEGIES = {"trend": trend}
+STRATEGIES = {"trend": trend, "risk_parity": risk_parity}

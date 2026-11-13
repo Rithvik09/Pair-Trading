@@ -8,7 +8,7 @@ and for all of them together. Like the pairs trader, none of them places orders.
 |---|---|---|---|
 | 0 | Pairs trading (stat arb on cointegrated pairs) | running | daily closes |
 | 1 | Trend following: long ETFs in uptrends, short those in downtrends, across asset classes | running (paper) | daily ETF closes |
-| 2 | Risk parity: stocks, bonds, gold, commodities sized to equal risk, monthly rebalance | to do | daily ETF closes |
+| 2 | Risk parity: stocks, bonds, gold, commodities sized to equal risk, monthly rebalance | running (paper) | daily ETF closes |
 | 3 | Momentum long/short: long the past year's winners, short the losers, monthly | to do | universe closes |
 | 4 | Low volatility / quality long/short | to do | closes (+ fundamentals for quality) |
 | 5 | Stock vs. sector ETF / basket stat arb | to do | daily closes |

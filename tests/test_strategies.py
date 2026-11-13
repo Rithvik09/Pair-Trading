@@ -12,7 +12,7 @@ from pairs.config import Config, load_config, strategy_params
 from pairs.paper import PaperBook
 from pairs.paths import STATE_DIR, strategy_path
 from pairs.portfolio import WeightBook
-from pairs.strategies import STRATEGIES, trend
+from pairs.strategies import STRATEGIES, risk_parity, trend
 
 
 def _etfs(n=400, end="2026-10-26"):
@@ -132,6 +132,53 @@ def test_repo_config_runs_trend_on_its_own_book():
     assert t["enabled"] and "SPY" in t["universe"] and t["starting_cash"] > 0
     assert strategy_path("trend") == STATE_DIR / "trend.json"
     assert "trend" in STRATEGIES
+
+
+# ---------------------------------------------------------------- risk parity
+def _rp(**over):
+    return strategy_params("risk_parity", {"universe": ["UPP", "DWN", "CALM"], **over})
+
+
+def test_risk_parity_holds_everything_long_sized_to_equal_risk():
+    px = _etfs()
+    weights, reasons = risk_parity.targets(px, _rp(exposure=1.0))
+    assert all(w > 0 for w in weights.values())  # long only, even what fell
+    assert sum(weights.values()) == pytest.approx(1.0)
+    risk = [weights[t] * _vol(px[t]) for t in px]  # each brings the same volatility
+    assert max(risk) == pytest.approx(min(risk))
+    assert reasons["CALM"] == (f"{_vol(px['CALM']):.0%} volatility: "
+                               f"{weights['CALM']:.0%} of the book")
+
+
+def test_risk_parity_exposure_sets_the_total():
+    weights, _ = risk_parity.targets(_etfs(), _rp(exposure=1.5))
+    assert sum(weights.values()) == pytest.approx(1.5)
+
+
+def test_risk_parity_shares_out_what_lacks_history():
+    px = _etfs()
+    px.loc[px.index[:-30], "DWN"] = np.nan  # only 30 closes
+    weights, reasons = risk_parity.targets(px, _rp())
+    assert weights["DWN"] == 0 and reasons["DWN"] == "not enough history"
+    assert sum(weights.values()) == pytest.approx(1.0)
+
+
+def test_risk_parity_does_not_look_ahead():
+    px = _etfs()
+    early = px.index[-100]
+    assert risk_parity.targets(px.loc[:early], _rp()) == risk_parity.targets(px, _rp(), asof=early)
+
+
+def test_risk_parity_rebalances_monthly_like_trend():
+    assert risk_parity.due(None, "2026-11-02")
+    assert not risk_parity.due("2026-11-02", "2026-11-30")
+    assert risk_parity.due("2026-11-30", "2026-12-01")
+
+
+def test_repo_config_runs_risk_parity_on_its_own_book():
+    rp = load_config().strategies["risk_parity"]
+    assert rp["enabled"] and {"SPY", "TLT", "GLD"} <= set(rp["universe"])
+    assert strategy_path("risk_parity") == STATE_DIR / "risk_parity.json"
 
 
 # ---------------------------------------------------------------- recap by strategy

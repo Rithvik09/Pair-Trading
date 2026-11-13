@@ -41,6 +41,12 @@ same expected volatility: `vol_target` (10% a year by default) is a budget split
 the ETFs, so the book itself swings well under 10%, since they don't all move together. The
 stock held is capped at 1.5 times the book (`max_gross`). It rebalances at the first close of each
 month and is valued every day; its orders appear in the recap as `TREND SPY` REBALANCE.
+**Risk parity** (`pairs/strategies/risk_parity.py`, running on paper): always long six ETFs
+(US and international stocks, long and medium bonds, gold, commodities), each sized in
+proportion to 1 / its volatility so each brings the same risk, adding up to `exposure` times
+the book (1.0 by default, no borrowing). Rebalanced at the first close of each month; orders
+appear as `RISK PARITY SPY` REBALANCE.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,
