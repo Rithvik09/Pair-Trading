@@ -8,11 +8,13 @@ import pandas as pd
 import pytest
 
 from pairs import cli, notify
+from pairs.backtest import BacktestConfig, signal_frame
 from pairs.config import Config, load_config, strategy_params
 from pairs.paper import PaperBook
 from pairs.paths import STATE_DIR, strategy_path
 from pairs.portfolio import WeightBook
-from pairs.strategies import STRATEGIES, low_vol, momentum, risk_parity, trend
+from pairs.signals import leg_weights
+from pairs.strategies import STRATEGIES, low_vol, momentum, risk_parity, sector_arb, trend
 
 
 def _etfs(n=400, end="2026-10-26"):
@@ -319,6 +321,82 @@ def test_repo_config_runs_low_vol_on_its_own_book():
     lv = load_config().strategies["low_vol"]
     assert lv["enabled"] and lv["index"] == "S&P 500"
     assert len(low_vol.tickers(lv)) > 450
+
+
+# ---------------------------------------------------------------- stock vs sector ETF
+def _sector(n=300, kick=None):
+    """XLK and four tech stocks that track it closely; `kick` = {ticker: last-day move}."""
+    rng = np.random.default_rng(13)
+    idx = pd.bdate_range(end="2026-10-26", periods=n)
+    etf = np.cumsum(rng.normal(0, 0.01, n))
+    out = {"XLK": 100 * np.exp(etf)}
+    for t in ("AAPL", "MSFT", "NVDA", "ORCL"):
+        noise = np.zeros(n)
+        for i in range(1, n):
+            noise[i] = 0.8 * noise[i - 1] + rng.normal(0, 0.003)
+        out[t] = 50 * np.exp(etf + noise)
+    df = pd.DataFrame(out, idx)
+    for t, move in (kick or {}).items():
+        df.loc[df.index[-1], t] *= 1 + move
+    return df
+
+
+def _sa(**over):
+    return strategy_params("sector_arb", {"max_positions": 10, **over})
+
+
+def test_sector_arb_maps_each_stock_to_its_sector_etf():
+    assert sector_arb.sector_etf()["AAPL"] == "XLK" and sector_arb.sector_etf()["JPM"] == "XLF"
+    tickers = sector_arb.tickers(_sa())
+    assert {"AAPL", "XLK", "XLF", "XLU"} <= set(tickers) and len(tickers) > 450
+
+
+def test_sector_arb_shorts_a_stock_that_ran_ahead_of_its_sector():
+    px = _sector(kick={"AAPL": 0.015})
+    weights, reasons = sector_arb.targets(px, _sa(position_size=0.1))
+    frame = signal_frame(px["AAPL"], px["XLK"], BacktestConfig())
+    z, beta = frame["z"].iloc[-1], frame["beta"].iloc[-1]
+    w_y, w_x = leg_weights(beta)
+    assert 2 <= z < 4 and weights["AAPL"] == pytest.approx(-0.1 * w_y)
+    assert weights["XLK"] == pytest.approx(0.1 * w_x)  # the hedge
+    assert reasons["AAPL"].startswith(f"z {z:+.2f} vs XLK: AAPL ran ahead of its sector, "
+                                      "so short AAPL / buy XLK")
+    assert set(weights) == {"AAPL", "XLK"}  # the others are near normal
+
+
+def test_sector_arb_keeps_a_trade_until_it_converges():
+    px = _sector(kick={"AAPL": 0.015})
+    weights, reasons = sector_arb.targets(px, _sa(entry=10.0), held={"AAPL": -40})
+    assert weights["AAPL"] < 0 and "holding" in reasons["AAPL"]  # no new entries at 10, kept
+
+
+def test_sector_arb_closes_a_trade_once_it_converges():
+    px = _sector()
+    zs = {t: signal_frame(px[t], px["XLK"], BacktestConfig())["z"].iloc[-1]
+          for t in ("AAPL", "MSFT", "NVDA", "ORCL")}
+    t = min(zs, key=lambda k: abs(zs[k]))
+    assert abs(zs[t]) <= 1.0
+    weights, reasons = sector_arb.targets(px, _sa(exit=1.0), held={t: -40})
+    assert weights[t] == 0 and f"z {zs[t]:+.2f} vs XLK: back within ±1.0, converged" == reasons[t]
+
+
+def test_sector_arb_takes_the_widest_gaps_first():
+    px = _sector(kick={"AAPL": 0.02, "MSFT": 0.011, "NVDA": -0.03})
+    weights, _ = sector_arb.targets(px, _sa(max_positions=2))
+    assert {t for t in weights if t != "XLK"} == {"AAPL", "NVDA"}
+
+
+def test_sector_arb_nets_the_hedges_on_one_etf():
+    px = _sector(kick={"AAPL": 0.015, "NVDA": -0.025})
+    weights, _ = sector_arb.targets(px, _sa(position_size=0.1))
+    legs = {t: leg_weights(signal_frame(px[t], px["XLK"], BacktestConfig())["beta"].iloc[-1])[1]
+            for t in ("AAPL", "NVDA")}
+    assert weights["XLK"] == pytest.approx(0.1 * legs["AAPL"] - 0.1 * legs["NVDA"])
+
+
+def test_repo_config_runs_sector_arb_on_its_own_book():
+    sa = load_config().strategies["sector_arb"]
+    assert sa["enabled"] and sa["index"] == "S&P 500" and sa["max_positions"] >= 1
 
 
 # ---------------------------------------------------------------- recap by strategy

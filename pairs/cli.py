@@ -260,7 +260,7 @@ def run_strategy(name: str, params: dict, book: WeightBook, margin_rate: float, 
     book.accrue_borrow(date, {t: b.fee_rate for t, b in borrow.items()})
     new = []
     if strategy.due(book.last_rebalance, date):
-        weights, reasons = strategy.targets(prices, params)
+        weights, reasons = strategy.targets(prices, params, held=dict(book.holdings))
         unshortable = [t for t, w in weights.items()
                        if w < 0 and t in borrow and borrow[t].shortable is False]
         for t in unshortable:

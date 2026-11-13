@@ -28,8 +28,8 @@ def tickers(params: dict) -> list[str]:
     return sorted(set(df.loc[df["index"] == params["index"], "ticker"]))
 
 
-def targets(prices: pd.DataFrame, params: dict,
-            asof=None) -> tuple[dict[str, float], dict[str, str]]:
+def targets(prices: pd.DataFrame, params: dict, asof=None,
+            held=None) -> tuple[dict[str, float], dict[str, str]]:
     """Long the n_each stocks with the best 12-month return up to a month ago, short the
     n_each worst, each at exposure / 2 / n_each of the book. Stocks without that much
     history aren't ranked. Only the stocks picked get a weight; the book closes the rest."""

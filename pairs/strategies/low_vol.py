@@ -25,8 +25,8 @@ DEFAULTS = {
 tickers = momentum.tickers  # every stock in the index
 
 
-def targets(prices: pd.DataFrame, params: dict,
-            asof=None) -> tuple[dict[str, float], dict[str, str]]:
+def targets(prices: pd.DataFrame, params: dict, asof=None,
+            held=None) -> tuple[dict[str, float], dict[str, str]]:
     """Long the n_each stocks with the lowest volatility over the past year, short the n_each
     with the highest. Weight is proportional to 1 / volatility, scaled so the weights add up
     to `exposure` in absolute terms. Stocks without a year of closes aren't ranked."""

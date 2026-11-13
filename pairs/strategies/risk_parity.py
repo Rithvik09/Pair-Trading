@@ -21,8 +21,8 @@ DEFAULTS = {
 }
 
 
-def targets(prices: pd.DataFrame, params: dict,
-            asof=None) -> tuple[dict[str, float], dict[str, str]]:
+def targets(prices: pd.DataFrame, params: dict, asof=None,
+            held=None) -> tuple[dict[str, float], dict[str, str]]:
     """Target weight and reason per ETF in params["universe"], from closes up to the last
     row of `prices` (or up to `asof`).
 

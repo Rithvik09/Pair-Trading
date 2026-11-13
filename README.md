@@ -62,6 +62,14 @@ sides carry the same risk; the weights add up to `exposure` (1.0 by default). Th
 half of this idea (profitable, low-debt companies) needs company fundamentals the free Yahoo
 feed doesn't provide, so it isn't built.
 
+**Stock vs. sector ETF stat arb** (`pairs/strategies/sector_arb.py`, running on paper):
+pairs trading where each S&P 500 stock's partner is its sector ETF (XLK for tech, XLF for
+financials, ...). It uses the same z-score rule as the pairs trader (enter at ±2, close at
+±0.5, give up at ±4) and checks every close. Each trade is `position_size` (5%) of the book,
+split between the stock and its hedge; at most `max_positions` (20) are open, widest gaps
+first. Hedges from several stocks on one ETF are netted into one holding. Unlike pairs, a
+stopped-out stock isn't held back from re-entering.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,

@@ -111,3 +111,12 @@ starting_cash = 100000
 index = "S&P 500"       # which index in universe.csv to rank
 n_each = 20             # stocks long, and the same number short
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
+
+# Stock vs. sector ETF stat arb: pairs trading where each S&P 500 stock's partner is its
+# sector ETF (XLK, XLF, ...). Same z-score rule as [strategy]; checked every close.
+[strategies.sector_arb]
+enabled = true
+starting_cash = 100000
+index = "S&P 500"       # which index in universe.csv to trade
+position_size = 0.05    # each trade's stock + hedge, as a share of the book
+max_positions = 20      # trades open at once; the widest gaps are taken first
