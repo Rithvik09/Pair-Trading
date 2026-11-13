@@ -231,3 +231,12 @@ def test_pending_orders_are_those_whose_session_has_not_passed():
               "execute_on": "2026-10-20"}, {"pair": "C/D", "execute_on": None},
               {"pair": "E/F", "execute_on": "2026-10-21"}]
     assert [o["pair"] for o in pending_orders(orders, "2026-10-20")] == ["TREND SPY", "E/F"]
+
+
+def test_a_target_too_small_for_one_share_is_logged(tmp_path):
+    book = _book(tmp_path, cash=1_000)
+    _rebalance(book, {"AAA": 0.5, "BBB": -0.05}, prices={"AAA": 33.0, "BBB": 700.0})
+    assert "BBB" not in book.holdings and not [o for o in book.orders if "BBB" in o["pair"]]
+    (entry,) = [e for e in book.log if e["pair"] == "TREND BBB"]
+    assert entry["action"] == "too small BBB"
+    assert entry["reason"] == "why BBB, but -$50 doesn't buy one share at $700.00"

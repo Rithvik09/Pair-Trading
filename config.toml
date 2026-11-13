@@ -67,8 +67,11 @@ starting_cash = 100000  # only used the first time the book is created
 margin_rate = 0.5        # margin per $ of stock held, long and short; 0.5 = Reg T. Ask your broker
 
 # Other strategies run next to pairs trading. Each is its own paper book (state/<name>.json)
-# with its own cash, so the recap and the dashboard show profit and loss per strategy and
-# in total. See ROADMAP.md for the ones still to come. cost_bps is [strategy]'s unless set here.
+# with its own cash: $25,000 each, so with pairs' $100,000 the six that are on total
+# $250,000 (picks would add its own when switched on). starting_cash only counts when a
+# book is first created; to change it later, delete that book's file to start it over.
+# Separate books mean the recap and the dashboard show profit and loss per strategy and in
+# total. See ROADMAP.md for the ones still to come. cost_bps is [strategy]'s unless set here.
 
 # Trend following: long the ETFs that rose over the past 12 months, short those that fell,
 # each sized to bring the same volatility. Rebalanced at the first close of each month.
@@ -77,7 +80,7 @@ margin_rate = 0.5        # margin per $ of stock held, long and short; 0.5 = Reg
 # together; they don't, so expect its own volatility to be well below it.
 [strategies.trend]
 enabled = true
-starting_cash = 100000  # each strategy is its own paper book with its own cash
+starting_cash = 25000   # each strategy is its own paper book with its own cash
 # stocks (US large, tech, small, developed, emerging), bonds, credit, gold, commodities,
 # property, the dollar
 universe = ["SPY", "QQQ", "IWM", "EFA", "EEM", "TLT", "IEF", "LQD", "GLD", "DBC", "VNQ", "UUP"]
@@ -89,7 +92,7 @@ max_gross = 1.5         # most stock held, long + short, as a multiple of the bo
 # each month.
 [strategies.risk_parity]
 enabled = true
-starting_cash = 100000
+starting_cash = 25000
 universe = ["SPY", "EFA", "TLT", "IEF", "GLD", "DBC"]
 exposure = 1.0          # stock held as a multiple of the book's value; above 1 borrows
 
@@ -97,9 +100,9 @@ exposure = 1.0          # stock held as a multiple of the book's value; above 1 
 # ago, short those that fell most, equal weights. Swapped at the first close of each month.
 [strategies.momentum]
 enabled = true
-starting_cash = 100000
+starting_cash = 25000
 index = "S&P 500"       # which index in universe.csv to rank
-n_each = 20             # stocks long, and the same number short
+n_each = 10             # stocks long, and the same number short (about $1,250 each at $25k)
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
 
 # Low volatility long/short: long the 20 calmest S&P 500 stocks over the past year, short the
@@ -107,27 +110,27 @@ exposure = 1.0          # stock held, long + short, as a multiple of the book's 
 # Swapped at the first close of each month.
 [strategies.low_vol]
 enabled = true
-starting_cash = 100000
+starting_cash = 25000
 index = "S&P 500"       # which index in universe.csv to rank
-n_each = 20             # stocks long, and the same number short
+n_each = 10             # stocks long, and the same number short (about $1,250 each at $25k)
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
 
 # Stock vs. sector ETF stat arb: pairs trading where each S&P 500 stock's partner is its
 # sector ETF (XLK, XLF, ...). Same z-score rule as [strategy]; checked every close.
 [strategies.sector_arb]
 enabled = true
-starting_cash = 100000
+starting_cash = 25000
 index = "S&P 500"       # which index in universe.csv to trade
-position_size = 0.05    # each trade's stock + hedge, as a share of the book
-max_positions = 20      # trades open at once; the widest gaps are taken first
+position_size = 0.10    # each trade's stock + hedge, as a share of the book ($2,500 at $25k)
+max_positions = 10      # trades open at once; the widest gaps are taken first
 
 # Short-term reversal: long the 20 S&P 500 stocks that fell most over the past week, short
 # the 20 that rose most. Swapped at the first close of each week, so trading costs are high.
 [strategies.reversal]
 enabled = true
-starting_cash = 100000
+starting_cash = 25000
 index = "S&P 500"       # which index in universe.csv to rank
-n_each = 20             # stocks long, and the same number short
+n_each = 10             # stocks long, and the same number short (about $1,250 each at $25k)
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
 
 # Your own picks: long what you expect to do well, short what you expect to lag. The app
@@ -135,7 +138,7 @@ exposure = 1.0          # stock held, long + short, as a multiple of the book's 
 # enabled = true; changes are traded at the next close.
 [strategies.picks]
 enabled = false
-starting_cash = 100000
+starting_cash = 25000
 long = []               # e.g. ["COST", "WMT"]
 short = []              # e.g. ["TGT"]
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value

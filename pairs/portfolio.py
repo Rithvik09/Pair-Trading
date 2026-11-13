@@ -159,6 +159,13 @@ class WeightBook:
                         "holding was left as it is")
                 continue
             want = math.trunc(w * equity / px + math.copysign(1e-9, w))  # 9.9999999 is 10
+            if want == held == 0 and w:
+                self.log.append({"date": str(date), "pair": f"{self.label} {t}",
+                                 "action": f"too small {t}", "z": 0.0,
+                                 "reason": f"{reasons.get(t, 'a target')}, but "
+                                           f"{'-' if w < 0 else ''}${abs(w) * equity:,.0f} "
+                                           f"doesn't buy one share at ${px:,.2f}"})
+                continue
             flip = want * held < 0
             if want == held or (w != 0 and not flip
                                 and abs(want - held) * px < band * abs(w) * equity):

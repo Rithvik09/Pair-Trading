@@ -49,14 +49,14 @@ appear as `RISK PARITY SPY` REBALANCE.
 
 **Momentum long/short** (`pairs/strategies/momentum.py`, running on paper): each month, rank
 the S&P 500 (from `universe.csv`) by return over the 12 months to a month ago, then go long
-the 20 best and short the 20 worst at equal weights, adding up to `exposure` (1.0 by default:
+the 10 best and short the 10 worst at equal weights, adding up to `exposure` (1.0 by default:
 half long, half short). The latest month is left out because it tends to reverse. A short
 the IBKR feed says can't be borrowed is skipped and listed under "Not traded". Between
 rebalances only the stocks held are priced, so the daily job stays quick. `universe.csv` is
 today's index, so a backtest would flatter this; the paper book doesn't have that problem.
 
 **Low volatility long/short** (`pairs/strategies/low_vol.py`, running on paper): each month,
-long the 20 calmest S&P 500 stocks over the past year and short the 20 jumpiest. Each stock
+long the 10 calmest S&P 500 stocks over the past year and short the 10 jumpiest. Each stock
 is sized in proportion to 1 / its volatility, so the calm side is held in more size and both
 sides carry the same risk; the weights add up to `exposure` (1.0 by default). The "quality"
 half of this idea (profitable, low-debt companies) needs company fundamentals the free Yahoo
@@ -65,14 +65,14 @@ feed doesn't provide, so it isn't built.
 **Stock vs. sector ETF stat arb** (`pairs/strategies/sector_arb.py`, running on paper):
 pairs trading where each S&P 500 stock's partner is its sector ETF (XLK for tech, XLF for
 financials, ...). It uses the same z-score rule as the pairs trader (enter at ±2, close at
-±0.5, give up at ±4) and checks every close. Each trade is `position_size` (5%) of the book,
-split between the stock and its hedge; at most `max_positions` (20) are open, widest gaps
+±0.5, give up at ±4) and checks every close. Each trade is `position_size` (10%) of the book,
+split between the stock and its hedge; at most `max_positions` (10) are open, widest gaps
 first. Hedges from several stocks on one ETF are netted into one holding. Unlike pairs, a
 stopped-out stock isn't held back from re-entering.
 
 **Short-term reversal** (`pairs/strategies/reversal.py`, running on paper): at the first
-close of each week, go long the 20 S&P 500 stocks that fell most over the past five days and
-short the 20 that rose most, at equal weights adding up to `exposure` (1.0). It replaces most
+close of each week, go long the 10 S&P 500 stocks that fell most over the past five days and
+short the 10 that rose most, at equal weights adding up to `exposure` (1.0). It replaces most
 of its holdings every week, so trading costs eat much of a small edge; the recap will show
 whether anything is left.
 
@@ -81,9 +81,11 @@ whether anything is left.
 share of `exposure`; the book trades any change at the next close, and the recap scores your
 picks like any other strategy.
 
+Each of these books starts with $25,000, so with pairs' $100,000 the total is $250,000.
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
-left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,
+left alone rather than traded, and a target too small to buy one share is listed under
+"Not traded". Dividends are paid into cash for longs and charged to shorts,
 worked out from how far Yahoo's adjusted prices restate the previous close; a split changes
 the share count instead, with a ⚠ to check it against your broker.
 
