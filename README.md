@@ -76,6 +76,11 @@ short the 20 that rose most, at equal weights adding up to `exposure` (1.0). It 
 of its holdings every week, so trading costs eat much of a small edge; the recap will show
 whether anything is left.
 
+**Your own picks** (`pairs/strategies/picks.py`, off until you add some): list tickers under
+`long` and `short` in `[strategies.picks]` and set `enabled = true`. Each pick gets an equal
+share of `exposure`; the book trades any change at the next close, and the recap scores your
+picks like any other strategy.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,

@@ -129,3 +129,13 @@ starting_cash = 100000
 index = "S&P 500"       # which index in universe.csv to rank
 n_each = 20             # stocks long, and the same number short
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
+
+# Your own picks: long what you expect to do well, short what you expect to lag. The app
+# sizes them at equal weights, writes the orders and keeps score. Add tickers and set
+# enabled = true; changes are traded at the next close.
+[strategies.picks]
+enabled = false
+starting_cash = 100000
+long = []               # e.g. ["COST", "WMT"]
+short = []              # e.g. ["TGT"]
+exposure = 1.0          # stock held, long + short, as a multiple of the book's value

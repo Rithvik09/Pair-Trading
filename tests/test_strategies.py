@@ -18,6 +18,7 @@ from pairs.strategies import (
     STRATEGIES,
     low_vol,
     momentum,
+    picks,
     reversal,
     risk_parity,
     sector_arb,
@@ -448,6 +449,42 @@ def test_reversal_trades_at_the_first_close_of_each_week(last, date, due):
 def test_repo_config_runs_reversal_on_its_own_book():
     r = load_config().strategies["reversal"]
     assert r["enabled"] and r["index"] == "S&P 500"
+
+
+# ---------------------------------------------------------------- your own picks
+def _picks(**over):
+    return strategy_params("picks", {"long": ["UPP", "CALM"], "short": ["DWN"], **over})
+
+
+def test_picks_hold_your_longs_and_shorts_at_equal_weights():
+    weights, reasons = picks.targets(_etfs(), _picks(exposure=1.5))
+    assert weights == pytest.approx({"UPP": 0.5, "CALM": 0.5, "DWN": -0.5})
+    assert reasons["UPP"] == "your pick: long"
+    assert reasons["DWN"] == "your pick: short"
+    assert picks.tickers(_picks()) == ["CALM", "DWN", "UPP"]
+
+
+def test_picks_without_a_price_are_left_out():
+    weights, _ = picks.targets(_etfs(), _picks(long=["UPP", "NOPE"]))
+    assert "NOPE" not in weights and weights["UPP"] == pytest.approx(0.5)
+
+
+def test_picks_are_checked_every_close():
+    assert picks.due("2026-11-12", "2026-11-13")
+
+
+@pytest.mark.parametrize("section, match", [
+    ({"long": [], "short": []}, "long or short"),
+    ({"long": ["AAPL"], "short": ["aapl"]}, "both"),
+    ({"long": "AAPL"}, "long"),
+])
+def test_picks_config_is_checked(section, match):
+    with pytest.raises(ValueError, match=match):
+        strategy_params("picks", section)
+
+
+def test_repo_config_has_a_picks_section_switched_off_until_you_add_some():
+    assert load_config().strategies.get("picks", {"enabled": False})["enabled"] is False
 
 
 # ---------------------------------------------------------------- recap by strategy

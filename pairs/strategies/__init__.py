@@ -12,11 +12,21 @@ A strategy is a module with:
     due(last_rebalance, date) whether to trade the book to those targets at this close
     tickers(params)           optional: what to price on a rebalance day, if not
                               params["universe"] (e.g. every stock in an index)
+    check(params)             optional: raise ValueError if the settings can't be traded
 
 To add one, write the module and list it here; the daily job, recap and dashboard pick it up.
 """
 
-from pairs.strategies import low_vol, momentum, reversal, risk_parity, sector_arb, trend
+from pairs.strategies import (
+    low_vol,
+    momentum,
+    picks,
+    reversal,
+    risk_parity,
+    sector_arb,
+    trend,
+)
 
 STRATEGIES = {"trend": trend, "risk_parity": risk_parity, "momentum": momentum,
-              "low_vol": low_vol, "sector_arb": sector_arb, "reversal": reversal}
+              "low_vol": low_vol, "sector_arb": sector_arb, "reversal": reversal,
+              "picks": picks}

@@ -13,7 +13,7 @@ and for all of them together. Like the pairs trader, none of them places orders.
 | 4 | Low volatility long/short (quality half needs fundamentals) | running (paper) | closes (+ fundamentals for quality) |
 | 5 | Stock vs. sector ETF stat arb | running (paper) | daily closes |
 | 6 | Short-term reversal: buy last week's losers, short the winners | running (paper) | daily closes |
-| 7 | Discretionary long/short: your own picks, sized and tracked by the app | to do | your picks + closes |
+| 7 | Discretionary long/short: your own picks, sized and tracked by the app | ready: add picks in config.toml | your picks + closes |
 | 8 | Merger arbitrage | needs a data source | deal announcements and terms |
 | 9 | Post-earnings drift | needs a data source | earnings estimates and actuals |
 | 10 | Volatility selling | needs a data source | options or VIX futures |

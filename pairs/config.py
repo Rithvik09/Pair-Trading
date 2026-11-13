@@ -56,13 +56,19 @@ def strategy_params(name: str, section: dict, cost_bps: float = BacktestConfig.c
             if isinstance(out[k], bool) or not isinstance(out[k], int) or out[k] < 1:
                 raise ValueError(f"config.toml [{where}]: {k} must be a whole number of 1 "
                                  f"or more, got {out[k]!r}")
-    if "universe" in out:
-        u = out["universe"]
-        if not isinstance(u, list) or not u or not all(isinstance(t, str) and t.strip()
-                                                       for t in u):
-            raise ValueError(f"config.toml [{where}]: universe is a list of tickers, "
-                             f"e.g. [\"SPY\", \"TLT\"], got {u!r}")
-        out["universe"] = [t.strip().upper() for t in u]
+    for k, default in defaults.items():
+        if isinstance(default, list):
+            u = out[k]
+            if not isinstance(u, list) or (k == "universe" and not u) \
+                    or not all(isinstance(t, str) and t.strip() for t in u):
+                raise ValueError(f"config.toml [{where}]: {k} is a list of tickers, "
+                                 f"e.g. [\"SPY\", \"TLT\"], got {u!r}")
+            out[k] = [t.strip().upper() for t in u]
+    if hasattr(STRATEGIES[name], "check"):
+        try:
+            STRATEGIES[name].check(out)
+        except ValueError as e:
+            raise ValueError(f"config.toml [{where}]: {e}") from None
     return out
 
 
