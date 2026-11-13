@@ -1,0 +1,328 @@
+{
+  "cash": 22705.68535782051,
+  "starting_cash": 25000.0,
+  "holdings": {
+    "DBC": 35,
+    "EEM": 13,
+    "EFA": 13,
+    "GLD": -2,
+    "IEF": -37,
+    "IWM": 4,
+    "LQD": -30,
+    "QQQ": 1,
+    "SPY": 1,
+    "TLT": -23,
+    "UUP": 140,
+    "VNQ": 14
+  },
+  "last_rebalance": "2026-11-12",
+  "last_prices": {
+    "DBC": 30.90999984741211,
+    "EEM": 61.13999938964844,
+    "EFA": 104.01000213623047,
+    "GLD": 354.8900146484375,
+    "IEF": 90.20999908447266,
+    "IWM": 278.44000244140625,
+    "LQD": 103.05000305175781,
+    "QQQ": 688.1699829101562,
+    "SPY": 757.1199951171875,
+    "TLT": 79.72000122070312,
+    "UUP": 29.420000076293945,
+    "VNQ": 96.44000244140625
+  },
+  "price_dates": {
+    "DBC": "2026-11-12",
+    "EEM": "2026-11-12",
+    "EFA": "2026-11-12",
+    "GLD": "2026-11-12",
+    "IEF": "2026-11-12",
+    "IWM": "2026-11-12",
+    "LQD": "2026-11-12",
+    "QQQ": "2026-11-12",
+    "SPY": "2026-11-12",
+    "TLT": "2026-11-12",
+    "UUP": "2026-11-12",
+    "VNQ": "2026-11-12"
+  },
+  "orders": [
+    {
+      "pair": "TREND DBC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "DBC",
+          "side": "BUY",
+          "qty": 35,
+          "ref_price": 30.90999984741211
+        }
+      ]
+    },
+    {
+      "pair": "TREND EEM",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "EEM",
+          "side": "BUY",
+          "qty": 13,
+          "ref_price": 61.13999938964844
+        }
+      ]
+    },
+    {
+      "pair": "TREND EFA",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "EFA",
+          "side": "BUY",
+          "qty": 13,
+          "ref_price": 104.01000213623047
+        }
+      ]
+    },
+    {
+      "pair": "TREND GLD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "GLD",
+          "side": "SELL SHORT",
+          "qty": 2,
+          "ref_price": 354.8900146484375
+        }
+      ]
+    },
+    {
+      "pair": "TREND IEF",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "IEF",
+          "side": "SELL SHORT",
+          "qty": 37,
+          "ref_price": 90.20999908447266
+        }
+      ]
+    },
+    {
+      "pair": "TREND IWM",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "IWM",
+          "side": "BUY",
+          "qty": 4,
+          "ref_price": 278.44000244140625
+        }
+      ]
+    },
+    {
+      "pair": "TREND LQD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "LQD",
+          "side": "SELL SHORT",
+          "qty": 30,
+          "ref_price": 103.05000305175781
+        }
+      ]
+    },
+    {
+      "pair": "TREND QQQ",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "QQQ",
+          "side": "BUY",
+          "qty": 1,
+          "ref_price": 688.1699829101562
+        }
+      ]
+    },
+    {
+      "pair": "TREND SPY",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SPY",
+          "side": "BUY",
+          "qty": 1,
+          "ref_price": 757.1199951171875
+        }
+      ]
+    },
+    {
+      "pair": "TREND TLT",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "TLT",
+          "side": "SELL SHORT",
+          "qty": 23,
+          "ref_price": 79.72000122070312
+        }
+      ]
+    },
+    {
+      "pair": "TREND UUP",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "UUP",
+          "side": "BUY",
+          "qty": 140,
+          "ref_price": 29.420000076293945
+        }
+      ]
+    },
+    {
+      "pair": "TREND VNQ",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "VNQ",
+          "side": "BUY",
+          "qty": 14,
+          "ref_price": 96.44000244140625
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [],
+  "log": [
+    {
+      "date": "2026-11-12",
+      "pair": "TREND DBC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 37.1% over 12 months: long, sized for 19% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND EEM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 12.2% over 12 months: long, sized for 25% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND EFA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 12.1% over 12 months: long, sized for 15% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND GLD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 6.6% over 12 months: short, sized for 24% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND IEF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 3.1% over 12 months: short, sized for 6% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND IWM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 15.2% over 12 months: long, sized for 18% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND LQD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 2.9% over 12 months: short, sized for 7% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND QQQ",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 11.2% over 12 months: long, sized for 24% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND SPY",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 12.0% over 12 months: long, sized for 15% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND TLT",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 7.2% over 12 months: short, sized for 11% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND UUP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 8.1% over 12 months: long, sized for 5% volatility"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "TREND VNQ",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 9.8% over 12 months: long, sized for 15% volatility"
+    }
+  ],
+  "equity": [
+    {
+      "date": "2026-11-12",
+      "cash": 22705.68535782051,
+      "unrealised": 2284.1999320983887,
+      "equity": 24989.885289918897,
+      "open": 12,
+      "gross": 20229.420162200928,
+      "margin": 10114.710081100464,
+      "free": 14875.175208818433
+    }
+  ]
+}

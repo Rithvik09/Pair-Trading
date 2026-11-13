@@ -1,0 +1,478 @@
+{
+  "cash": 26986.436793192865,
+  "starting_cash": 25000.0,
+  "holdings": {
+    "AMD": -1,
+    "ANET": -5,
+    "AXON": 1,
+    "CCL": 27,
+    "COF": 5,
+    "IFF": 16,
+    "KDP": 26,
+    "NVDA": 6,
+    "PFE": 43,
+    "PPL": 41,
+    "XLB": -22,
+    "XLF": -23,
+    "XLI": -11,
+    "XLK": 8,
+    "XLP": -17,
+    "XLU": -23,
+    "XLV": -6,
+    "XLY": -14
+  },
+  "last_rebalance": "2026-11-12",
+  "last_prices": {
+    "AMD": 585.2999877929688,
+    "ANET": 206.6300048828125,
+    "AXON": 307.1099853515625,
+    "CCL": 29.34000015258789,
+    "COF": 193.60000610351562,
+    "IFF": 80.37999725341797,
+    "KDP": 35.41999816894531,
+    "NVDA": 166.19000244140625,
+    "PFE": 28.829999923706055,
+    "PPL": 35.209999084472656,
+    "XLB": 52.34000015258789,
+    "XLF": 58.209999084472656,
+    "XLI": 169.44000244140625,
+    "XLK": 173.77000427246094,
+    "XLP": 91.05999755859375,
+    "XLU": 43.810001373291016,
+    "XLV": 187.8300018310547,
+    "XLY": 120.45999908447266
+  },
+  "price_dates": {
+    "AMD": "2026-11-12",
+    "ANET": "2026-11-12",
+    "AXON": "2026-11-12",
+    "CCL": "2026-11-12",
+    "COF": "2026-11-12",
+    "IFF": "2026-11-12",
+    "KDP": "2026-11-12",
+    "NVDA": "2026-11-12",
+    "PFE": "2026-11-12",
+    "PPL": "2026-11-12",
+    "XLB": "2026-11-12",
+    "XLF": "2026-11-12",
+    "XLI": "2026-11-12",
+    "XLK": "2026-11-12",
+    "XLP": "2026-11-12",
+    "XLU": "2026-11-12",
+    "XLV": "2026-11-12",
+    "XLY": "2026-11-12"
+  },
+  "orders": [
+    {
+      "pair": "SECTOR ARB AMD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "AMD",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 585.2999877929688
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB ANET",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ANET",
+          "side": "SELL SHORT",
+          "qty": 5,
+          "ref_price": 206.6300048828125
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB AXON",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "AXON",
+          "side": "BUY",
+          "qty": 1,
+          "ref_price": 307.1099853515625
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB CCL",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CCL",
+          "side": "BUY",
+          "qty": 27,
+          "ref_price": 29.34000015258789
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB COF",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "COF",
+          "side": "BUY",
+          "qty": 5,
+          "ref_price": 193.60000610351562
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB IFF",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "IFF",
+          "side": "BUY",
+          "qty": 16,
+          "ref_price": 80.37999725341797
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB KDP",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "KDP",
+          "side": "BUY",
+          "qty": 26,
+          "ref_price": 35.41999816894531
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB NVDA",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "NVDA",
+          "side": "BUY",
+          "qty": 6,
+          "ref_price": 166.19000244140625
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB PFE",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "PFE",
+          "side": "BUY",
+          "qty": 43,
+          "ref_price": 28.829999923706055
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB PPL",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "PPL",
+          "side": "BUY",
+          "qty": 41,
+          "ref_price": 35.209999084472656
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLB",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLB",
+          "side": "SELL SHORT",
+          "qty": 22,
+          "ref_price": 52.34000015258789
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLF",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLF",
+          "side": "SELL SHORT",
+          "qty": 23,
+          "ref_price": 58.209999084472656
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLI",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLI",
+          "side": "SELL SHORT",
+          "qty": 11,
+          "ref_price": 169.44000244140625
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLK",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLK",
+          "side": "BUY",
+          "qty": 8,
+          "ref_price": 173.77000427246094
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLP",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLP",
+          "side": "SELL SHORT",
+          "qty": 17,
+          "ref_price": 91.05999755859375
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLU",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLU",
+          "side": "SELL SHORT",
+          "qty": 23,
+          "ref_price": 43.810001373291016
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLV",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLV",
+          "side": "SELL SHORT",
+          "qty": 6,
+          "ref_price": 187.8300018310547
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLY",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLY",
+          "side": "SELL SHORT",
+          "qty": 14,
+          "ref_price": 120.45999908447266
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [],
+  "log": [
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB AMD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z +3.30 vs XLK: AMD ran ahead of its sector, so short AMD / buy XLK"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB ANET",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z +2.25 vs XLK: ANET ran ahead of its sector, so short ANET / buy XLK"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB AXON",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.27 vs XLI: AXON fell behind its sector, so short XLI / buy AXON"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB CCL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.30 vs XLY: CCL fell behind its sector, so short XLY / buy CCL"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB COF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.47 vs XLF: COF fell behind its sector, so short XLF / buy COF"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB IFF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.23 vs XLB: IFF fell behind its sector, so short XLB / buy IFF"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB KDP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -3.40 vs XLP: KDP fell behind its sector, so short XLP / buy KDP"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB NVDA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.83 vs XLK: NVDA fell behind its sector, so short XLK / buy NVDA"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB PFE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.33 vs XLV: PFE fell behind its sector, so short XLV / buy PFE"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB PPL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -2.76 vs XLU: PPL fell behind its sector, so short XLU / buy PPL"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLB",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLB sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLF sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLI",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLI sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLK sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLP sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLU",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLU sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLV",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLV sector trades"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "SECTOR ARB XLY",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLY sector trades"
+    }
+  ],
+  "equity": [
+    {
+      "date": "2026-11-12",
+      "cash": 26986.436793192865,
+      "unrealised": -1996.7800731658936,
+      "equity": 24989.65672002697,
+      "open": 18,
+      "gross": 20686.55994606018,
+      "margin": 10343.27997303009,
+      "free": 14646.37674699688
+    }
+  ]
+}

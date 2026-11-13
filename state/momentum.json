@@ -1,0 +1,528 @@
+{
+  "cash": 25431.239062083245,
+  "starting_cash": 25000.0,
+  "holdings": {
+    "APP": -3,
+    "APTV": -32,
+    "BSX": -28,
+    "CHTR": -9,
+    "CSGP": -41,
+    "DELL": 3,
+    "FICO": -1,
+    "HPE": 24,
+    "INTC": 20,
+    "INTU": -3,
+    "LITE": 2,
+    "MRNA": 5,
+    "MRVL": 7,
+    "MU": 1,
+    "PNR": -18,
+    "PODD": -8,
+    "SKYD": -164,
+    "SNDK": 1,
+    "STX": 2,
+    "VLO": 3
+  },
+  "last_rebalance": "2026-11-12",
+  "last_prices": {
+    "APP": 393.67999267578125,
+    "APTV": 38.810001373291016,
+    "BSX": 44.20000076293945,
+    "CHTR": 132.66000366210938,
+    "CSGP": 30.100000381469727,
+    "DELL": 371.1700134277344,
+    "FICO": 717.3800048828125,
+    "HPE": 50.15999984741211,
+    "INTC": 61.20000076293945,
+    "INTU": 340.1700134277344,
+    "LITE": 624.6500244140625,
+    "MRNA": 231.35000610351562,
+    "MRVL": 164.4499969482422,
+    "MU": 798.4400024414062,
+    "PNR": 68.13999938964844,
+    "PODD": 149.2899932861328,
+    "SKYD": 7.590000152587891,
+    "SNDK": 937.4600219726562,
+    "STX": 545.1400146484375,
+    "VLO": 374.95001220703125
+  },
+  "price_dates": {
+    "APP": "2026-11-12",
+    "APTV": "2026-11-12",
+    "BSX": "2026-11-12",
+    "CHTR": "2026-11-12",
+    "CSGP": "2026-11-12",
+    "DELL": "2026-11-12",
+    "FICO": "2026-11-12",
+    "HPE": "2026-11-12",
+    "INTC": "2026-11-12",
+    "INTU": "2026-11-12",
+    "LITE": "2026-11-12",
+    "MRNA": "2026-11-12",
+    "MRVL": "2026-11-12",
+    "MU": "2026-11-12",
+    "PNR": "2026-11-12",
+    "PODD": "2026-11-12",
+    "SKYD": "2026-11-12",
+    "SNDK": "2026-11-12",
+    "STX": "2026-11-12",
+    "VLO": "2026-11-12"
+  },
+  "orders": [
+    {
+      "pair": "MOMENTUM APP",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "APP",
+          "side": "SELL SHORT",
+          "qty": 3,
+          "ref_price": 393.67999267578125
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM APTV",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "APTV",
+          "side": "SELL SHORT",
+          "qty": 32,
+          "ref_price": 38.810001373291016
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM BSX",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "BSX",
+          "side": "SELL SHORT",
+          "qty": 28,
+          "ref_price": 44.20000076293945
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM CHTR",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CHTR",
+          "side": "SELL SHORT",
+          "qty": 9,
+          "ref_price": 132.66000366210938
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM CSGP",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CSGP",
+          "side": "SELL SHORT",
+          "qty": 41,
+          "ref_price": 30.100000381469727
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM DELL",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "DELL",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 371.1700134277344
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM FICO",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FICO",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 717.3800048828125
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM HPE",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "HPE",
+          "side": "BUY",
+          "qty": 24,
+          "ref_price": 50.15999984741211
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM INTC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "INTC",
+          "side": "BUY",
+          "qty": 20,
+          "ref_price": 61.20000076293945
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM INTU",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "INTU",
+          "side": "SELL SHORT",
+          "qty": 3,
+          "ref_price": 340.1700134277344
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM LITE",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "LITE",
+          "side": "BUY",
+          "qty": 2,
+          "ref_price": 624.6500244140625
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM MRNA",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MRNA",
+          "side": "BUY",
+          "qty": 5,
+          "ref_price": 231.35000610351562
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM MRVL",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MRVL",
+          "side": "BUY",
+          "qty": 7,
+          "ref_price": 164.4499969482422
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM MU",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MU",
+          "side": "BUY",
+          "qty": 1,
+          "ref_price": 798.4400024414062
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM PNR",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "PNR",
+          "side": "SELL SHORT",
+          "qty": 18,
+          "ref_price": 68.13999938964844
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM PODD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "PODD",
+          "side": "SELL SHORT",
+          "qty": 8,
+          "ref_price": 149.2899932861328
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM SKYD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SKYD",
+          "side": "SELL SHORT",
+          "qty": 164,
+          "ref_price": 7.590000152587891
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM SNDK",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SNDK",
+          "side": "BUY",
+          "qty": 1,
+          "ref_price": 937.4600219726562
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM STX",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "STX",
+          "side": "BUY",
+          "qty": 2,
+          "ref_price": 545.1400146484375
+        }
+      ]
+    },
+    {
+      "pair": "MOMENTUM VLO",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "VLO",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 374.95001220703125
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [],
+  "log": [
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM APP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 55.9% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM APTV",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 46.3% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM BSX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 58.0% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM CHTR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 49.7% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM CSGP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 56.0% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM DELL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 269.4% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM FICO",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 60.0% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM HPE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 180.7% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM INTC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 159.0% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM INTU",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 51.9% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM LITE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 255.0% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM MRNA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 756.9% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM MRVL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 175.0% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM MU",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 279.6% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM PNR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 51.4% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM PODD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 59.0% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM SKYD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 57.0% over the 12 months to a month ago: among the 10 worst of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM SNDK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 416.7% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM STX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 149.2% over the 12 months to a month ago: among the 10 best of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "MOMENTUM VLO",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 159.6% over the 12 months to a month ago: among the 10 best of 499, long"
+    }
+  ],
+  "equity": [
+    {
+      "date": "2026-11-12",
+      "cash": 25431.239062083245,
+      "unrealised": -442.50989723205566,
+      "equity": 24988.72916485119,
+      "open": 20,
+      "gross": 22541.67029762268,
+      "margin": 11270.83514881134,
+      "free": 13717.894016039849
+    }
+  ]
+}

@@ -1,0 +1,474 @@
+{
+  "cash": 6533.8091345090925,
+  "starting_cash": 25000.0,
+  "holdings": {
+    "ATO": 12,
+    "BE": -1,
+    "BRK-B": 3,
+    "COHR": -1,
+    "DUK": 16,
+    "EVRG": 24,
+    "FE": 46,
+    "FRT": 18,
+    "INTC": -6,
+    "L": 19,
+    "MRNA": -1,
+    "MRVL": -2,
+    "O": 34,
+    "REG": 28,
+    "SMCI": -13,
+    "WDC": -1,
+    "WEC": 17
+  },
+  "last_rebalance": "2026-11-12",
+  "last_prices": {
+    "ATO": 175.9199981689453,
+    "BE": 201.92999267578125,
+    "BRK-B": 589.8300170898438,
+    "COHR": 232.0800018310547,
+    "DUK": 128.58999633789062,
+    "EVRG": 88.2699966430664,
+    "FE": 46.5,
+    "FRT": 112.52999877929688,
+    "INTC": 61.20000076293945,
+    "L": 111.83000183105469,
+    "MRNA": 231.35000610351562,
+    "MRVL": 164.4499969482422,
+    "O": 59.2599983215332,
+    "REG": 75.73999786376953,
+    "SMCI": 26.989999771118164,
+    "WDC": 311.2099914550781,
+    "WEC": 117.4800033569336
+  },
+  "price_dates": {
+    "ATO": "2026-11-12",
+    "BE": "2026-11-12",
+    "BRK-B": "2026-11-12",
+    "COHR": "2026-11-12",
+    "DUK": "2026-11-12",
+    "EVRG": "2026-11-12",
+    "FE": "2026-11-12",
+    "FRT": "2026-11-12",
+    "INTC": "2026-11-12",
+    "L": "2026-11-12",
+    "MRNA": "2026-11-12",
+    "MRVL": "2026-11-12",
+    "O": "2026-11-12",
+    "REG": "2026-11-12",
+    "SMCI": "2026-11-12",
+    "WDC": "2026-11-12",
+    "WEC": "2026-11-12"
+  },
+  "orders": [
+    {
+      "pair": "LOW VOL ATO",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ATO",
+          "side": "BUY",
+          "qty": 12,
+          "ref_price": 175.9199981689453
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL BE",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "BE",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 201.92999267578125
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL BRK-B",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "BRK-B",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 589.8300170898438
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL COHR",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "COHR",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 232.0800018310547
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL DUK",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "DUK",
+          "side": "BUY",
+          "qty": 16,
+          "ref_price": 128.58999633789062
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL EVRG",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "EVRG",
+          "side": "BUY",
+          "qty": 24,
+          "ref_price": 88.2699966430664
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL FE",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FE",
+          "side": "BUY",
+          "qty": 46,
+          "ref_price": 46.5
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL FRT",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FRT",
+          "side": "BUY",
+          "qty": 18,
+          "ref_price": 112.52999877929688
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL INTC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "INTC",
+          "side": "SELL SHORT",
+          "qty": 6,
+          "ref_price": 61.20000076293945
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL L",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "L",
+          "side": "BUY",
+          "qty": 19,
+          "ref_price": 111.83000183105469
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL MRNA",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MRNA",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 231.35000610351562
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL MRVL",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MRVL",
+          "side": "SELL SHORT",
+          "qty": 2,
+          "ref_price": 164.4499969482422
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL O",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "O",
+          "side": "BUY",
+          "qty": 34,
+          "ref_price": 59.2599983215332
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL REG",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "REG",
+          "side": "BUY",
+          "qty": 28,
+          "ref_price": 75.73999786376953
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL SMCI",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SMCI",
+          "side": "SELL SHORT",
+          "qty": 13,
+          "ref_price": 26.989999771118164
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL WDC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "WDC",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 311.2099914550781
+        }
+      ]
+    },
+    {
+      "pair": "LOW VOL WEC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "WEC",
+          "side": "BUY",
+          "qty": 17,
+          "ref_price": 117.4800033569336
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [],
+  "log": [
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL ATO",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL BE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "112% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL BRK-B",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "15% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL COHR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "91% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL DUK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "17% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL EVRG",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL FE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL FRT",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL INTC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "86% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL L",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL LITE",
+      "action": "too small LITE",
+      "z": 0.0,
+      "reason": "102% volatility: among the 10 jumpiest of 499, short, but -$343 doesn't buy one share at $624.65"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL MRNA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "130% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL MRVL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "84% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL MU",
+      "action": "too small MU",
+      "z": 0.0,
+      "reason": "84% volatility: among the 10 jumpiest of 499, short, but -$417 doesn't buy one share at $798.44"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL O",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "17% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL REG",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "16% volatility: among the 10 calmest of 499, long"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL SMCI",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "96% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL SNDK",
+      "action": "too small SNDK",
+      "z": 0.0,
+      "reason": "114% volatility: among the 10 jumpiest of 499, short, but -$306 doesn't buy one share at $937.46"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL WDC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "83% volatility: among the 10 jumpiest of 499, short"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "LOW VOL WEC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "17% volatility: among the 10 calmest of 499, long"
+    }
+  ],
+  "equity": [
+    {
+      "date": "2026-11-12",
+      "cash": 6533.8091345090925,
+      "unrealised": 18454.93985557556,
+      "equity": 24988.748990084656,
+      "open": 17,
+      "gross": 22502.019830703735,
+      "margin": 11251.009915351868,
+      "free": 13737.739074732788
+    }
+  ]
+}

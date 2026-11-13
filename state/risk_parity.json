@@ -1,0 +1,178 @@
+{
+  "cash": 643.8879168758376,
+  "starting_cash": 25000.0,
+  "holdings": {
+    "DBC": 89,
+    "EFA": 33,
+    "GLD": 6,
+    "IEF": 92,
+    "SPY": 4,
+    "TLT": 59
+  },
+  "last_rebalance": "2026-11-12",
+  "last_prices": {
+    "DBC": 30.90999984741211,
+    "EFA": 104.01000213623047,
+    "GLD": 354.8900146484375,
+    "IEF": 90.20999908447266,
+    "SPY": 757.1199951171875,
+    "TLT": 79.72000122070312
+  },
+  "price_dates": {
+    "DBC": "2026-11-12",
+    "EFA": "2026-11-12",
+    "GLD": "2026-11-12",
+    "IEF": "2026-11-12",
+    "SPY": "2026-11-12",
+    "TLT": "2026-11-12"
+  },
+  "orders": [
+    {
+      "pair": "RISK PARITY DBC",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "DBC",
+          "side": "BUY",
+          "qty": 89,
+          "ref_price": 30.90999984741211
+        }
+      ]
+    },
+    {
+      "pair": "RISK PARITY EFA",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "EFA",
+          "side": "BUY",
+          "qty": 33,
+          "ref_price": 104.01000213623047
+        }
+      ]
+    },
+    {
+      "pair": "RISK PARITY GLD",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "GLD",
+          "side": "BUY",
+          "qty": 6,
+          "ref_price": 354.8900146484375
+        }
+      ]
+    },
+    {
+      "pair": "RISK PARITY IEF",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "IEF",
+          "side": "BUY",
+          "qty": 92,
+          "ref_price": 90.20999908447266
+        }
+      ]
+    },
+    {
+      "pair": "RISK PARITY SPY",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SPY",
+          "side": "BUY",
+          "qty": 4,
+          "ref_price": 757.1199951171875
+        }
+      ]
+    },
+    {
+      "pair": "RISK PARITY TLT",
+      "event": "rebalance",
+      "signal_date": "2026-11-12",
+      "execute_on": "2026-11-13",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "TLT",
+          "side": "BUY",
+          "qty": 59,
+          "ref_price": 79.72000122070312
+        }
+      ]
+    }
+  ],
+  "last_run_warnings": [],
+  "log": [
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY DBC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "19% volatility: 11% of the book"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY EFA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "15% volatility: 14% of the book"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY GLD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "24% volatility: 9% of the book"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY IEF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "6% volatility: 33% of the book"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY SPY",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "15% volatility: 14% of the book"
+    },
+    {
+      "date": "2026-11-12",
+      "pair": "RISK PARITY TLT",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "11% volatility: 19% of the book"
+    }
+  ],
+  "equity": [
+    {
+      "date": "2026-11-12",
+      "cash": 643.8879168758376,
+      "unrealised": 24343.940113067627,
+      "equity": 24987.828029943463,
+      "open": 6,
+      "gross": 24343.940113067627,
+      "margin": 12171.970056533813,
+      "free": 12815.85797340965
+    }
+  ]
+}
