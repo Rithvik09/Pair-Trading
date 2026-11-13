@@ -20,14 +20,15 @@ equity curve of the book, and the cash in use.
 Pairs trading is the first of several strategies (the list and the order they're being built
 in: [ROADMAP.md](ROADMAP.md)). Each runs as its own paper book, a "sleeve", with its own
 starting cash: pairs in `state/book.json`, the others in `state/<name>.json`. Because the
-books are separate, each strategy's profit or loss is its own, and the recap ends with a line
-per strategy and a total:
+books are separate, each strategy's profit or loss is its own. Every recap after a new close
+opens with the total and then each strategy, since it started and for the day:
 
 ```
-**By strategy**
-Pairs: $100,410 (+$410, +0.41%)
-Trend: $99,800 (-$200, -0.20%)
-Total: $200,210 (+$210, +0.10%) on $200,000 started
+**P&L after the Fri 2026-11-13 close**
+Total: $250,410 · +$410 (+0.16%) overall · +$190 today
+Pairs: $100,510 · +$510 (+0.51%) overall · +$240 today
+Trend: $24,900 · -$100 (-0.40%) overall · -$50 today
+...
 ```
 
 The dashboard's Strategies tab has the same table, each book's value over time, and each

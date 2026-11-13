@@ -524,10 +524,16 @@ def _two_days():
     return old, new
 
 
-def test_recap_has_a_section_per_strategy_and_totals():
+PNL = ("**P&L after the Wed 2026-10-28 close**\n"
+       "Total: $150,310 · +$310 (+0.21%) overall · +$210 today\n"
+       "Pairs: $100,410 · +$410 (+0.41%) overall · +$310 today\n"
+       "Trend: $49,900 · -$100 (-0.20%) overall · -$100 today")
+
+
+def test_recap_opens_with_overall_and_per_strategy_pnl():
     old, new = _two_days()
     text = notify.full_recap(old, new)
-    assert text.startswith(notify.recap(old["book"], new["book"]))  # pairs part unchanged
+    assert text.startswith(PNL + "\n\n" + notify.recap(old["book"], new["book"]))
     assert "**Trend after the Wed 2026-10-28 close**" in text
     section = text[text.index("**Trend after"):]
     assert "$49,900" in section and "-$100" in section and "-0.20%" in section
@@ -535,10 +541,6 @@ def test_recap_has_a_section_per_strategy_and_totals():
     assert "9 holdings" in section
     assert "**TREND SPY** REBALANCE: up 14.2% over 12 months" in section
     assert "BUY 12 SPY" in section and "⚠ TREND: no price for UUP" in section
-    assert "**By strategy**" in text
-    assert "Pairs: $100,410 (+$410, +0.41%)" in text
-    assert "Trend: $49,900 (-$100, -0.20%)" in text
-    assert "Total: $150,310 (+$310, +0.21%) on $150,000 started" in text
 
 
 def test_recap_is_quiet_when_no_book_has_a_new_close():
@@ -551,7 +553,14 @@ def test_recap_skips_the_section_of_a_strategy_with_no_new_close():
     new["trend"] = old["trend"]  # e.g. its prices were late: only pairs moved on
     text = notify.full_recap(old, new)
     assert "Paper book after" in text and "Trend after" not in text
-    assert "Trend: $50,000 (+$0, +0.00%)" in text  # still counted in the totals
+    assert "Trend: $50,000 · +$0 (+0.00%) overall · +$0 today" in text  # still in the totals
+
+
+def test_a_new_book_counts_its_first_day_from_its_start():
+    old, new = _two_days()
+    del old["trend"]
+    new["trend"]["equity"] = new["trend"]["equity"][-1:]
+    assert "Trend: $49,900 · -$100 (-0.20%) overall · -$100 today" in notify.full_recap(old, new)
 
 
 def test_recap_posts_a_strategy_warning_even_without_a_new_close():
@@ -561,10 +570,13 @@ def test_recap_posts_a_strategy_warning_even_without_a_new_close():
     assert notify.full_recap(new, new) == ""  # once, not on every run
 
 
-def test_recap_with_only_the_pairs_book_is_the_old_recap():
+def test_recap_with_only_the_pairs_book_still_shows_pnl():
     old, new = _two_days()
     text = notify.full_recap({"book": old["book"]}, {"book": new["book"]})
-    assert text == notify.recap(old["book"], new["book"]) and "By strategy" not in text
+    assert text == ("**P&L after the Wed 2026-10-28 close**\n"
+                    "Total: $100,410 · +$410 (+0.41%) overall · +$310 today\n"
+                    "Pairs: $100,410 · +$410 (+0.41%) overall · +$310 today\n\n"
+                    + notify.recap(old["book"], new["book"]))
 
 
 def test_notifier_takes_two_state_directories(tmp_path, monkeypatch):
@@ -634,8 +646,8 @@ def test_daily_runs_each_strategy_on_its_own_book(tmp_path, market):
     (text,) = posted
     assert "Paper book after" in text and "Trend after" in text
     assert "**TREND UPP** REBALANCE" in text and "over 12 months" in text
-    assert "By strategy" in text and "Pairs: $" in text and "Trend: $" in text
-    assert "Total: $" in text and "on $200,000 started" in text
+    assert text.startswith("**P&L after") and "Total: $" in text
+    assert "Pairs: $" in text and "Trend: $" in text and "overall" in text
 
     posted.clear()
     _, new = _daily(tmp_path, prices)  # catch-up run on the same close
@@ -691,7 +703,7 @@ def test_a_disabled_strategy_is_not_run(tmp_path, market):
     prices, posted = market
     config = Config(watchlist=[("YYY", "XXX")], strategies={"trend": _params(enabled=False)})
     _daily(tmp_path, prices, config)
-    assert not (tmp_path / "trend.json").exists() and "By strategy" not in posted[0]
+    assert not (tmp_path / "trend.json").exists() and "Trend: $" not in posted[0]
 
 
 def test_pairs_with_no_prices_still_fails_the_run(tmp_path, market):

@@ -205,37 +205,44 @@ def strategy_recap(name: str, old: dict, new: dict, today: date | None = None,
     return "\n\n".join(parts)
 
 
-def by_strategy(books: dict[str, dict]) -> str:
-    """One line per book (what it's worth, and its profit or loss since it started), then
-    all of them together. A book with no close recorded yet counts at its cash."""
-    lines, worth, started = ["**By strategy**"], 0.0, 0.0
+def pnl(books: dict[str, dict]) -> str:
+    """Profit and loss overall and per strategy: what all the books are worth together, then
+    each one (pairs first), with its P&L since it started and since its previous close. A
+    book's first close counts from its starting cash; one with no close yet counts at its cash.
+    """
+    rows, dates = [], []
     for name in sorted(books, key=lambda n: (n != PAIRS_BOOK, n)):
-        b = books[name]
-        value = b["equity"][-1]["equity"] if b.get("equity") else b.get("cash")
+        b, equity = books[name], books[name].get("equity") or []
+        value = equity[-1]["equity"] if equity else b.get("cash")
         start = b.get("starting_cash") or value
         if not start:
             continue
-        lines.append(f"{title(name)}: ${value:,.0f} ({_money(value - start)}, "
-                     f"{value / start - 1:+.2%})")
-        worth, started = worth + value, started + start
-    if not started:
+        prev = equity[-2]["equity"] if len(equity) > 1 else start
+        rows.append((title(name), value, start, value - prev))
+        dates += [equity[-1]["date"]] if equity else []
+    if not rows:
         return ""
-    lines.append(f"Total: ${worth:,.0f} ({_money(worth - started)}, {worth / started - 1:+.2%}) "
-                 f"on ${started:,.0f} started")
-    return "\n".join(lines)
+
+    def line(label, value, start, day):
+        return (f"{label}: ${value:,.0f} · {_money(value - start)} ({value / start - 1:+.2%}) "
+                f"overall · {_money(day)} today")
+
+    total = [sum(r[i] for r in rows) for i in (1, 2, 3)]
+    head = f"**P&L after the {_day(max(dates))} close**" if dates else "**P&L**"
+    return "\n".join([head, line("Total", *total)] + [line(*r) for r in rows])
 
 
 def full_recap(old: dict[str, dict], new: dict[str, dict], today: date | None = None) -> str:
-    """One message for every book, keyed by file name without .json ('book' is pairs): the
-    pairs recap, a section per strategy, then profit and loss by strategy and in total.
-    The totals go out only with a new close, so a catch-up run on a finished day stays quiet.
-    With only the pairs book this is exactly recap()."""
+    """One message for every book, keyed by file name without .json ('book' is pairs): profit
+    and loss overall and per strategy first, then the pairs recap and a section per strategy.
+    The P&L goes out only with a new close, so a catch-up run on a finished day stays quiet."""
     strategies = sorted(n for n in new if n != PAIRS_BOOK)
-    parts = [recap(old.get(PAIRS_BOOK, {}), new[PAIRS_BOOK], today)] if PAIRS_BOOK in new else []
+    parts = []
+    if any(_new_close(old.get(n, {}), b) for n, b in new.items()):
+        parts.append(pnl(new))
+    parts += [recap(old.get(PAIRS_BOOK, {}), new[PAIRS_BOOK], today)] if PAIRS_BOOK in new else []
     said = tuple(new.get(PAIRS_BOOK, {}).get("last_run_warnings", []))
     parts += [strategy_recap(n, old.get(n, {}), new[n], today, said) for n in strategies]
-    if strategies and any(_new_close(old.get(n, {}), b) for n, b in new.items()):
-        parts.append(by_strategy(new))
     return "\n\n".join(p for p in parts if p)
 
 
