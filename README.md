@@ -15,6 +15,38 @@ by default as under Reg T; your broker may want more), and what's left free, wit
 trades need more margin than the book is worth. The dashboard has the same decision log, an
 equity curve of the book, and the cash in use.
 
+## More than one strategy
+
+Pairs trading is the first of several strategies (the list and the order they're being built
+in: [ROADMAP.md](ROADMAP.md)). Each runs as its own paper book, a "sleeve", with its own
+starting cash: pairs in `state/book.json`, the others in `state/<name>.json`. Because the
+books are separate, each strategy's profit or loss is its own, and the recap ends with a line
+per strategy and a total:
+
+```
+**By strategy**
+Pairs: $100,410 (+$410, +0.41%)
+Trend: $99,800 (-$200, -0.20%)
+Total: $200,210 (+$210, +0.10%) on $200,000 started
+```
+
+The dashboard's Strategies tab has the same table, each book's value over time, and each
+strategy's holdings and recent trades. Strategies are switched on and sized in `config.toml`
+under `[strategies.<name>]`. None of them places orders either.
+
+**Trend following** (`pairs/strategies/trend.py`, running on paper): for each of 12 ETFs
+across stocks, bonds, credit, gold, commodities, property and the dollar, go long if it rose
+over the past 12 months and short if it fell. Each position is sized so every ETF brings the
+same expected volatility: `vol_target` (10% a year by default) is a budget split evenly over
+the ETFs, so the book itself swings well under 10%, since they don't all move together. The
+stock held is capped at 1.5 times the book (`max_gross`). It rebalances at the first close of each
+month and is valued every day; its orders appear in the recap as `TREND SPY` REBALANCE.
+These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
+borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
+left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,
+worked out from how far Yahoo's adjusted prices restate the previous close; a split changes
+the share count instead, with a ⚠ to check it against your broker.
+
 ## How it runs (free, private)
 
 Everything stays private: the repo (with your trade history) is a private GitHub repo, and the
@@ -22,9 +54,9 @@ dashboard is a private Streamlit app that only you and people you invite can ope
 
 | Piece | Where | What it does |
 |---|---|---|
-| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET (+ ~11:30pm ET catch-up) | Fetches closes and updates `state/book.json`, commits it, then posts the day's recap and new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
-| `app.py` | Streamlit Community Cloud | Read-only dashboard: Orders, Positions (with the book's equity curve), Decision log, Scanner, Pair explorer |
-| `config.toml` | this repo | The watchlist and strategy settings. Edit it to change what's traded |
+| `.github/workflows/daily.yml` | GitHub Actions, weekdays ~4:45pm ET (+ ~11:30pm ET catch-up) | Fetches closes and updates the books in `state/`, commits them, then posts the day's recap and new orders to Discord (only after the commit succeeds, so nothing is posted twice or lost) |
+| `app.py` | Streamlit Community Cloud | Read-only dashboard: Orders, Strategies (profit and loss per strategy), Positions (with the book's equity curve), Decision log, Scanner, Pair explorer |
+| `config.toml` | this repo | The watchlist, the pairs settings and the other strategies' settings. Edit it to change what's traded |
 
 ### One-time setup
 
@@ -115,7 +147,7 @@ uv run streamlit run app.py                 # the dashboard
 uv run python -m pairs.cli scan             # print cointegrated pairs in the S&P 1500
 uv run python -m pairs.cli shortlist        # ...that also pass the filters and backtest
 uv run python -m pairs.cli validate         # score those filters on years they never saw
-uv run python -m pairs.cli step             # update state/book.json, print any new orders
+uv run python -m pairs.cli step             # update the books in state/, print any new orders
 DISCORD_WEBHOOK_URL=... uv run python -m pairs.cli step --notify   # ...and post them
 uv run pytest                               # tests (synthetic data, no network)
 ```

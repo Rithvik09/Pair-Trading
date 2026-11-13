@@ -3,7 +3,7 @@
     uv run python -m pairs.cli scan            # cointegrated pairs in the S&P 1500
     uv run python -m pairs.cli shortlist       # ...that also pass the backtest filters
     uv run python -m pairs.cli validate        # how well those filters did on unseen years
-    uv run python -m pairs.cli step            # update state/book.json, print new orders
+    uv run python -m pairs.cli step            # update the books in state/, print new orders
     uv run python -m pairs.cli step --notify   # ...and post them to Discord
 
 The hosted job doesn't use --notify: it commits the book first and then posts with
@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import time
+import traceback
 
 import pandas as pd
 
@@ -21,11 +22,13 @@ from pairs.backtest import BacktestConfig, signal_frame
 from pairs.borrow import BorrowInfo, borrow_table
 from pairs.config import Config, load_config
 from pairs.data import UNIVERSE, load_prices, load_universe, update_universe
-from pairs.notify import post_discord, recap
+from pairs.notify import PAIRS_BOOK, full_recap, post_discord, title
 from pairs.orders import last_completed_session
 from pairs.paper import PaperBook, pair_key
-from pairs.paths import BOOK_PATH
+from pairs.paths import BOOK_PATH, strategy_path
+from pairs.portfolio import WeightBook
 from pairs.scanner import scan, shortlist, walk_forward
+from pairs.strategies import STRATEGIES
 
 # How much more of its gap (in z) a waiting signal must have left to close than the weakest
 # open trade before it's swapped in. Each swap pays trading costs on two round trips.
@@ -224,13 +227,100 @@ def run_step(book: PaperBook, config: Config, period: str = "2y", now=None,
     return results, [stale] if stale else []
 
 
+class NoPrices(Exception):
+    """No price came back for any ticker a strategy trades."""
+
+
+def run_strategy(name: str, params: dict, book: WeightBook, margin_rate: float, now=None,
+                 sleep=time.sleep, attempts: int = 3) -> tuple[list[dict], str | None]:
+    """One strategy's day on its own book: pay its dividends, charge borrow on its shorts,
+    trade to new targets if a rebalance is due, value the book at the latest close, save it.
+    Returns (new orders, the stale-prices warning if Yahoo was behind)."""
+    strategy = STRATEGIES[name]
+    tickers = sorted(set(params["universe"]) | set(book.holdings))
+    now = now or pd.Timestamp.now(tz="America/New_York")
+    prices, stale = load_fresh_prices(tickers, strategy.PERIOD, now, attempts=attempts,
+                                      sleep=sleep)
+    prices = prices[[t for t in tickers if t in prices]].dropna(how="all")
+    if prices.empty:
+        raise NoPrices(f"no price data for {', '.join(tickers)}: check the tickers in "
+                       "config.toml")
+    date = prices.index[-1].date()
+    book.last_run_warnings = [stale] if stale else []
+    # each holding's last-priced close as Yahoo gives it today: lower once a dividend is paid
+    restated = {t: prices[t].dropna().loc[:d] for t, d in book.price_dates.items()
+                if d and t in prices}
+    book.credit_dividends({t: float(s.iloc[-1]) for t, s in restated.items() if len(s)})
+    book.accrue_borrow(date, {t: b.fee_rate for t, b in borrow_table(tickers).items()})
+    new = []
+    if strategy.due(book.last_rebalance, date):
+        weights, reasons = strategy.targets(prices, params)
+        # trade only on a real price at this close; the book is valued at the last one known
+        new = book.rebalance(date, prices.iloc[-1].dropna().to_dict(), weights, reasons,
+                             params["cost_bps"], margin_rate=margin_rate)
+    book.record_equity(date, prices.ffill().iloc[-1].dropna().to_dict(), margin_rate)
+    book.save()
+    return new, stale
+
+
+def _plain(book) -> dict:
+    """A book as it reads back from its file, for the recap to compare."""
+    return json.loads(json.dumps(book.to_dict(), default=str))
+
+
+def step_strategies(config: Config, state_dir, now=None, sleep=time.sleep, attempts: int = 3):
+    """Run every enabled strategy, each on its own book in `state_dir`.
+
+    One failing must not cost the others, or the pairs book, their day: its error becomes a
+    warning in its own book (otherwise left as it was) and the rest carry on.
+    Returns (books before, books after, new orders, warnings about books that couldn't be read).
+    """
+    before, after, orders, unread = {}, {}, [], []
+    for name, params in config.strategies.items():
+        if not params["enabled"]:
+            continue
+        path = strategy_path(name, state_dir)
+        try:
+            book = WeightBook.load(path, starting_cash=params["starting_cash"])
+        except (OSError, ValueError, KeyError, TypeError) as e:  # a damaged file is left
+            # for a human to look at, not overwritten
+            unread.append(f"⚠ {title(name)}: couldn't read {path.name} ({e}), so it "
+                          "wasn't run")
+            print(unread[-1])
+            continue
+        before[name] = _plain(book)
+        try:
+            new, stale = run_strategy(name, params, book, config.margin_rate, now, sleep,
+                                      attempts)
+            orders += new
+            if stale:  # already waited for Yahoo once: the hosted job has no time to do it twice
+                attempts = 1
+        except Exception as e:  # noqa: BLE001  whatever went wrong, the other books go on
+            if not isinstance(e, NoPrices):
+                traceback.print_exc()
+            book = WeightBook.load(path, starting_cash=params["starting_cash"])  # undo half a run
+            book.last_run_warnings = [
+                f"⚠ {title(name)}: {e}" if isinstance(e, NoPrices) else
+                f"⚠ {title(name)} failed and was skipped for this close "
+                f"({type(e).__name__}: {e}). Its book is as it was."]
+            book.save()
+            print(book.last_run_warnings[0])
+        after[name] = _plain(book)
+        print(f"{title(name)}: cash ${book.cash:,.2f}, holdings: {len(book.holdings)}, "
+              f"new orders: {len(after[name]['orders']) - len(before[name]['orders'])}")
+    return before, after, orders, unread
+
+
 def daily(book: PaperBook, config: Config, webhook_url: str | None = None, now=None,
           sleep=time.sleep, attempts: int = 3) -> list[dict]:
-    """The scheduled job: step every pair, save the book, post the day's recap (the book's
-    value, every decision and why, new orders, new warnings). Returns the new orders."""
-    before = json.loads(json.dumps(book.to_dict(), default=str))
+    """The scheduled job: step every pair, save the book, run the other strategies on their
+    own books (kept next to the pairs book), post the day's recap (each book's value, every
+    decision and why, new orders, new warnings, profit and loss by strategy).
+    Returns the new orders."""
+    before = _plain(book)
     first_new = len(book.orders)
     results, notes = run_step(book, config, now=now, sleep=sleep, attempts=attempts)
+    waited = bool(notes)  # Yahoo is behind and the pairs step already retried for it
     for y, x, action, z in results:
         print(f"{pair_key((y, x))}: z={z:+.2f}  {action}")
     missing = [pair_key((y, x)) for y, x, action, _ in results if action == "no data"]
@@ -248,7 +338,13 @@ def daily(book: PaperBook, config: Config, webhook_url: str | None = None, now=N
     new = book.orders[first_new:]
     print(f"cash ${book.cash:,.2f}, open positions: {len(book.positions)}, "
           f"new orders: {len(new)}")
-    text = recap(before, json.loads(json.dumps(book.to_dict(), default=str)))
+    old, books, orders, unread = step_strategies(config, book.path.parent, now, sleep,
+                                                 1 if waited else attempts)
+    if unread:
+        book.last_run_warnings += unread
+        book.save()
+    new = new + orders
+    text = full_recap({PAIRS_BOOK: before, **old}, {PAIRS_BOOK: _plain(book), **books})
     if text:
         print(text)
         post_discord(text, webhook_url)

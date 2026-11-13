@@ -1,7 +1,7 @@
 """Pairs trading dashboard (view-only).  Run with:  uv run streamlit run app.py
 
-The daily job (GitHub Actions -> `pairs.cli step`) is the only thing that changes the book.
-The watchlist and strategy live in config.toml; edit that to change what is traded.
+The daily job (GitHub Actions -> `pairs.cli step`) is the only thing that changes the books.
+The watchlist and strategies live in config.toml; edit that to change what is traded.
 """
 
 import os
@@ -17,9 +17,11 @@ from pairs.backtest import BacktestConfig, backtest, signal_frame
 from pairs.borrow import DEFAULT_FEE, OVERRIDES_PATH, borrow_label, borrow_table, fee_label
 from pairs.config import load_config
 from pairs.data import UNIVERSE, load_prices
-from pairs.notify import EVENT_LABELS, _money
+from pairs.notify import EVENT_LABELS, _money, title
+from pairs.orders import pending_orders
 from pairs.paper import PaperBook, pair_key, short_legs
-from pairs.paths import BOOK_PATH
+from pairs.paths import BOOK_PATH, strategy_path
+from pairs.portfolio import WeightBook
 from pairs.scanner import scan
 from pairs.signals import trade_opens
 from pairs.sizing import loss_rates, plan, smallest_trade
@@ -121,23 +123,31 @@ def borrow_source_note(borrow: dict) -> str:
 
 
 book = PaperBook.load(BOOK_PATH, starting_cash=config.starting_cash)
-tab_orders, tab_book, tab_log, tab_size, tab_scan, tab_pair = st.tabs(
-    ["Orders", "Positions", "Decision log", "Sizing", "Scanner", "Pair explorer"])
+# the other strategies' books: those switched on, and any switched off that still has a book
+sleeves = {name: WeightBook.load(strategy_path(name), starting_cash=p["starting_cash"])
+           for name, p in config.strategies.items()
+           if p["enabled"] or strategy_path(name).exists()}
+tab_orders, tab_strats, tab_book, tab_log, tab_size, tab_scan, tab_pair = st.tabs(
+    ["Orders", "Strategies", "Positions", "Decision log", "Sizing", "Scanner", "Pair explorer"])
 
 # ---------------------------------------------------------------- orders
 with tab_orders:
     today = date.today().isoformat()
-    upcoming = [o for o in book.orders if o["execute_on"] and o["execute_on"] >= today]
+    # the pairs book's orders, then each other strategy's (e.g. a monthly rebalance)
+    upcoming = pending_orders(book.orders + [o for b in sleeves.values() for o in b.orders],
+                              today)
     last_run = max(book.last_bar.values(), default=None)
     st.caption(f"Latest close processed: {last_run or 'none yet'}. The daily job runs after "
                "each weekday close and posts new orders to Discord.")
     if not upcoming:
-        st.info("No orders to place. Nothing on the watchlist has crossed a threshold.")
+        st.info("No orders to place. Nothing on the watchlist has crossed a threshold"
+                + (", and no other strategy has a rebalance due." if sleeves else "."))
     for when in sorted({o["execute_on"] for o in upcoming}):
         st.subheader(f"Place at the open, {date.fromisoformat(when):%a %b %-d}")
         for o in (o for o in upcoming if o["execute_on"] == when):
+            z = "" if o["event"] == "rebalance" else f"z {o['z']:+.2f} "  # no z-score behind it
             st.markdown(f"**{o['pair']}** · {EVENT_LABELS.get(o['event'], o['event'])} · "
-                        f"z {o['z']:+.2f} at the {o['signal_date']} close")
+                        f"{z}at the {o['signal_date']} close")
             st.dataframe(pd.DataFrame(o["legs"]), hide_index=True, width="stretch",
                          column_config={"ref_price": st.column_config.NumberColumn(
                              "ref price (signal close)", format="$%.2f")})
@@ -150,6 +160,79 @@ with tab_orders:
                                  for leg in o["legs"])}
             for o in reversed(book.orders)])
         st.dataframe(hist, hide_index=True, width="stretch")
+
+# ---------------------------------------------------------------- strategies
+with tab_strats:
+    st.caption("Each strategy runs as its own paper book with its own cash, so its profit or "
+               "loss is its own. The Positions and Decision log tabs are the pairs book's.")
+    books = {"Pairs": book, **{title(name): b for name, b in sleeves.items()}}
+    rows = []
+    for label, b in books.items():
+        value = b.equity[-1]["equity"] if b.equity else b.cash
+        rows.append({"strategy": label, "started with": b.starting_cash, "value now": value,
+                     "open": len(b.positions if b is book else b.holdings)})
+    rows.append({"strategy": "Total", **{k: sum(r[k] for r in rows)
+                                         for k in ("started with", "value now", "open")}})
+    table = pd.DataFrame(rows)
+    table["P&L"] = table["value now"] - table["started with"]
+    table["P&L %"] = table["P&L"] / table["started with"] * 100
+    dollars = st.column_config.NumberColumn(format="$%.0f")
+    st.dataframe(table[["strategy", "started with", "value now", "P&L", "P&L %", "open"]],
+                 hide_index=True, width="stretch",
+                 column_config={"started with": dollars, "value now": dollars, "P&L": dollars,
+                                "P&L %": st.column_config.NumberColumn(format="%+.2f%%"),
+                                "open": st.column_config.NumberColumn(
+                                    "open positions", help="Pairs: open pair trades. Other "
+                                                           "strategies: tickers held.")})
+    total = rows[-1]
+    gain = _money(total["value now"] - total["started with"]).replace("$", "\\$")
+    st.markdown(f"All together: \\${total['value now']:,.0f}, {gain} on the "
+                f"\\${total['started with']:,.0f} started with.")
+
+    if any(b.equity for b in books.values()):
+        st.subheader("Value of each book")
+        fig = go.Figure()
+        for label, b in books.items():
+            if b.equity:
+                eq = pd.DataFrame(b.equity)
+                fig.add_trace(go.Scatter(x=pd.to_datetime(eq["date"]), y=eq["equity"],
+                                         mode="lines+markers", name=label))
+        fig.update_layout(height=340, margin={"t": 10, "b": 10}, yaxis_tickprefix="$",
+                          legend={"orientation": "h"})
+        st.plotly_chart(fig, width="stretch")
+    else:
+        st.info("No closes recorded yet. The chart appears after the daily job's next run.")
+
+    for name, b in sleeves.items():
+        with st.expander(f"{title(name)}: holdings and recent trades"):
+            if not b.equity:
+                st.info("No book yet. The daily job creates it on its next run.")
+            for w in b.last_run_warnings:
+                st.warning(w)
+            if b.equity:
+                last = b.equity[-1]
+                st.caption(f"As of the {last['date']} close. Last rebalanced: "
+                           f"{b.last_rebalance or 'never'}.")
+            if b.holdings and b.equity:
+                held = pd.DataFrame([{"ticker": t, "shares": n, "price": b.last_prices.get(t)}
+                                     for t, n in sorted(b.holdings.items())])
+                held["value"] = held["shares"] * held["price"]
+                held["weight"] = held["value"] / last["equity"] * 100
+                price = st.column_config.NumberColumn(format="$%.2f")
+                st.dataframe(held, hide_index=True, width="stretch",
+                             column_config={"price": price, "value": dollars,
+                                            "weight": st.column_config.NumberColumn(
+                                                "weight (% of book)", format="%+.1f%%")})
+                st.caption("Negative shares are a short. Prices are the last close the daily "
+                           "job saw.")
+            elif b.equity:
+                st.markdown("Nothing held: the book is all cash.")
+            if b.log:
+                st.markdown("Recent trades and why, newest first:")
+                st.dataframe(pd.DataFrame(reversed(b.log[-50:]))[["date", "pair", "reason"]],
+                             hide_index=True, width="stretch",
+                             column_config={"pair": "order",
+                                            "reason": st.column_config.TextColumn(width="large")})
 
 # ---------------------------------------------------------------- sizing
 @st.cache_data(ttl=3600, max_entries=5, show_spinner="Pricing the watchlist…")

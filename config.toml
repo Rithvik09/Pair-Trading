@@ -65,3 +65,21 @@ starting_cash = 100000  # only used the first time the book is created
 # signal replaces the open trade in profit with the least left to gain (losing trades stay).
 # max_open_positions = 10  # optional hard cap on top of that
 margin_rate = 0.5        # margin per $ of stock held, long and short; 0.5 = Reg T. Ask your broker
+
+# Other strategies run next to pairs trading. Each is its own paper book (state/<name>.json)
+# with its own cash, so the recap and the dashboard show profit and loss per strategy and
+# in total. See ROADMAP.md for the ones still to come. cost_bps is [strategy]'s unless set here.
+
+# Trend following: long the ETFs that rose over the past 12 months, short those that fell,
+# each sized to bring the same volatility. Rebalanced at the first close of each month.
+# vol_target is a volatility budget, not a forecast: each of the N ETFs is sized for
+# vol_target / N a year. The book would only swing by the full vol_target if they all moved
+# together; they don't, so expect its own volatility to be well below it.
+[strategies.trend]
+enabled = true
+starting_cash = 100000  # each strategy is its own paper book with its own cash
+# stocks (US large, tech, small, developed, emerging), bonds, credit, gold, commodities,
+# property, the dollar
+universe = ["SPY", "QQQ", "IWM", "EFA", "EEM", "TLT", "IEF", "LQD", "GLD", "DBC", "VNQ", "UUP"]
+vol_target = 0.10       # volatility budget shared out over the ETFs (see above)
+max_gross = 1.5         # most stock held, long + short, as a multiple of the book's value

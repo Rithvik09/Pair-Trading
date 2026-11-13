@@ -1,6 +1,6 @@
 name: daily step
 
-# After each weekday close: update the paper book, commit it, then post the recap to Discord.
+# After each weekday close: update the paper books, commit them, then post the recap to Discord.
 # Posting happens only after the push succeeds, so a failed run never leaves orders posted but
 # unsaved: the next run recomputes them and posts them then (once).
 # 21:45 UTC = 5:45pm ET in summer, 4:45pm ET in winter (prices are final by 4:15pm ET).
@@ -51,20 +51,21 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - name: Keep the previous book to diff against
+      - name: Keep the previous books to diff against
         run: |
-          cp state/book.json "$RUNNER_TEMP/old.json" 2>/dev/null || echo "First run, no book yet."
+          mkdir -p "$RUNNER_TEMP/old"
+          cp -R state/. "$RUNNER_TEMP/old/" 2>/dev/null || echo "First run, no books yet."
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
         with:
           name: state
           path: state/
-      - name: Commit the updated book
+      - name: Commit the updated books
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state/
           if git diff --cached --quiet; then
-            echo "The book didn't change: nothing to commit."
+            echo "The books didn't change: nothing to commit."
             exit 0
           fi
           git commit -m "Daily step: $(date -u +%F)"
@@ -76,4 +77,4 @@ jobs:
       - name: Post the recap and new orders to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
-        run: python3 -m pairs.notify "$RUNNER_TEMP/old.json" state/book.json
+        run: python3 -m pairs.notify "$RUNNER_TEMP/old" state

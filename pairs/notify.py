@@ -3,7 +3,8 @@
 Stdlib only on purpose: the hosted job runs this module with the webhook secret and without
 installing any third-party package.
 
-    python -m pairs.notify OLD_BOOK.json NEW_BOOK.json   # post the recap of what's new in NEW
+    python -m pairs.notify OLD_STATE_DIR NEW_STATE_DIR   # post the recap of what's new in NEW
+    python -m pairs.notify OLD_BOOK.json NEW_BOOK.json   # ...for the pairs book alone
 """
 
 import json
@@ -22,7 +23,9 @@ EVENT_LABELS = {
     "close": "CLOSE (converged)",
     "stop": "STOP-LOSS EXIT",
     "replace": "CLOSE (swapped for a better trade)",
+    "rebalance": "REBALANCE",  # a strategy book traded back to its target weights
 }
+PAIRS_BOOK = "book"  # the pairs book's file name in the state directory, without .json
 
 
 def _day(iso: str | None) -> str:
@@ -46,8 +49,9 @@ def format_orders(orders: list[dict], today: date | None = None) -> str:
         out.append(f"**Orders for {_day(when)}, at the open**"
                    + (" ⚠ LATE: that session has passed, check prices first" if late else ""))
         for o in group:
+            z = "" if o["event"] == "rebalance" else f"z {o['z']:+.2f}, "  # no z-score behind it
             out.append(f"**{o['pair']}** {EVENT_LABELS.get(o['event'], o['event'])} "
-                       f"(z {o['z']:+.2f}, signal from {_day(o['signal_date'])} close)")
+                       f"({z}signal from {_day(o['signal_date'])} close)")
             out.extend(f"• {leg['side']} {leg['qty']} {leg['ticker']}  (ref ${leg['ref_price']:,.2f})"
                        for leg in o["legs"])
         out.append("")
@@ -162,11 +166,92 @@ def recap(old: dict, new: dict, today: date | None = None) -> str:
     return "\n\n".join(parts)
 
 
+def title(name: str) -> str:
+    """A strategy's name as shown to the user, from its book's file name: 'trend' -> 'Trend'."""
+    return "Pairs" if name == PAIRS_BOOK else name.replace("_", " ").capitalize()
+
+
+def _new_close(old: dict, new: dict) -> bool:
+    """Whether `new` has a close recorded that `old` doesn't."""
+    equity = new.get("equity", [])
+    return bool(equity) and equity[-1]["date"] not in {e["date"] for e in old.get("equity", [])}
+
+
+def strategy_recap(name: str, old: dict, new: dict, today: date | None = None,
+                   said: tuple[str, ...] = ()) -> str:
+    """The same as recap, for a strategy's book: its value and profit or loss after a new
+    close, the trades of a rebalance with their reasons, new orders, new warnings.
+    `said` are warnings another book already carries (e.g. Yahoo is late), not to repeat."""
+    parts = []
+    seen = {_log_id(e) for e in old.get("log", [])}
+    decisions = [e for e in new.get("log", []) if _log_id(e) not in seen]
+    if _new_close(old, new):
+        equity = new["equity"]
+        now = equity[-1]
+        start = new.get("starting_cash") or now["equity"]
+        day = (f" · {_money(now['equity'] - equity[-2]['equity'])} since "
+               f"{_day(equity[-2]['date'])}" if len(equity) > 1 else "")
+        lines = [f"**{title(name)} after the {_day(now['date'])} close**",
+                 (f"Value ${now['equity']:,.0f} · {_money(now['equity'] - start)} "
+                  f"({now['equity'] / start - 1:+.2%}) since the ${start:,.0f} start{day} · "
+                  f"{now['open']} holdings")]
+        parts.append("\n".join(lines + _decision_lines(decisions)))
+    elif decisions:
+        parts.append("\n".join(_decision_lines(decisions)))
+    if orders := new_orders(old, new):
+        parts.append(format_orders(orders, today))
+    parts += [w for w in new.get("last_run_warnings", [])
+              if w not in old.get("last_run_warnings", []) and w not in said]
+    return "\n\n".join(parts)
+
+
+def by_strategy(books: dict[str, dict]) -> str:
+    """One line per book (what it's worth, and its profit or loss since it started), then
+    all of them together. A book with no close recorded yet counts at its cash."""
+    lines, worth, started = ["**By strategy**"], 0.0, 0.0
+    for name in sorted(books, key=lambda n: (n != PAIRS_BOOK, n)):
+        b = books[name]
+        value = b["equity"][-1]["equity"] if b.get("equity") else b.get("cash")
+        start = b.get("starting_cash") or value
+        if not start:
+            continue
+        lines.append(f"{title(name)}: ${value:,.0f} ({_money(value - start)}, "
+                     f"{value / start - 1:+.2%})")
+        worth, started = worth + value, started + start
+    if not started:
+        return ""
+    lines.append(f"Total: ${worth:,.0f} ({_money(worth - started)}, {worth / started - 1:+.2%}) "
+                 f"on ${started:,.0f} started")
+    return "\n".join(lines)
+
+
+def full_recap(old: dict[str, dict], new: dict[str, dict], today: date | None = None) -> str:
+    """One message for every book, keyed by file name without .json ('book' is pairs): the
+    pairs recap, a section per strategy, then profit and loss by strategy and in total.
+    The totals go out only with a new close, so a catch-up run on a finished day stays quiet.
+    With only the pairs book this is exactly recap()."""
+    strategies = sorted(n for n in new if n != PAIRS_BOOK)
+    parts = [recap(old.get(PAIRS_BOOK, {}), new[PAIRS_BOOK], today)] if PAIRS_BOOK in new else []
+    said = tuple(new.get(PAIRS_BOOK, {}).get("last_run_warnings", []))
+    parts += [strategy_recap(n, old.get(n, {}), new[n], today, said) for n in strategies]
+    if strategies and any(_new_close(old.get(n, {}), b) for n, b in new.items()):
+        parts.append(by_strategy(new))
+    return "\n\n".join(p for p in parts if p)
+
+
+def load_state(path) -> dict[str, dict]:
+    """Every book in a state directory, keyed by file name without .json. Empty if the
+    directory isn't there (the first run)."""
+    return {f.stem: json.loads(f.read_text()) for f in sorted(Path(path).glob("*.json"))}
+
+
 def main(argv: list[str]) -> None:
     old_path, new_path = argv
-    old = json.loads(Path(old_path).read_text()) if os.path.exists(old_path) else {}
-    new = json.loads(Path(new_path).read_text())
-    text = recap(old, new)
+    if os.path.isdir(new_path):
+        text = full_recap(load_state(old_path), load_state(new_path))
+    else:
+        old = json.loads(Path(old_path).read_text()) if os.path.exists(old_path) else {}
+        text = recap(old, json.loads(Path(new_path).read_text()))
     if text:
         print(text)
         post_discord(text, os.environ.get("DISCORD_WEBHOOK_URL"))

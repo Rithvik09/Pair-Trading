@@ -88,6 +88,11 @@ def next_session(signal_date) -> str | None:
     return d.isoformat()
 
 
+def pending_orders(orders: list[dict], today: str) -> list[dict]:
+    """Orders still to place: those for today's session or a later one (ISO dates)."""
+    return [o for o in orders if o["execute_on"] and o["execute_on"] >= today]
+
+
 def leg_orders(position: dict, prices: tuple[float, float], closing: bool) -> list[dict]:
     """One order per leg. Opening: short legs SELL SHORT, long legs BUY.
     Closing: the reverse (BUY TO COVER / SELL), same share counts."""
