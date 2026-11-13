@@ -120,3 +120,12 @@ starting_cash = 100000
 index = "S&P 500"       # which index in universe.csv to trade
 position_size = 0.05    # each trade's stock + hedge, as a share of the book
 max_positions = 20      # trades open at once; the widest gaps are taken first
+
+# Short-term reversal: long the 20 S&P 500 stocks that fell most over the past week, short
+# the 20 that rose most. Swapped at the first close of each week, so trading costs are high.
+[strategies.reversal]
+enabled = true
+starting_cash = 100000
+index = "S&P 500"       # which index in universe.csv to rank
+n_each = 20             # stocks long, and the same number short
+exposure = 1.0          # stock held, long + short, as a multiple of the book's value

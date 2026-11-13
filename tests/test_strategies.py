@@ -14,7 +14,15 @@ from pairs.paper import PaperBook
 from pairs.paths import STATE_DIR, strategy_path
 from pairs.portfolio import WeightBook
 from pairs.signals import leg_weights
-from pairs.strategies import STRATEGIES, low_vol, momentum, risk_parity, sector_arb, trend
+from pairs.strategies import (
+    STRATEGIES,
+    low_vol,
+    momentum,
+    reversal,
+    risk_parity,
+    sector_arb,
+    trend,
+)
 
 
 def _etfs(n=400, end="2026-10-26"):
@@ -397,6 +405,49 @@ def test_sector_arb_nets_the_hedges_on_one_etf():
 def test_repo_config_runs_sector_arb_on_its_own_book():
     sa = load_config().strategies["sector_arb"]
     assert sa["enabled"] and sa["index"] == "S&P 500" and sa["max_positions"] >= 1
+
+
+# ---------------------------------------------------------------- short-term reversal
+def _rev(**over):
+    return strategy_params("reversal", {"n_each": 5, **over})
+
+
+def _week(s):
+    return s.iloc[-1] / s.iloc[-6] - 1
+
+
+def test_reversal_buys_last_weeks_losers_and_shorts_its_winners():
+    px = _stocks(n=60)
+    weights, reasons = reversal.targets(px, _rev(exposure=1.0))
+    ranked = sorted(px, key=lambda t: _week(px[t]))
+    assert {t for t, w in weights.items() if w > 0} == set(ranked[:5])
+    assert {t for t, w in weights.items() if w < 0} == set(ranked[-5:])
+    assert all(abs(w) == pytest.approx(0.1) for w in weights.values())
+    worst = ranked[0]
+    assert reasons[worst] == (f"{'up' if _week(px[worst]) >= 0 else 'down'} "
+                              f"{abs(_week(px[worst])):.1%} over the past week: among the 5 "
+                              "worst of 30, long for a bounce")
+
+
+def test_reversal_does_not_look_ahead():
+    px = _stocks(n=60)
+    early = px.index[-10]
+    assert reversal.targets(px.loc[:early], _rev()) == reversal.targets(px, _rev(), asof=early)
+
+
+@pytest.mark.parametrize("last, date, due", [
+    (None, "2026-11-12", True),
+    ("2026-11-09", "2026-11-13", False),  # Monday, then Friday of the same week
+    ("2026-11-13", "2026-11-16", True),  # Friday, then the next Monday
+    ("2026-12-31", "2027-01-04", True),  # across the new year
+])
+def test_reversal_trades_at_the_first_close_of_each_week(last, date, due):
+    assert reversal.due(last, date) is due
+
+
+def test_repo_config_runs_reversal_on_its_own_book():
+    r = load_config().strategies["reversal"]
+    assert r["enabled"] and r["index"] == "S&P 500"
 
 
 # ---------------------------------------------------------------- recap by strategy

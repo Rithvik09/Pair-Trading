@@ -70,6 +70,12 @@ split between the stock and its hedge; at most `max_positions` (20) are open, wi
 first. Hedges from several stocks on one ETF are netted into one holding. Unlike pairs, a
 stopped-out stock isn't held back from re-entering.
 
+**Short-term reversal** (`pairs/strategies/reversal.py`, running on paper): at the first
+close of each week, go long the 20 S&P 500 stocks that fell most over the past five days and
+short the 20 that rose most, at equal weights adding up to `exposure` (1.0). It replaces most
+of its holdings every week, so trading costs eat much of a small edge; the recap will show
+whether anything is left.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,
