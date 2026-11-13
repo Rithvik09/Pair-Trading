@@ -12,7 +12,7 @@ from pairs.config import Config, load_config, strategy_params
 from pairs.paper import PaperBook
 from pairs.paths import STATE_DIR, strategy_path
 from pairs.portfolio import WeightBook
-from pairs.strategies import STRATEGIES, risk_parity, trend
+from pairs.strategies import STRATEGIES, momentum, risk_parity, trend
 
 
 def _etfs(n=400, end="2026-10-26"):
@@ -119,6 +119,8 @@ def test_config_loads_a_strategy_section(tmp_path):
     ("[strategies.trend]\nstarting_cash = 0\n", "starting_cash"),
     ("[strategies.trend]\nvol_target = -0.1\n", "vol_target"),
     ("[strategies.trend]\nenabled = \"yes\"\n", "enabled"),
+    ("[strategies.momentum]\nn_each = 0\n", "n_each"),
+    ("[strategies.momentum]\nn_each = 2.5\n", "n_each"),
 ])
 def test_config_rejects_bad_strategy_sections(tmp_path, text, match):
     f = tmp_path / "config.toml"
@@ -179,6 +181,98 @@ def test_repo_config_runs_risk_parity_on_its_own_book():
     rp = load_config().strategies["risk_parity"]
     assert rp["enabled"] and {"SPY", "TLT", "GLD"} <= set(rp["universe"])
     assert strategy_path("risk_parity") == STATE_DIR / "risk_parity.json"
+
+
+# ---------------------------------------------------------------- momentum long/short
+def _stocks(n=300, k=30):
+    """k stocks, S00 drifting down hardest through S29 drifting up hardest."""
+    rng = np.random.default_rng(5)
+    idx = pd.bdate_range(end="2026-10-26", periods=n)
+    return pd.DataFrame({f"S{i:02d}": 50 * np.exp(np.cumsum(rng.normal((i - k / 2) * 1e-4,
+                                                                     0.01, n)))
+                         for i in range(k)}, idx)
+
+
+def _mom(**over):
+    return strategy_params("momentum", {"n_each": 5, **over})
+
+
+def _score(s):
+    return s.iloc[-22] / s.iloc[-253] - 1
+
+
+def test_momentum_buys_the_winners_and_shorts_the_losers():
+    px = _stocks()
+    weights, reasons = momentum.targets(px, _mom(exposure=1.0))
+    ranked = sorted(px, key=lambda t: _score(px[t]))
+    assert {t for t, w in weights.items() if w > 0} == set(ranked[-5:])
+    assert {t for t, w in weights.items() if w < 0} == set(ranked[:5])
+    assert all(abs(w) == pytest.approx(0.1) for w in weights.values())  # 1.0 / 2 / 5
+    best = ranked[-1]
+    assert reasons[best] == (f"up {_score(px[best]):.1%} over the 12 months to a month ago: "
+                             "among the 5 best of 30, long")
+
+
+def test_momentum_skips_the_latest_month():
+    px = _stocks()
+    loser = min(px, key=lambda t: _score(px[t]))
+    px.loc[px.index[-21:], loser] *= 3  # a late rally doesn't count
+    weights, _ = momentum.targets(px, _mom())
+    assert weights[loser] < 0
+
+
+def test_momentum_leaves_out_stocks_without_a_years_history():
+    px = _stocks()
+    best = max(px, key=lambda t: _score(px[t]))
+    px.loc[px.index[:-200], best] = np.nan
+    weights, _ = momentum.targets(px, _mom())
+    assert best not in weights
+
+
+def test_momentum_does_not_look_ahead():
+    px = _stocks()
+    early = px.index[-30]
+    assert momentum.targets(px.loc[:early], _mom()) == momentum.targets(px, _mom(), asof=early)
+
+
+def test_momentum_trades_the_sp500_from_universe_csv():
+    tickers = momentum.tickers(_mom())
+    assert 450 < len(tickers) < 520 and "AAPL" in tickers and len(set(tickers)) == len(tickers)
+
+
+def test_repo_config_runs_momentum_on_its_own_book():
+    m = load_config().strategies["momentum"]
+    assert m["enabled"] and m["index"] == "S&P 500" and m["n_each"] >= 5
+
+
+def test_a_short_that_cannot_be_borrowed_is_dropped(tmp_path, market, monkeypatch):
+    prices, _ = market
+    from pairs.borrow import BorrowInfo
+    monkeypatch.setattr(cli, "borrow_table", lambda tickers: {
+        "DWN": BorrowInfo(shortable=False, fee_rate=0.0, available=0, source="ibkr")})
+    _daily(tmp_path, prices)
+    book = WeightBook.load(tmp_path / "trend.json")
+    assert "DWN" not in book.holdings and book.holdings["UPP"] > 0
+    assert any(e["pair"] == "TREND DWN" and "can't borrow" in e["reason"] for e in book.log)
+
+
+def test_between_rebalances_only_the_holdings_are_priced(tmp_path, market, monkeypatch):
+    prices, _ = market
+    config = Config(strategies={"trend": _params(universe=["UPP", "DWN", "CALM", "NEW"])})
+    asked = []
+
+    def load(tickers, **k):
+        asked.append(sorted(tickers))
+        return prices[[t for t in tickers if t in prices]]
+    monkeypatch.setattr(cli, "load_prices", lambda tickers, **k: load(tickers)
+                        .loc[:prices.index[-2]])
+    book = PaperBook.load(tmp_path / "book.json")
+    cli.daily(book, config, now=_after_close(prices.iloc[:-1]), sleep=lambda s: None)
+    held = sorted(WeightBook.load(tmp_path / "trend.json").holdings)
+    asked.clear()
+    monkeypatch.setattr(cli, "load_prices", lambda tickers, **k: load(tickers))
+    cli.daily(book, config, now=_after_close(prices), sleep=lambda s: None)
+    assert asked == [held]  # same month: no need to price the whole universe
 
 
 # ---------------------------------------------------------------- recap by strategy

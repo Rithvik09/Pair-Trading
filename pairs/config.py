@@ -52,6 +52,10 @@ def strategy_params(name: str, section: dict, cost_bps: float = BacktestConfig.c
                 raise ValueError(f"config.toml [{where}]: {k} must be a number above 0, "
                                  f"got {out[k]!r}")
             out[k] = float(out[k])
+        elif isinstance(default, int) and not isinstance(default, bool):
+            if isinstance(out[k], bool) or not isinstance(out[k], int) or out[k] < 1:
+                raise ValueError(f"config.toml [{where}]: {k} must be a whole number of 1 "
+                                 f"or more, got {out[k]!r}")
     if "universe" in out:
         u = out["universe"]
         if not isinstance(u, list) or not u or not all(isinstance(t, str) and t.strip()

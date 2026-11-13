@@ -7,10 +7,12 @@ A strategy is a module with:
                               ticker (negative = short) as of the last row of `prices`, and
                               one plain-English line per ticker on why
     due(last_rebalance, date) whether to trade the book to those targets at this close
+    tickers(params)           optional: what to price on a rebalance day, if not
+                              params["universe"] (e.g. every stock in an index)
 
 To add one, write the module and list it here; the daily job, recap and dashboard pick it up.
 """
 
-from pairs.strategies import risk_parity, trend
+from pairs.strategies import momentum, risk_parity, trend
 
-STRATEGIES = {"trend": trend, "risk_parity": risk_parity}
+STRATEGIES = {"trend": trend, "risk_parity": risk_parity, "momentum": momentum}

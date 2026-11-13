@@ -92,3 +92,12 @@ enabled = true
 starting_cash = 100000
 universe = ["SPY", "EFA", "TLT", "IEF", "GLD", "DBC"]
 exposure = 1.0          # stock held as a multiple of the book's value; above 1 borrows
+
+# Momentum long/short: long the S&P 500 stocks that rose most over the 12 months to a month
+# ago, short those that fell most, equal weights. Swapped at the first close of each month.
+[strategies.momentum]
+enabled = true
+starting_cash = 100000
+index = "S&P 500"       # which index in universe.csv to rank
+n_each = 20             # stocks long, and the same number short
+exposure = 1.0          # stock held, long + short, as a multiple of the book's value

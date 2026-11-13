@@ -237,8 +237,13 @@ def run_strategy(name: str, params: dict, book: WeightBook, margin_rate: float, 
     trade to new targets if a rebalance is due, value the book at the latest close, save it.
     Returns (new orders, the stale-prices warning if Yahoo was behind)."""
     strategy = STRATEGIES[name]
-    tickers = sorted(set(params["universe"]) | set(book.holdings))
     now = now or pd.Timestamp.now(tz="America/New_York")
+    tickers = set(book.holdings)
+    # the whole universe is only needed to pick new targets; other days value what's held
+    if not tickers or strategy.due(book.last_rebalance, last_completed_session(now)):
+        tickers |= set(strategy.tickers(params) if hasattr(strategy, "tickers")
+                       else params["universe"])
+    tickers = sorted(tickers)
     prices, stale = load_fresh_prices(tickers, strategy.PERIOD, now, attempts=attempts,
                                       sleep=sleep)
     prices = prices[[t for t in tickers if t in prices]].dropna(how="all")
@@ -251,13 +256,21 @@ def run_strategy(name: str, params: dict, book: WeightBook, margin_rate: float, 
     restated = {t: prices[t].dropna().loc[:d] for t, d in book.price_dates.items()
                 if d and t in prices}
     book.credit_dividends({t: float(s.iloc[-1]) for t, s in restated.items() if len(s)})
-    book.accrue_borrow(date, {t: b.fee_rate for t, b in borrow_table(tickers).items()})
+    borrow = borrow_table(tickers)
+    book.accrue_borrow(date, {t: b.fee_rate for t, b in borrow.items()})
     new = []
     if strategy.due(book.last_rebalance, date):
         weights, reasons = strategy.targets(prices, params)
+        unshortable = [t for t, w in weights.items()
+                       if w < 0 and t in borrow and borrow[t].shortable is False]
+        for t in unshortable:
+            weights[t], reasons[t] = 0.0, f"{reasons[t]}, but can't borrow {t} to short it"
         # trade only on a real price at this close; the book is valued at the last one known
         new = book.rebalance(date, prices.iloc[-1].dropna().to_dict(), weights, reasons,
                              params["cost_bps"], margin_rate=margin_rate)
+        traded = {leg["ticker"] for o in new for leg in o["legs"]}
+        book.log += [{"date": str(date), "pair": f"{book.label} {t}", "action": "skip: unshortable",
+                      "z": 0.0, "reason": reasons[t]} for t in unshortable if t not in traded]
     book.record_equity(date, prices.ffill().iloc[-1].dropna().to_dict(), margin_rate)
     book.save()
     return new, stale

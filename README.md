@@ -47,6 +47,14 @@ proportion to 1 / its volatility so each brings the same risk, adding up to `exp
 the book (1.0 by default, no borrowing). Rebalanced at the first close of each month; orders
 appear as `RISK PARITY SPY` REBALANCE.
 
+**Momentum long/short** (`pairs/strategies/momentum.py`, running on paper): each month, rank
+the S&P 500 (from `universe.csv`) by return over the 12 months to a month ago, then go long
+the 20 best and short the 20 worst at equal weights, adding up to `exposure` (1.0 by default:
+half long, half short). The latest month is left out because it tends to reverse. A short
+the IBKR feed says can't be borrowed is skipped and listed under "Not traded". Between
+rebalances only the stocks held are priced, so the daily job stays quick. `universe.csv` is
+today's index, so a backtest would flatter this; the paper book doesn't have that problem.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,
