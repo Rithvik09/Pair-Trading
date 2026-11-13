@@ -101,3 +101,13 @@ starting_cash = 100000
 index = "S&P 500"       # which index in universe.csv to rank
 n_each = 20             # stocks long, and the same number short
 exposure = 1.0          # stock held, long + short, as a multiple of the book's value
+
+# Low volatility long/short: long the 20 calmest S&P 500 stocks over the past year, short the
+# 20 jumpiest, each sized to bring the same volatility (so the two sides carry equal risk).
+# Swapped at the first close of each month.
+[strategies.low_vol]
+enabled = true
+starting_cash = 100000
+index = "S&P 500"       # which index in universe.csv to rank
+n_each = 20             # stocks long, and the same number short
+exposure = 1.0          # stock held, long + short, as a multiple of the book's value

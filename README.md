@@ -55,6 +55,13 @@ the IBKR feed says can't be borrowed is skipped and listed under "Not traded". B
 rebalances only the stocks held are priced, so the daily job stays quick. `universe.csv` is
 today's index, so a backtest would flatter this; the paper book doesn't have that problem.
 
+**Low volatility long/short** (`pairs/strategies/low_vol.py`, running on paper): each month,
+long the 20 calmest S&P 500 stocks over the past year and short the 20 jumpiest. Each stock
+is sized in proportion to 1 / its volatility, so the calm side is held in more size and both
+sides carry the same risk; the weights add up to `exposure` (1.0 by default). The "quality"
+half of this idea (profitable, low-debt companies) needs company fundamentals the free Yahoo
+feed doesn't provide, so it isn't built.
+
 These books hold whole shares to target weights (`pairs/portfolio.py`): trading costs and the
 borrow fee on shorts come out of cash, and a holding less than a quarter off its target is
 left alone rather than traded. Dividends are paid into cash for longs and charged to shorts,

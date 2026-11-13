@@ -12,7 +12,7 @@ from pairs.config import Config, load_config, strategy_params
 from pairs.paper import PaperBook
 from pairs.paths import STATE_DIR, strategy_path
 from pairs.portfolio import WeightBook
-from pairs.strategies import STRATEGIES, momentum, risk_parity, trend
+from pairs.strategies import STRATEGIES, low_vol, momentum, risk_parity, trend
 
 
 def _etfs(n=400, end="2026-10-26"):
@@ -273,6 +273,52 @@ def test_between_rebalances_only_the_holdings_are_priced(tmp_path, market, monke
     monkeypatch.setattr(cli, "load_prices", lambda tickers, **k: load(tickers))
     cli.daily(book, config, now=_after_close(prices), sleep=lambda s: None)
     assert asked == [held]  # same month: no need to price the whole universe
+
+
+# ---------------------------------------------------------------- low volatility
+def _calm_to_jumpy(n=300, k=20):
+    """k stocks, V00 the calmest through V19 the jumpiest."""
+    rng = np.random.default_rng(9)
+    idx = pd.bdate_range(end="2026-10-26", periods=n)
+    return pd.DataFrame({f"V{i:02d}": 40 * np.exp(np.cumsum(rng.normal(0, 0.005 + i * 0.002, n)))
+                         for i in range(k)}, idx)
+
+
+def _lv(**over):
+    return strategy_params("low_vol", {"n_each": 4, **over})
+
+
+def _yvol(s):
+    return np.log(s).diff().iloc[-252:].std() * np.sqrt(252)
+
+
+def test_low_vol_buys_the_calmest_and_shorts_the_jumpiest():
+    px = _calm_to_jumpy()
+    weights, reasons = low_vol.targets(px, _lv())
+    assert {t for t, w in weights.items() if w > 0} == {"V00", "V01", "V02", "V03"}
+    assert {t for t, w in weights.items() if w < 0} == {"V16", "V17", "V18", "V19"}
+    assert reasons["V00"] == f"{_yvol(px['V00']):.0%} volatility: among the 4 calmest of 20, long"
+
+
+def test_low_vol_balances_the_risk_of_the_two_sides():
+    px = _calm_to_jumpy()
+    weights, _ = low_vol.targets(px, _lv(exposure=1.0))
+    assert sum(abs(w) for w in weights.values()) == pytest.approx(1.0)
+    risk = [w * _yvol(px[t]) for t, w in weights.items()]
+    assert sum(r for r in risk if r > 0) == pytest.approx(-sum(r for r in risk if r < 0))
+    assert weights["V00"] > -weights["V19"]  # the calm side is held in more size
+
+
+def test_low_vol_does_not_look_ahead():
+    px = _calm_to_jumpy()
+    early = px.index[-30]
+    assert low_vol.targets(px.loc[:early], _lv()) == low_vol.targets(px, _lv(), asof=early)
+
+
+def test_repo_config_runs_low_vol_on_its_own_book():
+    lv = load_config().strategies["low_vol"]
+    assert lv["enabled"] and lv["index"] == "S&P 500"
+    assert len(low_vol.tickers(lv)) > 450
 
 
 # ---------------------------------------------------------------- recap by strategy
