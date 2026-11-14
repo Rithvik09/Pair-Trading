@@ -1,5 +1,5 @@
 {
-  "cash": 28848.97729964673,
+  "cash": 27439.356131433837,
   "starting_cash": 25000.0,
   "holdings": {
     "AMD": -1,
@@ -19,12 +19,13 @@
     "XLU": -23,
     "XLV": -14,
     "XLY": -14,
-    "GILD": 6
+    "GILD": 6,
+    "XLK": 8
   },
   "last_rebalance": "2026-11-13",
   "last_prices": {
     "AMD": 534.0599975585938,
-    "ANET": 206.6300048828125,
+    "ANET": 197.2899932861328,
     "AXON": 315.42999267578125,
     "CCL": 29.229999542236328,
     "COF": 195.0800018310547,
@@ -40,7 +41,8 @@
     "XLU": 44.040000915527344,
     "XLV": 188.85000610351562,
     "XLY": 119.9800033569336,
-    "GILD": 168.0800018310547
+    "GILD": 168.0800018310547,
+    "XLK": 170.27999877929688
   },
   "price_dates": {
     "AMD": "2026-11-13",
@@ -60,7 +62,8 @@
     "XLU": "2026-11-13",
     "XLV": "2026-11-13",
     "XLY": "2026-11-13",
-    "GILD": "2026-11-13"
+    "GILD": "2026-11-13",
+    "XLK": "2026-11-13"
   },
   "orders": [
     {
@@ -377,11 +380,24 @@
           "ref_price": 188.85000610351562
         }
       ]
+    },
+    {
+      "pair": "SECTOR ARB XLK",
+      "event": "rebalance",
+      "signal_date": "2026-11-13",
+      "execute_on": "2026-11-16",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLK",
+          "side": "BUY",
+          "qty": 8,
+          "ref_price": 170.27999877929688
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 SECTOR ARB: no price for ANET at the 2026-11-13 close, so its holding was left as it is"
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-11-12",
@@ -529,6 +545,13 @@
       "action": "rebalance",
       "z": 0.0,
       "reason": "hedge for the XLV sector trades"
+    },
+    {
+      "date": "2026-11-13",
+      "pair": "SECTOR ARB XLK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLK sector trades"
     }
   ],
   "equity": [
@@ -544,13 +567,13 @@
     },
     {
       "date": "2026-11-13",
-      "cash": 28848.97729964673,
-      "unrealised": -3815.2201347351074,
-      "equity": 25033.75716491162,
-      "open": 18,
-      "gross": 21842.740131378174,
-      "margin": 10921.370065689087,
-      "free": 14112.387099222535
+      "cash": 27439.356131433837,
+      "unrealised": -2406.280086517334,
+      "equity": 25033.076044916503,
+      "open": 19,
+      "gross": 23158.28006362915,
+      "margin": 11579.140031814575,
+      "free": 13453.936013101928
     }
   ]
 }
