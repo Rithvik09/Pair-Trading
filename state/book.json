@@ -1,5 +1,5 @@
 {
-  "cash": 104664.93490031108,
+  "cash": 105298.00152169252,
   "starting_cash": 100000.0,
   "blocked": [
     "VMRK/CPT"
@@ -43,7 +43,7 @@
       "side": "short_spread",
       "entry_date": "2026-10-30",
       "entry_y": 79.01000213623047,
-      "entry_x": 899.8200073242188,
+      "entry_x": 897.9414672851562,
       "y_shares": -83,
       "x_shares": 3,
       "beta": 0.513566275318701,
@@ -123,7 +123,7 @@
       "side": "long_spread",
       "entry_date": "2026-11-04",
       "entry_y": 35.720001220703125,
-      "entry_x": 129.58999633789062,
+      "entry_x": 128.49655151367188,
       "y_shares": 150,
       "x_shares": -35,
       "beta": 0.8661005144150083,
@@ -154,7 +154,7 @@
       "x": "SPGI",
       "side": "short_spread",
       "entry_date": "2026-11-04",
-      "entry_y": 674.2999877929688,
+      "entry_y": 672.1782836914062,
       "entry_x": 481.69000244140625,
       "y_shares": -10,
       "x_shares": 5,
@@ -196,22 +196,6 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0,
       "borrow_fee_x": 0.0025
-    },
-    "PDFS/COHU": {
-      "y": "PDFS",
-      "x": "COHU",
-      "side": "short_spread",
-      "entry_date": "2026-11-06",
-      "entry_y": 37.61000061035156,
-      "entry_x": 38.4900016784668,
-      "y_shares": -155,
-      "x_shares": 107,
-      "beta": 0.710442970793335,
-      "entry_z": 2.1121516176206447,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0025,
-      "borrow_fee_x": 0.0
     },
     "SHO/APLE": {
       "y": "SHO",
@@ -602,48 +586,70 @@
       "borrow": 0.22176971011691624,
       "pnl": 140.98813019222683,
       "reason": "converged"
+    },
+    {
+      "y": "PDFS",
+      "x": "COHU",
+      "side": "short_spread",
+      "entry_date": "2026-11-06",
+      "entry_y": 37.61000061035156,
+      "entry_x": 38.4900016784668,
+      "y_shares": -155,
+      "x_shares": 107,
+      "beta": 0.710442970793335,
+      "entry_z": 2.1121516176206447,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0,
+      "exit_date": "2026-11-13",
+      "exit_y": 36.97999954223633,
+      "exit_x": 43.59000015258789,
+      "borrow": 0.28338090737660726,
+      "pnl": 633.0666213814418,
+      "reason": "converged"
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-12",
+    "MTD/TMO": "2026-11-13",
     "SW/PKG": "2026-11-12",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-12",
+    "PPL/DUK": "2026-11-13",
     "MTDR/OXY": "2026-11-12",
-    "LKFN/RNST": "2026-11-12",
-    "BANC/FIBK": "2026-11-12",
-    "RF/FIBK": "2026-11-12",
+    "LKFN/RNST": "2026-11-13",
+    "BANC/FIBK": "2026-11-13",
+    "RF/FIBK": "2026-11-13",
     "KRG/PECO": "2026-11-12",
     "TALO/COP": "2026-11-12",
-    "ALL/THG": "2026-11-12",
+    "ALL/THG": "2026-11-13",
     "SHO/APLE": "2026-11-12",
-    "IESC/STRL": "2026-11-12",
+    "IESC/STRL": "2026-11-13",
     "MTDR/CHRD": "2026-11-12",
-    "KNX/JBHT": "2026-11-12",
+    "KNX/JBHT": "2026-11-13",
     "REG/IVT": "2026-11-12",
     "ENTG/ICHR": "2026-11-12",
     "SPG/IVT": "2026-11-12",
-    "D/AEE": "2026-11-12",
-    "MSCI/SPGI": "2026-11-12",
-    "KKR/BX": "2026-11-12",
-    "PDFS/COHU": "2026-11-12",
-    "FELE/LECO": "2026-11-12",
+    "D/AEE": "2026-11-13",
+    "MSCI/SPGI": "2026-11-13",
+    "KKR/BX": "2026-11-13",
+    "PDFS/COHU": "2026-11-13",
+    "FELE/LECO": "2026-11-13",
     "RES/LBRT": "2026-11-12",
-    "VMRK/CPT": "2026-11-12",
+    "VMRK/CPT": "2026-11-13",
     "RHP/APLE": "2026-11-12",
-    "FLS/PH": "2026-11-12",
+    "FLS/PH": "2026-11-13",
     "PENN/CZR": "2026-11-12",
-    "IESC/EME": "2026-11-12",
-    "FDS/MORN": "2026-11-12",
-    "TRNO/EGP": "2026-11-12",
-    "RES/HAL": "2026-11-12",
-    "CWT/MSEX": "2026-11-12",
-    "TRNO/FR": "2026-11-12",
-    "PWR/STRL": "2026-11-12",
+    "IESC/EME": "2026-11-13",
+    "FDS/MORN": "2026-11-13",
+    "TRNO/EGP": "2026-11-13",
+    "RES/HAL": "2026-11-13",
+    "CWT/MSEX": "2026-11-13",
+    "TRNO/FR": "2026-11-13",
+    "PWR/STRL": "2026-11-13",
     "YETI/BC": "2026-11-12",
-    "RL/TPR": "2026-11-12",
-    "ITW/LECO": "2026-11-12",
+    "RL/TPR": "2026-11-13",
+    "ITW/LECO": "2026-11-13",
     "AMP/CRBG": "2026-11-12",
     "SSD/WMS": "2026-11-12"
   },
@@ -1613,6 +1619,27 @@
           "ref_price": 198.0500030517578
         }
       ]
+    },
+    {
+      "pair": "PDFS/COHU",
+      "event": "close",
+      "signal_date": "2026-11-13",
+      "execute_on": "2026-11-16",
+      "z": -0.06203613610339938,
+      "legs": [
+        {
+          "ticker": "PDFS",
+          "side": "BUY TO COVER",
+          "qty": 155,
+          "ref_price": 36.97999954223633
+        },
+        {
+          "ticker": "COHU",
+          "side": "SELL",
+          "qty": 107,
+          "ref_price": 43.59000015258789
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -1931,6 +1958,13 @@
       "action": "close",
       "z": 0.45376276698784207,
       "reason": "z +0.45 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-13",
+      "pair": "PDFS/COHU",
+      "action": "close",
+      "z": -0.06203613610339938,
+      "reason": "z -0.06 back within \u00b10.5: the spread converged, take the profit"
     }
   ],
   "equity": [
@@ -2063,6 +2097,16 @@
       "gross": 177498.089512825,
       "margin": 88749.0447564125,
       "free": 14979.701683306048
+    },
+    {
+      "date": "2026-11-13",
+      "cash": 105298.00152169252,
+      "unrealised": -923.9234772796763,
+      "equity": 104374.07804441285,
+      "open": 17,
+      "gross": 167077.8794116974,
+      "margin": 83538.9397058487,
+      "free": 20835.138338564153
     }
   ]
 }
