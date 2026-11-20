@@ -228,6 +228,22 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0,
       "borrow_fee_x": 0.0025
+    },
+    "IESC/EME": {
+      "y": "IESC",
+      "x": "EME",
+      "side": "short_spread",
+      "entry_date": "2026-11-19",
+      "entry_y": 166.89999389648438,
+      "entry_x": 636.0800170898438,
+      "y_shares": -15,
+      "x_shares": 11,
+      "beta": 2.780421414317638,
+      "entry_z": 2.040666558430229,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0
     }
   },
   "closed": [
@@ -673,45 +689,45 @@
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-18",
+    "MTD/TMO": "2026-11-19",
     "SW/PKG": "2026-11-18",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-18",
+    "PPL/DUK": "2026-11-19",
     "MTDR/OXY": "2026-11-18",
-    "LKFN/RNST": "2026-11-18",
-    "BANC/FIBK": "2026-11-18",
-    "RF/FIBK": "2026-11-18",
+    "LKFN/RNST": "2026-11-19",
+    "BANC/FIBK": "2026-11-19",
+    "RF/FIBK": "2026-11-19",
     "KRG/PECO": "2026-11-18",
     "TALO/COP": "2026-11-18",
-    "ALL/THG": "2026-11-18",
+    "ALL/THG": "2026-11-19",
     "SHO/APLE": "2026-11-18",
-    "IESC/STRL": "2026-11-18",
+    "IESC/STRL": "2026-11-19",
     "MTDR/CHRD": "2026-11-18",
-    "KNX/JBHT": "2026-11-18",
+    "KNX/JBHT": "2026-11-19",
     "REG/IVT": "2026-11-18",
     "ENTG/ICHR": "2026-11-18",
     "SPG/IVT": "2026-11-18",
-    "D/AEE": "2026-11-18",
-    "MSCI/SPGI": "2026-11-18",
-    "KKR/BX": "2026-11-18",
-    "PDFS/COHU": "2026-11-18",
-    "FELE/LECO": "2026-11-18",
+    "D/AEE": "2026-11-19",
+    "MSCI/SPGI": "2026-11-19",
+    "KKR/BX": "2026-11-19",
+    "PDFS/COHU": "2026-11-19",
+    "FELE/LECO": "2026-11-19",
     "RES/LBRT": "2026-11-18",
-    "VMRK/CPT": "2026-11-18",
+    "VMRK/CPT": "2026-11-19",
     "RHP/APLE": "2026-11-18",
-    "FLS/PH": "2026-11-18",
+    "FLS/PH": "2026-11-19",
     "PENN/CZR": "2026-11-18",
-    "IESC/EME": "2026-11-18",
-    "FDS/MORN": "2026-11-18",
-    "TRNO/EGP": "2026-11-18",
-    "RES/HAL": "2026-11-18",
-    "CWT/MSEX": "2026-11-18",
-    "TRNO/FR": "2026-11-18",
-    "PWR/STRL": "2026-11-18",
+    "IESC/EME": "2026-11-19",
+    "FDS/MORN": "2026-11-19",
+    "TRNO/EGP": "2026-11-19",
+    "RES/HAL": "2026-11-19",
+    "CWT/MSEX": "2026-11-19",
+    "TRNO/FR": "2026-11-19",
+    "PWR/STRL": "2026-11-19",
     "YETI/BC": "2026-11-18",
-    "RL/TPR": "2026-11-18",
-    "ITW/LECO": "2026-11-18",
+    "RL/TPR": "2026-11-19",
+    "ITW/LECO": "2026-11-19",
     "AMP/CRBG": "2026-11-18",
     "SSD/WMS": "2026-11-18"
   },
@@ -1849,6 +1865,27 @@
           "ref_price": 115.70999908447266
         }
       ]
+    },
+    {
+      "pair": "IESC/EME",
+      "event": "open short_spread",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 2.040666558430229,
+      "legs": [
+        {
+          "ticker": "IESC",
+          "side": "SELL SHORT",
+          "qty": 15,
+          "ref_price": 166.89999389648438
+        },
+        {
+          "ticker": "EME",
+          "side": "BUY",
+          "qty": 11,
+          "ref_price": 636.0800170898438
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -2223,6 +2260,13 @@
       "action": "close",
       "z": 0.34559181055476557,
       "reason": "z +0.35 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "IESC/EME",
+      "action": "open short_spread",
+      "z": 2.040666558430229,
+      "reason": "z +2.04 \u2265 +2.0: IESC ran ahead of EME, so short IESC / buy EME (hedge ratio 2.78)"
     }
   ],
   "equity": [
@@ -2395,6 +2439,16 @@
       "gross": 135591.0612335205,
       "margin": 67795.53061676025,
       "free": 36470.936568677935
+    },
+    {
+      "date": "2026-11-19",
+      "cash": 106447.35210710042,
+      "unrealised": -1766.34691753051,
+      "equity": 104681.00518956991,
+      "open": 15,
+      "gross": 143250.81950569153,
+      "margin": 71625.40975284576,
+      "free": 33055.59543672415
     }
   ]
 }

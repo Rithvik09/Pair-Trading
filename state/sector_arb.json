@@ -1,10 +1,9 @@
 {
-  "cash": 27812.791268124696,
+  "cash": 27111.49594883011,
   "starting_cash": 25000.0,
   "holdings": {
     "AMD": -2,
     "ANET": -5,
-    "AXON": 1,
     "CCL": 27,
     "COF": 5,
     "IFF": 16,
@@ -14,53 +13,48 @@
     "PPL": 41,
     "XLB": -22,
     "XLF": -23,
-    "XLI": -11,
     "XLP": -17,
     "XLU": -23,
-    "XLV": -6,
-    "XLY": -14,
-    "XLK": 6
+    "XLY": -24,
+    "DGX": -4,
+    "WSM": 6
   },
-  "last_rebalance": "2026-11-18",
+  "last_rebalance": "2026-11-19",
   "last_prices": {
-    "AMD": 530.1400146484375,
+    "AMD": 489.19000244140625,
     "ANET": 193.94000244140625,
-    "AXON": 300.69000244140625,
-    "CCL": 28.969999313354492,
-    "COF": 184.3000030517578,
-    "IFF": 80.08000183105469,
-    "KDP": 35.0099983215332,
-    "NVDA": 150.9600067138672,
-    "PFE": 28.059999465942383,
-    "PPL": 35.099998474121094,
-    "XLB": 50.459999084472656,
-    "XLF": 56.41999816894531,
-    "XLI": 164.66000366210938,
-    "XLP": 91.18000030517578,
-    "XLU": 43.54999923706055,
-    "XLV": 181.1699981689453,
-    "XLY": 119.19999694824219,
-    "XLK": 163.80999755859375
+    "CCL": 27.56999969482422,
+    "COF": 181.75999450683594,
+    "IFF": 78.61000061035156,
+    "KDP": 34.40999984741211,
+    "NVDA": 145.97999572753906,
+    "PFE": 27.540000915527344,
+    "PPL": 34.709999084472656,
+    "XLB": 49.41999816894531,
+    "XLF": 55.58000183105469,
+    "XLP": 89.86000061035156,
+    "XLU": 43.0099983215332,
+    "XLY": 115.87999725341797,
+    "DGX": 259.0899963378906,
+    "WSM": 220.66000366210938
   },
   "price_dates": {
-    "AMD": "2026-11-18",
-    "ANET": "2026-11-18",
-    "AXON": "2026-11-18",
-    "CCL": "2026-11-18",
-    "COF": "2026-11-18",
-    "IFF": "2026-11-18",
-    "KDP": "2026-11-18",
-    "NVDA": "2026-11-18",
-    "PFE": "2026-11-18",
-    "PPL": "2026-11-18",
-    "XLB": "2026-11-18",
-    "XLF": "2026-11-18",
-    "XLI": "2026-11-18",
-    "XLP": "2026-11-18",
-    "XLU": "2026-11-18",
-    "XLV": "2026-11-18",
-    "XLY": "2026-11-18",
-    "XLK": "2026-11-18"
+    "AMD": "2026-11-19",
+    "ANET": "2026-11-19",
+    "CCL": "2026-11-19",
+    "COF": "2026-11-19",
+    "IFF": "2026-11-19",
+    "KDP": "2026-11-19",
+    "NVDA": "2026-11-19",
+    "PFE": "2026-11-19",
+    "PPL": "2026-11-19",
+    "XLB": "2026-11-19",
+    "XLF": "2026-11-19",
+    "XLP": "2026-11-19",
+    "XLU": "2026-11-19",
+    "XLY": "2026-11-19",
+    "DGX": "2026-11-19",
+    "WSM": "2026-11-19"
   },
   "orders": [
     {
@@ -452,9 +446,116 @@
           "ref_price": 163.80999755859375
         }
       ]
+    },
+    {
+      "pair": "SECTOR ARB AXON",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "AXON",
+          "side": "SELL",
+          "qty": 1,
+          "ref_price": 306.9800109863281
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB DGX",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "DGX",
+          "side": "SELL SHORT",
+          "qty": 4,
+          "ref_price": 259.0899963378906
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB WSM",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "WSM",
+          "side": "BUY",
+          "qty": 6,
+          "ref_price": 220.66000366210938
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLI",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLI",
+          "side": "BUY TO COVER",
+          "qty": 11,
+          "ref_price": 161.36000061035156
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLK",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLK",
+          "side": "SELL",
+          "qty": 6,
+          "ref_price": 160.69000244140625
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLV",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLV",
+          "side": "BUY TO COVER",
+          "qty": 6,
+          "ref_price": 177.4600067138672
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLY",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLY",
+          "side": "SELL SHORT",
+          "qty": 10,
+          "ref_price": 115.87999725341797
+        }
+      ]
     }
   ],
-  "last_run_warnings": [],
+  "last_run_warnings": [
+    "\u26a0 SECTOR ARB: no price for ANET at the 2026-11-19 close, so its holding was left as it is"
+  ],
   "log": [
     {
       "date": "2026-11-12",
@@ -637,6 +738,55 @@
       "action": "rebalance",
       "z": 0.0,
       "reason": "hedge for the XLK sector trades"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB AXON",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -0.19 vs XLI: back within \u00b10.5, converged"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB DGX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z +3.32 vs XLV: DGX ran ahead of its sector, so short DGX / buy XLV"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB WSM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z -3.59 vs XLY: WSM fell behind its sector, so short XLY / buy WSM"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLI",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLK sector trades"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLV",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLV sector trades"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLY",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLY sector trades"
     }
   ],
   "equity": [
@@ -689,6 +839,16 @@
       "gross": 20286.76987838745,
       "margin": 10143.384939193726,
       "free": 14843.076300397035
+    },
+    {
+      "date": "2026-11-19",
+      "cash": 27111.49594883011,
+      "unrealised": -2035.2099418640137,
+      "equity": 25076.286006966096,
+      "open": 16,
+      "gross": 19260.76987838745,
+      "margin": 9630.384939193726,
+      "free": 15445.90106777237
     }
   ]
 }
