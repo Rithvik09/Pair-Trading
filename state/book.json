@@ -1,5 +1,5 @@
 {
-  "cash": 106447.35210710042,
+  "cash": 106300.35289087014,
   "starting_cash": 100000.0,
   "blocked": [
     "VMRK/CPT"
@@ -68,22 +68,6 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0,
       "borrow_fee_x": 0.0025
-    },
-    "SPG/IVT": {
-      "y": "SPG",
-      "x": "IVT",
-      "side": "short_spread",
-      "entry_date": "2026-11-02",
-      "entry_y": 221.72999572753906,
-      "entry_x": 31.31999969482422,
-      "y_shares": -29,
-      "x_shares": 113,
-      "beta": 0.5544423159617984,
-      "entry_z": 2.001893650906747,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0025,
-      "borrow_fee_x": 0.0
     },
     "AMP/CRBG": {
       "y": "AMP",
@@ -686,38 +670,60 @@
       "borrow": 0.30815277311537,
       "pnl": 145.34175720002915,
       "reason": "converged"
+    },
+    {
+      "y": "SPG",
+      "x": "IVT",
+      "side": "short_spread",
+      "entry_date": "2026-11-02",
+      "entry_y": 221.72999572753906,
+      "entry_x": 31.31999969482422,
+      "y_shares": -29,
+      "x_shares": 113,
+      "beta": 0.5544423159617984,
+      "entry_z": 2.001893650906747,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0025,
+      "borrow_fee_x": 0.0,
+      "exit_date": "2026-11-19",
+      "exit_y": 225.22000122070312,
+      "exit_x": 31.010000228881836,
+      "borrow": 0.7591172770394219,
+      "pnl": -146.9992162302865,
+      "reason": "converged"
     }
   ],
   "last_bar": {
     "MTD/TMO": "2026-11-19",
-    "SW/PKG": "2026-11-18",
+    "SW/PKG": "2026-11-19",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
     "PPL/DUK": "2026-11-19",
-    "MTDR/OXY": "2026-11-18",
+    "MTDR/OXY": "2026-11-19",
     "LKFN/RNST": "2026-11-19",
     "BANC/FIBK": "2026-11-19",
     "RF/FIBK": "2026-11-19",
-    "KRG/PECO": "2026-11-18",
-    "TALO/COP": "2026-11-18",
+    "KRG/PECO": "2026-11-19",
+    "TALO/COP": "2026-11-19",
     "ALL/THG": "2026-11-19",
-    "SHO/APLE": "2026-11-18",
+    "SHO/APLE": "2026-11-19",
     "IESC/STRL": "2026-11-19",
-    "MTDR/CHRD": "2026-11-18",
+    "MTDR/CHRD": "2026-11-19",
     "KNX/JBHT": "2026-11-19",
-    "REG/IVT": "2026-11-18",
-    "ENTG/ICHR": "2026-11-18",
-    "SPG/IVT": "2026-11-18",
+    "REG/IVT": "2026-11-19",
+    "ENTG/ICHR": "2026-11-19",
+    "SPG/IVT": "2026-11-19",
     "D/AEE": "2026-11-19",
     "MSCI/SPGI": "2026-11-19",
     "KKR/BX": "2026-11-19",
     "PDFS/COHU": "2026-11-19",
     "FELE/LECO": "2026-11-19",
-    "RES/LBRT": "2026-11-18",
+    "RES/LBRT": "2026-11-19",
     "VMRK/CPT": "2026-11-19",
-    "RHP/APLE": "2026-11-18",
+    "RHP/APLE": "2026-11-19",
     "FLS/PH": "2026-11-19",
-    "PENN/CZR": "2026-11-18",
+    "PENN/CZR": "2026-11-19",
     "IESC/EME": "2026-11-19",
     "FDS/MORN": "2026-11-19",
     "TRNO/EGP": "2026-11-19",
@@ -725,11 +731,11 @@
     "CWT/MSEX": "2026-11-19",
     "TRNO/FR": "2026-11-19",
     "PWR/STRL": "2026-11-19",
-    "YETI/BC": "2026-11-18",
+    "YETI/BC": "2026-11-19",
     "RL/TPR": "2026-11-19",
     "ITW/LECO": "2026-11-19",
-    "AMP/CRBG": "2026-11-18",
-    "SSD/WMS": "2026-11-18"
+    "AMP/CRBG": "2026-11-19",
+    "SSD/WMS": "2026-11-19"
   },
   "orders": [
     {
@@ -1886,6 +1892,27 @@
           "ref_price": 636.0800170898438
         }
       ]
+    },
+    {
+      "pair": "SPG/IVT",
+      "event": "close",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.21405635625004732,
+      "legs": [
+        {
+          "ticker": "SPG",
+          "side": "BUY TO COVER",
+          "qty": 29,
+          "ref_price": 225.22000122070312
+        },
+        {
+          "ticker": "IVT",
+          "side": "SELL",
+          "qty": 113,
+          "ref_price": 31.010000228881836
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -2267,6 +2294,13 @@
       "action": "open short_spread",
       "z": 2.040666558430229,
       "reason": "z +2.04 \u2265 +2.0: IESC ran ahead of EME, so short IESC / buy EME (hedge ratio 2.78)"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SPG/IVT",
+      "action": "close",
+      "z": 0.21405635625004732,
+      "reason": "z +0.21 back within \u00b10.5: the spread converged, take the profit"
     }
   ],
   "equity": [
@@ -2442,13 +2476,13 @@
     },
     {
       "date": "2026-11-19",
-      "cash": 106447.35210710042,
-      "unrealised": -1766.34691753051,
-      "equity": 104681.00518956991,
-      "open": 15,
-      "gross": 143250.81950569153,
-      "margin": 71625.40975284576,
-      "free": 33055.59543672415
+      "cash": 106300.35289087014,
+      "unrealised": -2266.4879143129197,
+      "equity": 104033.86497655722,
+      "open": 14,
+      "gross": 132360.2691078186,
+      "margin": 66180.1345539093,
+      "free": 37853.73042264792
     }
   ]
 }

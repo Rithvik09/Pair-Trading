@@ -1,9 +1,9 @@
 {
-  "cash": 27111.49594883011,
+  "cash": 26504.114236336212,
   "starting_cash": 25000.0,
   "holdings": {
     "AMD": -2,
-    "ANET": -5,
+    "ANET": -7,
     "CCL": 27,
     "COF": 5,
     "IFF": 16,
@@ -17,12 +17,13 @@
     "XLU": -23,
     "XLY": -24,
     "DGX": -4,
-    "WSM": 6
+    "WSM": 6,
+    "XLK": 6
   },
   "last_rebalance": "2026-11-19",
   "last_prices": {
     "AMD": 489.19000244140625,
-    "ANET": 193.94000244140625,
+    "ANET": 189.58999633789062,
     "CCL": 27.56999969482422,
     "COF": 181.75999450683594,
     "IFF": 78.61000061035156,
@@ -36,7 +37,8 @@
     "XLU": 43.0099983215332,
     "XLY": 115.87999725341797,
     "DGX": 259.0899963378906,
-    "WSM": 220.66000366210938
+    "WSM": 220.66000366210938,
+    "XLK": 160.69000244140625
   },
   "price_dates": {
     "AMD": "2026-11-19",
@@ -54,7 +56,8 @@
     "XLU": "2026-11-19",
     "XLY": "2026-11-19",
     "DGX": "2026-11-19",
-    "WSM": "2026-11-19"
+    "WSM": "2026-11-19",
+    "XLK": "2026-11-19"
   },
   "orders": [
     {
@@ -551,11 +554,39 @@
           "ref_price": 115.87999725341797
         }
       ]
+    },
+    {
+      "pair": "SECTOR ARB ANET",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ANET",
+          "side": "SELL SHORT",
+          "qty": 2,
+          "ref_price": 189.58999633789062
+        }
+      ]
+    },
+    {
+      "pair": "SECTOR ARB XLK",
+      "event": "rebalance",
+      "signal_date": "2026-11-19",
+      "execute_on": "2026-11-20",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "XLK",
+          "side": "BUY",
+          "qty": 6,
+          "ref_price": 160.69000244140625
+        }
+      ]
     }
   ],
-  "last_run_warnings": [
-    "\u26a0 SECTOR ARB: no price for ANET at the 2026-11-19 close, so its holding was left as it is"
-  ],
+  "last_run_warnings": [],
   "log": [
     {
       "date": "2026-11-12",
@@ -787,6 +818,27 @@
       "action": "rebalance",
       "z": 0.0,
       "reason": "hedge for the XLY sector trades"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB ANET",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "z +1.14 vs XLK: not back yet, holding"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "hedge for the XLK sector trades"
+    },
+    {
+      "date": "2026-11-19",
+      "pair": "SECTOR ARB XLV",
+      "action": "too small XLV",
+      "z": 0.0,
+      "reason": "hedge for the XLV sector trades, but $89 doesn't buy one share at $177.46"
     }
   ],
   "equity": [
@@ -842,13 +894,13 @@
     },
     {
       "date": "2026-11-19",
-      "cash": 27111.49594883011,
-      "unrealised": -2035.2099418640137,
-      "equity": 25076.286006966096,
-      "open": 16,
-      "gross": 19260.76987838745,
-      "margin": 9630.384939193726,
-      "free": 15445.90106777237
+      "cash": 26504.114236336212,
+      "unrealised": -1428.4998893737793,
+      "equity": 25075.614346962433,
+      "open": 17,
+      "gross": 20582.33985519409,
+      "margin": 10291.169927597046,
+      "free": 14784.444419365387
     }
   ]
 }
