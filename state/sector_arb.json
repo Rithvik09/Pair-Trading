@@ -1050,6 +1050,13 @@
       "action": "rebalance",
       "z": 0.0,
       "reason": "hedge for the XLY sector trades"
+    },
+    {
+      "date": "2026-11-20",
+      "pair": "SECTOR ARB XLV",
+      "action": "too small XLV",
+      "z": 0.0,
+      "reason": "hedge for the XLV sector trades, but $80 doesn't buy one share at $177.24"
     }
   ],
   "equity": [
