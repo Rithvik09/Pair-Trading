@@ -1,5 +1,5 @@
 {
-  "cash": 106406.25324331844,
+  "cash": 107615.95065514592,
   "starting_cash": 100000.0,
   "blocked": [
     "VMRK/CPT"
@@ -197,22 +197,6 @@
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
     },
-    "ENTG/ICHR": {
-      "y": "ENTG",
-      "x": "ICHR",
-      "side": "long_spread",
-      "entry_date": "2026-11-20",
-      "entry_y": 124.52999877929688,
-      "entry_x": 27.280000686645508,
-      "y_shares": 75,
-      "x_shares": -22,
-      "beta": 0.06546539328907404,
-      "entry_z": -2.0929032043089957,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0,
-      "borrow_fee_x": 0.0025
-    },
     "RES/LBRT": {
       "y": "RES",
       "x": "LBRT",
@@ -224,6 +208,22 @@
       "x_shares": -144,
       "beta": 0.18466860977297767,
       "entry_z": -2.1038937809754006,
+      "notional": 10000.0,
+      "costs": 5.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025
+    },
+    "REG/IVT": {
+      "y": "REG",
+      "x": "IVT",
+      "side": "long_spread",
+      "entry_date": "2026-11-23",
+      "entry_y": 73.7300033569336,
+      "entry_x": 31.479999542236328,
+      "y_shares": 86,
+      "x_shares": -115,
+      "beta": 0.5723089448294341,
+      "entry_z": -2.1889504502543247,
       "notional": 10000.0,
       "costs": 5.0,
       "borrow_fee_y": 0.0,
@@ -736,50 +736,72 @@
       "borrow": 0.753900650024414,
       "pnl": 5.031072494506836,
       "reason": "converged"
+    },
+    {
+      "y": "ENTG",
+      "x": "ICHR",
+      "side": "long_spread",
+      "entry_date": "2026-11-20",
+      "entry_y": 124.52999877929688,
+      "entry_x": 27.280000686645508,
+      "y_shares": 75,
+      "x_shares": -22,
+      "beta": 0.06546539328907404,
+      "entry_z": -2.0929032043089957,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025,
+      "exit_date": "2026-11-23",
+      "exit_y": 142.05999755859375,
+      "exit_x": 31.600000381469727,
+      "borrow": 0.012503333648045858,
+      "pnl": 1209.6974118274848,
+      "reason": "converged"
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-20",
-    "SW/PKG": "2026-11-20",
+    "MTD/TMO": "2026-11-23",
+    "SW/PKG": "2026-11-23",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-20",
-    "MTDR/OXY": "2026-11-20",
-    "LKFN/RNST": "2026-11-20",
-    "BANC/FIBK": "2026-11-20",
-    "RF/FIBK": "2026-11-20",
-    "KRG/PECO": "2026-11-20",
-    "TALO/COP": "2026-11-20",
-    "ALL/THG": "2026-11-20",
-    "SHO/APLE": "2026-11-20",
-    "IESC/STRL": "2026-11-20",
-    "MTDR/CHRD": "2026-11-20",
-    "KNX/JBHT": "2026-11-20",
-    "REG/IVT": "2026-11-20",
-    "ENTG/ICHR": "2026-11-20",
-    "SPG/IVT": "2026-11-20",
-    "D/AEE": "2026-11-20",
-    "MSCI/SPGI": "2026-11-20",
-    "KKR/BX": "2026-11-20",
-    "PDFS/COHU": "2026-11-20",
-    "FELE/LECO": "2026-11-20",
-    "RES/LBRT": "2026-11-20",
-    "VMRK/CPT": "2026-11-20",
-    "RHP/APLE": "2026-11-20",
-    "FLS/PH": "2026-11-20",
-    "PENN/CZR": "2026-11-20",
-    "IESC/EME": "2026-11-20",
-    "FDS/MORN": "2026-11-20",
-    "TRNO/EGP": "2026-11-20",
-    "RES/HAL": "2026-11-20",
-    "CWT/MSEX": "2026-11-20",
-    "TRNO/FR": "2026-11-20",
-    "PWR/STRL": "2026-11-20",
-    "YETI/BC": "2026-11-20",
-    "RL/TPR": "2026-11-20",
-    "ITW/LECO": "2026-11-20",
-    "AMP/CRBG": "2026-11-20",
-    "SSD/WMS": "2026-11-20"
+    "PPL/DUK": "2026-11-23",
+    "MTDR/OXY": "2026-11-23",
+    "LKFN/RNST": "2026-11-23",
+    "BANC/FIBK": "2026-11-23",
+    "RF/FIBK": "2026-11-23",
+    "KRG/PECO": "2026-11-23",
+    "TALO/COP": "2026-11-23",
+    "ALL/THG": "2026-11-23",
+    "SHO/APLE": "2026-11-23",
+    "IESC/STRL": "2026-11-23",
+    "MTDR/CHRD": "2026-11-23",
+    "KNX/JBHT": "2026-11-23",
+    "REG/IVT": "2026-11-23",
+    "ENTG/ICHR": "2026-11-23",
+    "SPG/IVT": "2026-11-23",
+    "D/AEE": "2026-11-23",
+    "MSCI/SPGI": "2026-11-23",
+    "KKR/BX": "2026-11-23",
+    "PDFS/COHU": "2026-11-23",
+    "FELE/LECO": "2026-11-23",
+    "RES/LBRT": "2026-11-23",
+    "VMRK/CPT": "2026-11-23",
+    "RHP/APLE": "2026-11-23",
+    "FLS/PH": "2026-11-23",
+    "PENN/CZR": "2026-11-23",
+    "IESC/EME": "2026-11-23",
+    "FDS/MORN": "2026-11-23",
+    "TRNO/EGP": "2026-11-23",
+    "RES/HAL": "2026-11-23",
+    "CWT/MSEX": "2026-11-23",
+    "TRNO/FR": "2026-11-23",
+    "PWR/STRL": "2026-11-23",
+    "YETI/BC": "2026-11-23",
+    "RL/TPR": "2026-11-23",
+    "ITW/LECO": "2026-11-23",
+    "AMP/CRBG": "2026-11-23",
+    "SSD/WMS": "2026-11-23"
   },
   "orders": [
     {
@@ -2041,6 +2063,48 @@
           "ref_price": 32.56999969482422
         }
       ]
+    },
+    {
+      "pair": "REG/IVT",
+      "event": "open long_spread",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": -2.1889504502543247,
+      "legs": [
+        {
+          "ticker": "REG",
+          "side": "BUY",
+          "qty": 86,
+          "ref_price": 73.7300033569336
+        },
+        {
+          "ticker": "IVT",
+          "side": "SELL SHORT",
+          "qty": 115,
+          "ref_price": 31.479999542236328
+        }
+      ]
+    },
+    {
+      "pair": "ENTG/ICHR",
+      "event": "close",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": -0.24526165694587246,
+      "legs": [
+        {
+          "ticker": "ENTG",
+          "side": "SELL",
+          "qty": 75,
+          "ref_price": 142.05999755859375
+        },
+        {
+          "ticker": "ICHR",
+          "side": "BUY TO COVER",
+          "qty": 22,
+          "ref_price": 31.600000381469727
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -2457,6 +2521,20 @@
       "action": "close",
       "z": 0.30502179999445783,
       "reason": "z +0.31 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REG/IVT",
+      "action": "open long_spread",
+      "z": -2.1889504502543247,
+      "reason": "z -2.19 \u2264 -2.0: REG fell behind IVT, so buy REG / short IVT (hedge ratio 0.57)"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "ENTG/ICHR",
+      "action": "close",
+      "z": -0.24526165694587246,
+      "reason": "z -0.25 back within \u00b10.5: the spread converged, take the profit"
     }
   ],
   "equity": [
@@ -2649,6 +2727,16 @@
       "gross": 131875.6799826622,
       "margin": 65937.8399913311,
       "free": 37717.98861910534
+    },
+    {
+      "date": "2026-11-23",
+      "cash": 107615.95065514592,
+      "unrealised": -1935.4127622920141,
+      "equity": 105680.5378928539,
+      "open": 14,
+      "gross": 134788.20067691803,
+      "margin": 67394.10033845901,
+      "free": 38286.437554394885
     }
   ]
 }

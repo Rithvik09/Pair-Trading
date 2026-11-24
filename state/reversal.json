@@ -1,72 +1,72 @@
 {
-  "cash": 25267.792799769933,
+  "cash": 26253.268242191218,
   "starting_cash": 25000.0,
   "holdings": {
-    "FSLR": 7,
-    "NVDA": 7,
-    "ALB": 14,
-    "ALL": -4,
-    "APA": -27,
-    "CBOE": -3,
-    "CHTR": -9,
-    "CNC": -17,
-    "COIN": 10,
-    "ELV": -2,
-    "FCX": 23,
-    "HOOD": 18,
-    "HUM": -2,
-    "MRNA": 6,
-    "NEM": 11,
-    "SKYD": 184,
-    "SMCI": 52,
-    "TRGP": -4,
-    "TSN": -20,
-    "VRSK": -6
+    "NVDA": -7,
+    "CNC": 20,
+    "ELV": 3,
+    "HUM": 3,
+    "AKAM": -14,
+    "COHR": -6,
+    "CRM": 7,
+    "FDXF": 11,
+    "FIX": -1,
+    "FTNT": -10,
+    "GNRC": -6,
+    "INTC": -21,
+    "INTU": 4,
+    "IP": 45,
+    "NKE": 38,
+    "PANW": -3,
+    "TJX": -9,
+    "UNH": 3,
+    "WDC": -4,
+    "WSM": 6
   },
-  "last_rebalance": "2026-11-16",
+  "last_rebalance": "2026-11-23",
   "last_prices": {
-    "FSLR": 137.58999633789062,
-    "NVDA": 125.52999877929688,
-    "ALB": 79.69999694824219,
-    "ALL": 267.0,
-    "APA": 45.029998779296875,
-    "CBOE": 357.7099914550781,
-    "CHTR": 128.72999572753906,
-    "CNC": 63.779998779296875,
-    "COIN": 101.97000122070312,
-    "ELV": 394.4800109863281,
-    "FCX": 45.9900016784668,
-    "HOOD": 62.16999816894531,
-    "HUM": 390.0,
-    "MRNA": 195.0,
-    "NEM": 94.68000030517578,
-    "SKYD": 6.199999809265137,
-    "SMCI": 21.649999618530273,
-    "TRGP": 278.29998779296875,
-    "TSN": 65.12000274658203,
-    "VRSK": 202.08999633789062
+    "NVDA": 165.0500030517578,
+    "CNC": 63.31999969482422,
+    "ELV": 379.54998779296875,
+    "HUM": 383.67999267578125,
+    "AKAM": 89.22000122070312,
+    "COHR": 215.80999755859375,
+    "CRM": 185.4600067138672,
+    "FDXF": 116.80999755859375,
+    "FIX": 1158.530029296875,
+    "FTNT": 131.10000610351562,
+    "GNRC": 204.75,
+    "INTC": 59.65999984741211,
+    "INTU": 275.4599914550781,
+    "IP": 28.979999542236328,
+    "NKE": 33.7599983215332,
+    "PANW": 353.42999267578125,
+    "TJX": 139.25,
+    "UNH": 336.0799865722656,
+    "WDC": 297.25,
+    "WSM": 212.1300048828125
   },
   "price_dates": {
-    "FSLR": "2026-11-20",
-    "NVDA": "2026-11-20",
-    "ALB": "2026-11-20",
-    "ALL": "2026-11-20",
-    "APA": "2026-11-20",
-    "CBOE": "2026-11-20",
-    "CHTR": "2026-11-20",
-    "CNC": "2026-11-20",
-    "COIN": "2026-11-20",
-    "ELV": "2026-11-20",
-    "FCX": "2026-11-20",
-    "HOOD": "2026-11-20",
-    "HUM": "2026-11-20",
-    "MRNA": "2026-11-20",
-    "NEM": "2026-11-20",
-    "SKYD": "2026-11-20",
-    "SMCI": "2026-11-20",
-    "TRGP": "2026-11-20",
-    "TSN": "2026-11-20",
-    "VRSK": "2026-11-20"
+    "NVDA": "2026-11-23",
+    "CNC": "2026-11-23",
+    "ELV": "2026-11-23",
+    "HUM": "2026-11-23",
+    "AKAM": "2026-11-23",
+    "COHR": "2026-11-23",
+    "CRM": "2026-11-23",
+    "FDXF": "2026-11-23",
+    "FIX": "2026-11-23",
+    "FTNT": "2026-11-23",
+    "GNRC": "2026-11-23",
+    "INTC": "2026-11-23",
+    "INTU": "2026-11-23",
+    "IP": "2026-11-23",
+    "NKE": "2026-11-23",
+    "PANW": "2026-11-23",
+    "TJX": "2026-11-23",
+    "UNH": "2026-11-23",
+    "WDC": "2026-11-23",
+    "WSM": "2026-11-23"
   },
   "orders": [
     {
@@ -848,6 +848,570 @@
           "ref_price": 212.75999450683594
         }
       ]
+    },
+    {
+      "pair": "REVERSAL AKAM",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "AKAM",
+          "side": "SELL SHORT",
+          "qty": 14,
+          "ref_price": 89.22000122070312
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL ALB",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ALB",
+          "side": "SELL",
+          "qty": 14,
+          "ref_price": 82.58000183105469
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL ALL",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ALL",
+          "side": "BUY TO COVER",
+          "qty": 4,
+          "ref_price": 265.2799987792969
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL APA",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "APA",
+          "side": "BUY TO COVER",
+          "qty": 27,
+          "ref_price": 44.060001373291016
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL CBOE",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CBOE",
+          "side": "BUY TO COVER",
+          "qty": 3,
+          "ref_price": 354.6700134277344
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL CHTR",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CHTR",
+          "side": "BUY TO COVER",
+          "qty": 9,
+          "ref_price": 127.91999816894531
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL CNC",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CNC",
+          "side": "BUY TO COVER",
+          "qty": 17,
+          "ref_price": 63.31999969482422
+        },
+        {
+          "ticker": "CNC",
+          "side": "BUY",
+          "qty": 20,
+          "ref_price": 63.31999969482422
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL COHR",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "COHR",
+          "side": "SELL SHORT",
+          "qty": 6,
+          "ref_price": 215.80999755859375
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL COIN",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "COIN",
+          "side": "SELL",
+          "qty": 10,
+          "ref_price": 108.77999877929688
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL CRM",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "CRM",
+          "side": "BUY",
+          "qty": 7,
+          "ref_price": 185.4600067138672
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL ELV",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "ELV",
+          "side": "BUY TO COVER",
+          "qty": 2,
+          "ref_price": 379.54998779296875
+        },
+        {
+          "ticker": "ELV",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 379.54998779296875
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL FCX",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FCX",
+          "side": "SELL",
+          "qty": 23,
+          "ref_price": 49.709999084472656
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL FDXF",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FDXF",
+          "side": "BUY",
+          "qty": 11,
+          "ref_price": 116.80999755859375
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL FIX",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FIX",
+          "side": "SELL SHORT",
+          "qty": 1,
+          "ref_price": 1158.530029296875
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL FSLR",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FSLR",
+          "side": "SELL",
+          "qty": 7,
+          "ref_price": 146.52999877929688
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL FTNT",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "FTNT",
+          "side": "SELL SHORT",
+          "qty": 10,
+          "ref_price": 131.10000610351562
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL GNRC",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "GNRC",
+          "side": "SELL SHORT",
+          "qty": 6,
+          "ref_price": 204.75
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL HOOD",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "HOOD",
+          "side": "SELL",
+          "qty": 18,
+          "ref_price": 67.37000274658203
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL HUM",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "HUM",
+          "side": "BUY TO COVER",
+          "qty": 2,
+          "ref_price": 383.67999267578125
+        },
+        {
+          "ticker": "HUM",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 383.67999267578125
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL INTC",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "INTC",
+          "side": "SELL SHORT",
+          "qty": 21,
+          "ref_price": 59.65999984741211
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL INTU",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "INTU",
+          "side": "BUY",
+          "qty": 4,
+          "ref_price": 275.4599914550781
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL IP",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "IP",
+          "side": "BUY",
+          "qty": 45,
+          "ref_price": 28.979999542236328
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL MRNA",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "MRNA",
+          "side": "SELL",
+          "qty": 6,
+          "ref_price": 212.0800018310547
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL NEM",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "NEM",
+          "side": "SELL",
+          "qty": 11,
+          "ref_price": 100.7300033569336
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL NKE",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "NKE",
+          "side": "BUY",
+          "qty": 38,
+          "ref_price": 33.7599983215332
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL NVDA",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "NVDA",
+          "side": "SELL",
+          "qty": 7,
+          "ref_price": 165.0500030517578
+        },
+        {
+          "ticker": "NVDA",
+          "side": "SELL SHORT",
+          "qty": 7,
+          "ref_price": 165.0500030517578
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL PANW",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "PANW",
+          "side": "SELL SHORT",
+          "qty": 3,
+          "ref_price": 353.42999267578125
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL SKYD",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SKYD",
+          "side": "SELL",
+          "qty": 184,
+          "ref_price": 6.329999923706055
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL SMCI",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "SMCI",
+          "side": "SELL",
+          "qty": 52,
+          "ref_price": 24.530000686645508
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL TJX",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "TJX",
+          "side": "SELL SHORT",
+          "qty": 9,
+          "ref_price": 139.25
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL TRGP",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "TRGP",
+          "side": "BUY TO COVER",
+          "qty": 4,
+          "ref_price": 277.2699890136719
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL TSN",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "TSN",
+          "side": "BUY TO COVER",
+          "qty": 20,
+          "ref_price": 62.95000076293945
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL UNH",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "UNH",
+          "side": "BUY",
+          "qty": 3,
+          "ref_price": 336.0799865722656
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL VRSK",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "VRSK",
+          "side": "BUY TO COVER",
+          "qty": 6,
+          "ref_price": 199.91000366210938
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL WDC",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "WDC",
+          "side": "SELL SHORT",
+          "qty": 4,
+          "ref_price": 297.25
+        }
+      ]
+    },
+    {
+      "pair": "REVERSAL WSM",
+      "event": "rebalance",
+      "signal_date": "2026-11-23",
+      "execute_on": "2026-11-24",
+      "z": 0.0,
+      "legs": [
+        {
+          "ticker": "WSM",
+          "side": "BUY",
+          "qty": 6,
+          "ref_price": 212.1300048828125
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -1229,6 +1793,258 @@
       "action": "rebalance",
       "z": 0.0,
       "reason": "up 6.1% over the past week: among the 10 best of 502, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL AKAM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 6.0% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL ALB",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL ALL",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL APA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL CBOE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL CHTR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL CNC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 15.3% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL COHR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 6.1% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL COIN",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL CRM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 13.7% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL ELV",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 15.0% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL FCX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL FDXF",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 12.1% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL FIX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 9.5% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL FSLR",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL FTNT",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 6.4% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL GNRC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 10.3% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL HOOD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL HUM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 16.8% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL INTC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 7.6% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL INTU",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 20.3% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL IP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 12.8% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL MRNA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL NEM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL NKE",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 11.8% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL NVDA",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 5.7% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL PANW",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 11.8% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL SKYD",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL SMCI",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL TJX",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 6.2% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL TRGP",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL TSN",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL UNH",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 18.4% over the past week: among the 10 worst of 501, long for a bounce"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL VRSK",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "no longer a target: closed"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL WDC",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "up 5.8% over the past week: among the 10 best of 501, short for a pullback"
+    },
+    {
+      "date": "2026-11-23",
+      "pair": "REVERSAL WSM",
+      "action": "rebalance",
+      "z": 0.0,
+      "reason": "down 15.8% over the past week: among the 10 worst of 501, long for a bounce"
     }
   ],
   "equity": [
@@ -1301,6 +2117,16 @@
       "gross": 21429.119777679443,
       "margin": 10714.559888839722,
       "free": 14388.612911998327
+    },
+    {
+      "date": "2026-11-23",
+      "cash": 26253.268242191218,
+      "unrealised": -43.66026306152344,
+      "equity": 26209.607979129694,
+      "open": 20,
+      "gross": 24261.779914855957,
+      "margin": 12130.889957427979,
+      "free": 14078.718021701716
     }
   ]
 }
