@@ -2262,7 +2262,9 @@
       ]
     }
   ],
-  "last_run_warnings": [],
+  "last_run_warnings": [
+    "\u26a0 no price data for FDS/MORN: check the tickers in config.toml"
+  ],
   "log": [
     {
       "date": "2026-10-27",
