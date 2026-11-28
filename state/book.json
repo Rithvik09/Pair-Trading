@@ -1,5 +1,5 @@
 {
-  "cash": 107858.84932513179,
+  "cash": 109003.34270929077,
   "starting_cash": 100000.0,
   "blocked": [
     "VMRK/CPT"
@@ -148,38 +148,6 @@
       "costs": 5.0,
       "borrow_fee_y": 0.0025,
       "borrow_fee_x": 0.0
-    },
-    "RES/LBRT": {
-      "y": "RES",
-      "x": "LBRT",
-      "side": "long_spread",
-      "entry_date": "2026-11-20",
-      "entry_y": 4.820000171661377,
-      "entry_x": 10.760000228881836,
-      "y_shares": 1751,
-      "x_shares": -144,
-      "beta": 0.18466860977297767,
-      "entry_z": -2.1038937809754006,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0,
-      "borrow_fee_x": 0.0025
-    },
-    "REG/IVT": {
-      "y": "REG",
-      "x": "IVT",
-      "side": "long_spread",
-      "entry_date": "2026-11-23",
-      "entry_y": 73.7300033569336,
-      "entry_x": 31.479999542236328,
-      "y_shares": 86,
-      "x_shares": -115,
-      "beta": 0.5723089448294341,
-      "entry_z": -2.1889504502543247,
-      "notional": 10000.0,
-      "costs": 5.0,
-      "borrow_fee_y": 0.0,
-      "borrow_fee_x": 0.0025
     },
     "IESC/STRL": {
       "y": "IESC",
@@ -808,50 +776,94 @@
       "borrow": 0.8293981524573433,
       "pnl": -175.5957059832679,
       "reason": "converged"
+    },
+    {
+      "y": "REG",
+      "x": "IVT",
+      "side": "long_spread",
+      "entry_date": "2026-11-23",
+      "entry_y": 73.7300033569336,
+      "entry_x": 31.479999542236328,
+      "y_shares": 86,
+      "x_shares": -115,
+      "beta": 0.5723089448294341,
+      "entry_z": -2.1889504502543247,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025,
+      "exit_date": "2026-11-27",
+      "exit_y": 75.77999877929688,
+      "exit_x": 31.969999313354492,
+      "borrow": 0.1005611096488105,
+      "pnl": 109.84907153500451,
+      "reason": "converged"
+    },
+    {
+      "y": "RES",
+      "x": "LBRT",
+      "side": "long_spread",
+      "entry_date": "2026-11-20",
+      "entry_y": 4.820000171661377,
+      "entry_x": 10.760000228881836,
+      "y_shares": 1751,
+      "x_shares": -144,
+      "beta": 0.18466860977297767,
+      "entry_z": -2.1038937809754006,
+      "notional": 10000.0,
+      "costs": 10.0,
+      "borrow_fee_y": 0.0,
+      "borrow_fee_x": 0.0025,
+      "exit_date": "2026-11-27",
+      "exit_y": 5.539999961853027,
+      "exit_x": 12.260000228881836,
+      "borrow": 0.07532000160217286,
+      "pnl": 1034.6443126239776,
+      "reason": "converged"
     }
   ],
   "last_bar": {
-    "MTD/TMO": "2026-11-25",
-    "SW/PKG": "2026-11-25",
+    "MTD/TMO": "2026-11-27",
+    "SW/PKG": "2026-11-27",
     "PPL/WEC": "2026-10-27",
     "AIG/L": "2026-10-27",
-    "PPL/DUK": "2026-11-25",
-    "MTDR/OXY": "2026-11-25",
-    "LKFN/RNST": "2026-11-25",
-    "BANC/FIBK": "2026-11-25",
-    "RF/FIBK": "2026-11-25",
-    "KRG/PECO": "2026-11-25",
-    "TALO/COP": "2026-11-25",
-    "ALL/THG": "2026-11-25",
-    "SHO/APLE": "2026-11-25",
-    "IESC/STRL": "2026-11-25",
-    "MTDR/CHRD": "2026-11-25",
-    "KNX/JBHT": "2026-11-25",
-    "REG/IVT": "2026-11-25",
-    "ENTG/ICHR": "2026-11-25",
-    "SPG/IVT": "2026-11-25",
-    "D/AEE": "2026-11-25",
-    "MSCI/SPGI": "2026-11-25",
-    "KKR/BX": "2026-11-25",
-    "PDFS/COHU": "2026-11-25",
-    "FELE/LECO": "2026-11-25",
-    "RES/LBRT": "2026-11-25",
-    "VMRK/CPT": "2026-11-25",
-    "RHP/APLE": "2026-11-25",
-    "FLS/PH": "2026-11-25",
-    "PENN/CZR": "2026-11-25",
-    "IESC/EME": "2026-11-25",
-    "FDS/MORN": "2026-11-25",
-    "TRNO/EGP": "2026-11-25",
-    "RES/HAL": "2026-11-25",
-    "CWT/MSEX": "2026-11-25",
-    "TRNO/FR": "2026-11-25",
-    "PWR/STRL": "2026-11-25",
-    "YETI/BC": "2026-11-25",
-    "RL/TPR": "2026-11-25",
-    "ITW/LECO": "2026-11-25",
-    "AMP/CRBG": "2026-11-25",
-    "SSD/WMS": "2026-11-25"
+    "PPL/DUK": "2026-11-27",
+    "MTDR/OXY": "2026-11-27",
+    "LKFN/RNST": "2026-11-27",
+    "BANC/FIBK": "2026-11-27",
+    "RF/FIBK": "2026-11-27",
+    "KRG/PECO": "2026-11-27",
+    "TALO/COP": "2026-11-27",
+    "ALL/THG": "2026-11-27",
+    "SHO/APLE": "2026-11-27",
+    "IESC/STRL": "2026-11-27",
+    "MTDR/CHRD": "2026-11-27",
+    "KNX/JBHT": "2026-11-27",
+    "REG/IVT": "2026-11-27",
+    "ENTG/ICHR": "2026-11-27",
+    "SPG/IVT": "2026-11-27",
+    "D/AEE": "2026-11-27",
+    "MSCI/SPGI": "2026-11-27",
+    "KKR/BX": "2026-11-27",
+    "PDFS/COHU": "2026-11-27",
+    "FELE/LECO": "2026-11-27",
+    "RES/LBRT": "2026-11-27",
+    "VMRK/CPT": "2026-11-27",
+    "RHP/APLE": "2026-11-27",
+    "FLS/PH": "2026-11-27",
+    "PENN/CZR": "2026-11-27",
+    "IESC/EME": "2026-11-27",
+    "FDS/MORN": "2026-11-27",
+    "TRNO/EGP": "2026-11-27",
+    "RES/HAL": "2026-11-27",
+    "CWT/MSEX": "2026-11-27",
+    "TRNO/FR": "2026-11-27",
+    "PWR/STRL": "2026-11-27",
+    "YETI/BC": "2026-11-27",
+    "RL/TPR": "2026-11-27",
+    "ITW/LECO": "2026-11-27",
+    "AMP/CRBG": "2026-11-27",
+    "SSD/WMS": "2026-11-27"
   },
   "orders": [
     {
@@ -2260,6 +2272,48 @@
           "ref_price": 31.610000610351562
         }
       ]
+    },
+    {
+      "pair": "REG/IVT",
+      "event": "close",
+      "signal_date": "2026-11-27",
+      "execute_on": "2026-11-30",
+      "z": -0.3741392890610482,
+      "legs": [
+        {
+          "ticker": "REG",
+          "side": "SELL",
+          "qty": 86,
+          "ref_price": 75.77999877929688
+        },
+        {
+          "ticker": "IVT",
+          "side": "BUY TO COVER",
+          "qty": 115,
+          "ref_price": 31.969999313354492
+        }
+      ]
+    },
+    {
+      "pair": "RES/LBRT",
+      "event": "close",
+      "signal_date": "2026-11-27",
+      "execute_on": "2026-11-30",
+      "z": -0.10421716082413995,
+      "legs": [
+        {
+          "ticker": "RES",
+          "side": "SELL",
+          "qty": 1751,
+          "ref_price": 5.539999961853027
+        },
+        {
+          "ticker": "LBRT",
+          "side": "BUY TO COVER",
+          "qty": 144,
+          "ref_price": 12.260000228881836
+        }
+      ]
     }
   ],
   "last_run_warnings": [],
@@ -2725,6 +2779,20 @@
       "action": "close",
       "z": -0.4184135441445922,
       "reason": "z -0.42 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-27",
+      "pair": "REG/IVT",
+      "action": "close",
+      "z": -0.3741392890610482,
+      "reason": "z -0.37 back within \u00b10.5: the spread converged, take the profit"
+    },
+    {
+      "date": "2026-11-27",
+      "pair": "RES/LBRT",
+      "action": "close",
+      "z": -0.10421716082413995,
+      "reason": "z -0.10 back within \u00b10.5: the spread converged, take the profit"
     }
   ],
   "equity": [
@@ -2947,6 +3015,16 @@
       "gross": 128664.50014162064,
       "margin": 64332.25007081032,
       "free": 42038.37500051495
+    },
+    {
+      "date": "2026-11-27",
+      "cash": 109003.34270929077,
+      "unrealised": -2403.6094508587257,
+      "equity": 106599.73325843204,
+      "open": 11,
+      "gross": 108628.8899307251,
+      "margin": 54314.44496536255,
+      "free": 52285.28829306949
     }
   ]
 }
